@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  match: one
+  guess_a: 1
+  guess_b: 1
+  points: 1
+
+two:
+  user: two
+  match: two
+  guess_a: 1
+  guess_b: 1
+  points: 1

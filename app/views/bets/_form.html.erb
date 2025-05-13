@@ -1,0 +1,14 @@
+<!-- app/views/bets/_form.html.erb -->
+<%= form_with(model: [@match, @bet], local: true) do |form| %>
+  <div class="field">
+    <%= form.label :guess_a, @match.team_a %>
+    <%= form.number_field :guess_a %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :guess_b, @match.team_b %>
+    <%= form.number_field :guess_b %>
+  </div>
+  
+  <%= form.submit "Salvar Palpite" %>
+<% end %>

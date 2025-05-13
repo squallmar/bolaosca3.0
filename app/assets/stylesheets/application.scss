@@ -1,0 +1,95 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+@import "bootstrap";
+
+
+.field {
+  margin-bottom: 15px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.vs-text {
+  color: #6c757d;
+  font-weight: normal;
+}
+
+.match-card {
+  transition: transform 0.2s;
+}
+
+.match-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar */
+.navbar-brand {
+  font-weight: 600;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid #dee2e6;
+}
+
+/* Flash messages */
+.alert i.bi {
+  margin-right: 0.5rem;
+}
+
+/* Páginas estáticas */
+.static-page h2 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-top: 2rem;
+}
+
+/* Painel Admin */
+.admin-dashboard .card {
+  transition: transform 0.2s;
+  height: 100%;
+}
+
+.admin-dashboard .card:hover {
+  transform: translateY(-3px);
+}
+
+.admin-dashboard .display-6 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+/* app/assets/stylesheets/application.css */
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: none;
+  color: #dc3545;
+}
+
+.was-validated .invalid-feedback {
+  display: block;
+}
+
+/* --------------------------------------*/

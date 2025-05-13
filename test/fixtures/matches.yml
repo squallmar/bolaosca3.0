@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  championship: one
+  team_a: MyString
+  team_b: MyString
+  score_a: 1
+  score_b: 1
+  match_date: 2025-05-09 22:40:49
+  status: MyString
+
+two:
+  championship: two
+  team_a: MyString
+  team_b: MyString
+  score_a: 1
+  score_b: 1
+  match_date: 2025-05-09 22:40:49
+  status: MyString

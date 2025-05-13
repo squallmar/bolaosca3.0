@@ -1,0 +1,53 @@
+<div class="matches-container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Próximas Partidas</h1>
+    <% if user_signed_in? && current_user.admin? %>
+      <%= link_to new_match_path, class: "btn btn-success" do %>
+        <i class="bi bi-plus-lg"></i> Nova Partida
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @matches.any? %>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <% @matches.each do |match| %>
+        <div class="col">
+          <div class="card match-card h-100">
+            <div class="card-body">
+              <h3 class="card-title text-center">
+                <%= match.team_a %> <span class="vs-text">vs</span> <%= match.team_b %>
+              </h3>
+              
+              <div class="match-details">
+                <p class="card-text">
+                  <i class="bi bi-trophy"></i> <%= match.championship.name %>
+                </p>
+                <p class="card-text">
+                  <i class="bi bi-calendar-event"></i> <%= l(match.match_date, format: :long) %>
+                </p>
+              </div>
+
+              <% if user_signed_in? %>
+                <div class="d-grid mt-3">
+                  <% if bet = match.bets.find_by(user: current_user) %>
+                    <%= link_to edit_match_bet_path(match, bet), class: "btn btn-warning" do %>
+                      <i class="bi bi-pencil"></i> Editar Palpite
+                    <% end %>
+                  <% else %>
+                    <%= link_to new_match_bet_path(match), class: "btn btn-primary" do %>
+                      <i class="bi bi-joystick"></i> Fazer Palpite
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info text-center">
+      <i class="bi bi-info-circle-fill"></i> Não há partidas futuras cadastradas.
+    </div>
+  <% end %>
+</div>
