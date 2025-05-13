@@ -19,9 +19,9 @@ module Admin
       @championship = Championship.new(championship_params)
 
       if @championship.save
-        redirect_to admin_championships_path, notice: 'Campeonato criado com sucesso.'
+        redirect_to new_path, notice: 'Campeonato criado com sucesso.' # VERIFICAR SE O CAMPEONATO CRIADO É O ÚLTIMO!!!!!!!!!!!!!
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
