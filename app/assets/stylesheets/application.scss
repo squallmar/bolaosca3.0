@@ -93,3 +93,26 @@ footer {
 }
 
 /* --------------------------------------*/
+
+/* Rankings -----------------------------------------------------------*/
+.table-rankings {
+  th {
+    position: sticky;
+    top: 0;
+    background: #343a40;
+    color: white;
+  }
+  
+  tr:nth-child(1) {
+    background-color: #ffd700 !important; /* Ouro para 1º lugar */
+  }
+  
+  tr:nth-child(2) {
+    background-color: #c0c0c0 !important; /* Prata para 2º lugar */
+  }
+  
+  tr:nth-child(3) {
+    background-color: #cd7f32 !important; /* Bronze para 3º lugar */
+  }
+}
+/* ----------------------------------------------------------------------- */

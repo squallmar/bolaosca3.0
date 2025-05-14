@@ -1,2 +1,37 @@
-<h1>Rankings#index</h1>
-<p>Find me in app/views/rankings/index.html.erb</p>
+<div class="container mt-4">
+  <h1 class="text-center mb-4">Classificação dos Jogadores</h1>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Posição</th>
+          <th scope="col">Jogador</th>
+          <th scope="col">Pontuação Total</th>
+          <th scope="col">Acertos</th>
+          <th scope="col">Palpites</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @rankings.each_with_index do |user, index| %>
+          <tr>
+            <th scope="row"><%= index + 1 %></th>
+            <td>
+              <%= image_tag user.avatar_url || 'default-avatar.png', class: 'rounded-circle me-2', width: 30 %>
+              <%= user.name %>
+            </td>
+            <td><%= user.total_points %></td>
+            <td><%= user.correct_bets_count %></td>
+            <td><%= user.bets_count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if @rankings.empty? %>
+    <div class="alert alert-info text-center">
+      Nenhuma pontuação disponível ainda.
+    </div>
+  <% end %>
+</div>
