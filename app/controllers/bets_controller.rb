@@ -1,6 +1,6 @@
 class BetsController < ApplicationController
   before_action :authenticate_user!
-  
+
   def new
     @match = Match.find(params[:match_id])
     @bet = @match.bets.build(user: current_user)
@@ -12,7 +12,7 @@ class BetsController < ApplicationController
     @bet.user = current_user
 
     if @bet.save
-      redirect_to matches_path, notice: 'Palpite criado com sucesso!'
+      redirect_to matches_path, notice: "Palpite criado com sucesso!"
     else
       render :new
     end
@@ -20,9 +20,9 @@ class BetsController < ApplicationController
 
   def update
     @bet = current_user.bets.find(params[:id])
-    
+
     if @bet.update(bet_params)
-      redirect_to matches_path, notice: 'Palpite atualizado com sucesso!'
+      redirect_to matches_path, notice: "Palpite atualizado com sucesso!"
     else
       render :edit
     end

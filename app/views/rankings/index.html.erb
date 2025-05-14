@@ -17,7 +17,8 @@
           <tr>
             <th scope="row"><%= index + 1 %></th>
             <td>
-              <%= image_tag user.avatar_url || 'default-avatar.png', class: 'rounded-circle me-2', width: 30 %>
+              <%= image_tag(user.avatar_url.present? ? user.avatar_url : 'default-avatar.png', 
+             class: 'rounded-circle me-2', width: 30) %>
               <%= user.name %>
             </td>
             <td><%= user.total_points %></td>
