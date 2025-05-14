@@ -7,7 +7,7 @@
         <tr>
           <th scope="col">Posição</th>
           <th scope="col">Jogador</th>
-          <th scope="col">Pontuação Total</th>
+          <th scope="col">Pontuação</th>
           <th scope="col">Acertos</th>
           <th scope="col">Palpites</th>
         </tr>
@@ -17,13 +17,13 @@
           <tr>
             <th scope="row"><%= index + 1 %></th>
             <td>
-              <%= image_tag(user.avatar_url.present? ? user.avatar_url : 'default-avatar.png', 
-             class: 'rounded-circle me-2', width: 30) %>
-              <%= user.name %>
+              <%# Usando o email como identificação temporária %>
+              <i class="bi bi-person-circle me-2"></i>
+              <%= user.email.split('@').first.capitalize %>
             </td>
-            <td><%= user.total_points %></td>
-            <td><%= user.correct_bets_count %></td>
-            <td><%= user.bets_count %></td>
+            <td><%= user.total_points || 0 %></td>
+            <td><%= user.correct_bets_count || 0 %></td>
+            <td><%= user.bets_count || 0 %></td>
           </tr>
         <% end %>
       </tbody>
@@ -32,7 +32,7 @@
 
   <% if @rankings.empty? %>
     <div class="alert alert-info text-center">
-      Nenhuma pontuação disponível ainda.
+      Nenhum jogador encontrado na classificação.
     </div>
   <% end %>
 </div>

@@ -116,3 +116,16 @@ footer {
   }
 }
 /* ----------------------------------------------------------------------- */
+/* Estilos para a tabela de classificação */
+.table-rankings {
+  tr:first-child { background-color: #fff9c4; } /* Ouro */
+  tr:nth-child(2) { background-color: #f5f5f5; } /* Prata */
+  tr:nth-child(3) { background-color: #ffecb3; } /* Bronze */
+  
+  .bi-person-circle {
+    font-size: 1.2rem;
+    color: #6c757d;
+  }
+}
+
+/* ----------------------------------------------------------------------- */
