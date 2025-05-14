@@ -1,4 +1,5 @@
 class Match < ApplicationRecord
+  has_many :bets, dependent: :destroy
   belongs_to :championship
   has_one_attached :team_a_logo
   has_one_attached :team_b_logo

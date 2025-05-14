@@ -1,0 +1,15 @@
+<h2>Fazer palpite para <%= @match.team_a %> vs <%= @match.team_b %></h2>
+
+<%= form_with model: [@match, @bet], local: true do |f| %>
+  <div class="field">
+    <%= f.label :guess_a, @match.team_a %>
+    <%= f.number_field :guess_a %>
+  </div>
+
+  <div class="field">
+    <%= f.label :guess_b, @match.team_b %>
+    <%= f.number_field :guess_b %>
+  </div>
+
+  <%= f.submit "Salvar Palpite" %>
+<% end %>

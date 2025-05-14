@@ -1,4 +1,5 @@
 class MatchesController < ApplicationController
+  before_action :check_admin, except: [ :index ]
   before_action :authenticate_user!, except: [ :index ]
   before_action :set_match, only: [ :edit, :update, :destroy ]
 
@@ -42,6 +43,12 @@ class MatchesController < ApplicationController
   end
 
   private
+
+  def check_admin
+    unless current_user.admin?
+      redirect_to matches_path, alert: "Acesso negado"
+    end
+  end
 
   def set_match
     @match = Match.find(params[:id])
