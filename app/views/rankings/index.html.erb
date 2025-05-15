@@ -1,29 +1,51 @@
 <div class="container mt-4">
-  <h1 class="text-center mb-4">Classificação dos Jogadores</h1>
+  <h1 class="text-center mb-4">🏆 Classificação dos Jogadores</h1>
 
   <div class="table-responsive">
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover align-middle">
       <thead class="table-dark">
         <tr>
-          <th scope="col">Posição</th>
-          <th scope="col">Jogador</th>
-          <th scope="col">Pontuação</th>
-          <th scope="col">Acertos</th>
-          <th scope="col">Palpites</th>
+          <th scope="col" style="width: 10%">#</th>
+          <th scope="col" style="width: 30%">Jogador</th>
+          <th scope="col" style="width: 15%">Pontos</th>
+          <th scope="col" style="width: 15%">Acertos</th>
+          <th scope="col" style="width: 15%">Palpites</th>
+          <th scope="col" style="width: 15%">% Acerto</th>
         </tr>
       </thead>
       <tbody>
         <% @rankings.each_with_index do |user, index| %>
           <tr>
-            <th scope="row"><%= index + 1 %></th>
+            <th scope="row">
+              <%= index + 1 %>
+              <% if index < 3 %>
+                <span class="badge bg-<%= ['warning', 'secondary', 'danger'][index] %>">
+                  <%= ['🥇', '🥈', '🥉'][index] %>
+                </span>
+              <% end %>
+            </th>
             <td>
-              <%# Usando o email como identificação temporária %>
-              <i class="bi bi-person-circle me-2"></i>
-              <%= user.email.split('@').first.capitalize %>
+              <div class="d-flex align-items-center">
+                <% if user.avatar_url.present? %>
+                  <%= image_tag user.avatar_url, class: "rounded-circle me-2", width: "32", height: "32", alt: user.nickname %>
+                <% else %>
+                  <i class="bi bi-person-circle me-2" style="font-size: 1.5rem"></i>
+                <% end %>
+                <div>
+                  <strong><%= user.nickname.present? ? user.nickname.split('@').first.capitalize : "Jogador #{user.id}" %></strong>
+                </div>
+              </div>
             </td>
-            <td><%= user.total_points || 0 %></td>
+            <td class="fw-bold"><%= user.total_points || 0 %></td>
             <td><%= user.correct_bets_count || 0 %></td>
             <td><%= user.bets_count || 0 %></td>
+            <td>
+              <% if user.bets_count.to_i > 0 %>
+                <%= number_to_percentage((user.correct_bets_count.to_f / user.bets_count.to_f) * 100, precision: 1) %>
+              <% else %>
+                -
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>
@@ -32,7 +54,11 @@
 
   <% if @rankings.empty? %>
     <div class="alert alert-info text-center">
-      Nenhum jogador encontrado na classificação.
+      Nenhum jogador encontrado na classificação. Seja o primeiro a palpitar!
     </div>
   <% end %>
+
+  <div class="text-end mt-3">
+    <small class="text-muted">Atualizado em: <%= l(Time.current, format: :long) %></small>
+  </div>
 </div>

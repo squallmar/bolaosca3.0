@@ -48,9 +48,9 @@
   <div class="mb-3">
     <%= f.label :avatar, "Avatar", class: "form-label" %>
     <%= f.file_field :avatar, accept: "image/*", class: "form-control" %>
-    <% if resource.avatar.present? %>
+    <% if resource.avatar_url.present? %>
       <div class="mt-2">
-        <%= image_tag resource.avatar.url, style: "width: 100px; height: auto;", class: "rounded-circle" %>
+        <%= image_tag resource.avatar_url, style: "width: 100px; height: auto;", class: "rounded-circle" %>
       </div>
     <% end %>
   </div>
