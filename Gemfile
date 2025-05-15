@@ -66,4 +66,4 @@ gem "devise"
 gem "bootstrap", "~> 5.3", ">= 5.3.5"
 gem "dartsass-rails", "~> 0.5.1"
 gem "sassc-rails", "~> 2.1", ">= 2.1.2"
-gem 'i18n'
+gem "i18n"

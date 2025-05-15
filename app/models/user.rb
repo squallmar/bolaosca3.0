@@ -21,11 +21,11 @@ class User < ApplicationRecord
   end
 
   def name
-  email.split('@').first.capitalize
+  email.split("@").first.capitalize
   end
 
   def avatar_url
-  nil 
+  nil
   end
 
   # Pontuação total do usuário no bolão
