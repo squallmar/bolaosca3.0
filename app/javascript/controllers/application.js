@@ -1,9 +1,17 @@
+// app/javascript/controllers/application.js
 import { Application } from "@hotwired/stimulus"
+import { definitionsFromContext } from "@hotwired/stimulus-loading"
 
 const application = Application.start()
+application.load(definitionsFromContext(import.meta.context))
 
-// Configure Stimulus development experience
-application.debug = false
-window.Stimulus   = application
+// Inicialize tooltips/popovers
+import { Tooltip, Popover } from "bootstrap"
 
-export { application }
+document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+  new Tooltip(el)
+})
+
+document.querySelectorAll('[data-bs-toggle="popover"]').forEach(el => {
+  new Popover(el)
+})

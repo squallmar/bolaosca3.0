@@ -28,10 +28,6 @@ class User < ApplicationRecord
   email.split("@").first.capitalize
   end
 
-  def avatar_url
-  nil
-  end
-
   # Pontuação total do usuário no bolão
   def total_points
     bets.sum(:points)
