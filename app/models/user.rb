@@ -2,6 +2,7 @@ class User < ApplicationRecord
   # Relacionamentos
   has_many :bets, dependent: :destroy
   has_many :matches, through: :bets
+  mount_uploader :avatar, AvatarUploader
 
   # Módulos do Devise
   devise :database_authenticatable, :registerable,
