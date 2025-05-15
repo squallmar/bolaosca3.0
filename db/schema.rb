@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_14_010746) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_15_224729) do
   create_table "bets", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "match_id", null: false
@@ -58,6 +58,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_14_010746) do
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "avatar_url"
+    t.string "full_name"
+    t.string "nickname"
+    t.string "phone"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
