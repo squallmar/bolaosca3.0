@@ -129,3 +129,24 @@ footer {
 }
 
 /* ----------------------------------------------------------------------- */
+
+/* Estilos para os formulários de autenticação */
+.auth-card {
+  max-width: 450px;
+  margin: 2rem auto;
+}
+
+.auth-card .card-body {
+  padding: 2rem;
+}
+
+.auth-card .form-control {
+  padding: 0.75rem 1rem;
+}
+
+.auth-card .btn {
+  padding: 0.75rem;
+}
+
+
+/* ----------------------------------------------------------------------- */
