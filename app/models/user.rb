@@ -6,7 +6,7 @@ class User < ApplicationRecord
   # Módulos do Devise
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :trackable  # rastreamento de login
+         :trackable   # rastreamento de login
 
   # Validações
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -14,6 +14,9 @@ class User < ApplicationRecord
 
   # Atributo virtual para senha atual (útil para atualizações)
   attr_accessor :current_password
+
+  # Define o valor padrão para o atributo admin
+  attribute :admin, :boolean, default: false
 
   # Métodos
   def admin?

@@ -54,25 +54,25 @@
             <i class="bi bi-people-fill"></i> Informações dos Times
           </h5>
 
+          <% teams_list = ["ATLÉTICO-MG","ATLÉTICO-PR","BAHIA-BA","BOTAFOGO-RJ","CORINTHIANS-SP","CORITIBA-PR","CRICIÚMA-SC","CRUZEIRO-MG","FLAMENGO-RJ","FLUMINENSE-RJ","GOIÁS-GO","GRÊMIO-RS","INTERNACIONAL-RS","NÁUTICO-PE","PONTE PRETA-SP","PORTUGUESA-SP","SANTOS-SP","SÃO PAULO-SP","VASCO DA GAMA-RJ","VITÓRIA-BA","ABC-RN","AMÉRICA-MG","AMÉRICA-RN","ASA-AL","ATLÉTICO-GO","AVAÍ-SC","BOA-MG","BRAGANTINO-SP","CEARÁ-CE","CHAPECOENSE-SC","FIGUEIRENSE-SC","GUARATINGUETÁ-SP","ICASA-CE","JOINVILLE-SC","OESTE-SP","PALMEIRAS-SP","PARANÁ-PR","PAYSANDU-PA","SÃO CAETANO-SP","SPORT-PE","ÁGUIA DE MARABÁ-PA","BARAÚNAS-RN","BETIM-MG","BRASILIENSE-DF","CAXIAS-RS","CRAC-GO","CRB-AL","CUIABÁ-MT","DUQUE DE CAXIAS-RJ","FORTALEZA-CE","GRÊMIO BARUERI-SP","GUARANI-SP","LUVERDENSE-MT","MACAÉ-RJ","MADUREIRA-RJ","MOGI MIRIM-SP","SAMPAIO CORRÊA-MA","SANTA CRUZ-PE","VILA NOVA-GO","TREZE-PB","NACIONAL-AM","PARAGOMINAS","PLÁCIDO DE CASTRO","VILHENA","NÁUTICO-RR","SALGUEIRO","GURUPI","YPIRANGA-AP","MARANHÃO","PARNAHYBA","TIRADENTES","GUARANY DE SOBRAL","YPIRANGA-PE","POTIGUAR DE MOSSORÓ","CENTRAL","SERGIPE","BOTAFOGO-PB","CSA","JUAZEIRENSE","VITÓRIA DA CONQUISTA","GOIANÉSIA","MIXTO","BRASÍLIA","APARECIDENSE","ÁGUIA NEGRA","TUPI-MG","NOVA IGUAÇU","RESENDE","ARAXÁ","ARACRUZ","JUVENTUDE","MARCÍLIO DIAS","SANTO ANDRÉ","VILLA NOVA-MG","PENAPOLENSE","METROPOLITANO-SC","JMALUCELLI","LAJEADENSE","LONDRINA","BOTAFOGO-SP"] %>
+
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
                 <%= form.label :team_a, "Time A", class: "form-label fw-bold" %>
-                <%= form.text_field :team_a, class: "form-control", required: true,
-                      placeholder: "Nome do Time A" %>
+                <%= form.select :team_a, teams_list, { prompt: "Selecione o Time A..." }, { class: "form-select select2", required: true } %>
                 <div class="invalid-feedback">
-                  Por favor, informe o Time A.
+                  Por favor, selecione o Time A.
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-6">
               <div class="mb-3">
                 <%= form.label :team_b, "Time B", class: "form-label fw-bold" %>
-                <%= form.text_field :team_b, class: "form-control", required: true,
-                      placeholder: "Nome do Time B" %>
+                <%= form.select :team_b, teams_list, { prompt: "Selecione o Time B..." }, { class: "form-select select2", required: true } %>
                 <div class="invalid-feedback">
-                  Por favor, informe o Time B.
+                  Por favor, selecione o Time B.
                 </div>
               </div>
             </div>
@@ -86,7 +86,7 @@
                 <small class="form-text text-muted">Formatos: JPG, PNG (max 2MB)</small>
               </div>
             </div>
-            
+
             <div class="col-md-6">
               <div class="mb-3">
                 <%= form.label :team_b_logo, "Escudo Time B", class: "form-label fw-bold" %>
