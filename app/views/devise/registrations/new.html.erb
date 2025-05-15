@@ -17,12 +17,22 @@
             <% if @minimum_password_length %>
               <small class="text-muted">(mínimo de <%= @minimum_password_length %> caracteres)</small>
             <% end %>
-            <%= f.password_field :password, autocomplete: "new-password", class: "form-control", required: true %>
+            <div class="input-group">
+              <%= f.password_field :password, autocomplete: "new-password", class: "form-control", required: true, id: "password-field" %>
+              <button class="btn btn-outline-secondary" type="button" id="toggle-password">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
           </div>
 
           <div class="mb-4">
             <%= f.label :password_confirmation, "Confirme sua senha", class: "form-label" %>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", required: true %>
+            <div class="input-group">
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", required: true, id: "password-confirmation-field" %>
+              <button class="btn btn-outline-secondary" type="button" id="toggle-password-confirmation">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
           </div>
 
           <div class="d-grid gap-2">
@@ -39,3 +49,30 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Função para alternar a visibilidade da senha
+  function togglePassword(fieldId, buttonId) {
+    const field = document.getElementById(fieldId);
+    const button = document.getElementById(buttonId);
+    const icon = button.querySelector('i');
+    
+    button.addEventListener('click', function() {
+      if (field.type === 'password') {
+        field.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+      } else {
+        field.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+      }
+    });
+  }
+
+  // Aplicar para ambos os campos de senha
+  togglePassword('password-field', 'toggle-password');
+  togglePassword('password-confirmation-field', 'toggle-password-confirmation');
+});
+</script>

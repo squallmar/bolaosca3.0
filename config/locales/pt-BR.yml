@@ -61,7 +61,7 @@ pt-BR:
       long: "%d de %B de %Y, %H:%M"
     am: "AM"
     pm: "PM"
- 
+
   devise:
     confirmations:
       confirmed: "Sua conta foi confirmada com sucesso."
@@ -124,3 +124,10 @@ pt-BR:
       not_saved:
         one: "1 erro impediu que %{resource} fosse salvo:"
         other: "%{count} erros impediram que %{resource} fosse salvo:"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            admin:
+              inclusion: "não é um valor válido." 
