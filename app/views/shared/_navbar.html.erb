@@ -15,14 +15,13 @@
         </li>
         <li class="nav-item">
           <%= link_to "Ranking", rankings_path, class: "nav-link #{'active' if current_page?(rankings_path)}" %>
-        </li>
+        </li>    
       </ul>
-
       <ul class="navbar-nav">
         <% if user_signed_in? %>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-              <i class="bi bi-person-circle"></i> <%= current_user.email %>
+              <i class="bi bi-person-circle"></i> <%= current_user.nickname.present? ? current_user.nickname.split('@').first.capitalize : "Jogador #{current_user.id}" %>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
              <% if current_user.admin? %>
