@@ -10,6 +10,11 @@ Rails.application.routes.draw do
   get "/termos", to: "static_pages#termos", as: :termos
   get "/privacidade", to: "static_pages#privacidade", as: :privacidade
   get "up" => "rails/health#show", as: :rails_health_check
+  get "/regras", to: "static_pages#regras", as: "regras"
+  get "/sobre", to: "static_pages#sobre", as: "sobre"
+  get "/ajuda", to: "static_pages#ajuda", as: "ajuda"
+  get "/contato", to: "static_pages#contato", as: "contato"
+
 
   # Namespace administrativo
   namespace :admin do

@@ -6,6 +6,9 @@ import "controllers"
 import "@popperjs/core"
 import "bootstrap"
 
+import "jquery"
+window.$ = window.jQuery = jQuery
+
 // Inicialize componentes do Bootstrap que você está usando
 document.addEventListener('DOMContentLoaded', () => {
   // Tooltips

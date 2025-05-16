@@ -1,3 +1,4 @@
+// matches_form.js
 document.addEventListener("DOMContentLoaded", function() {
   // Configuração da data mínima
   const dateField = document.getElementById("match-date-field");
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
       event.stopPropagation();
       
       if (form.checkValidity()) {
-        showConfirmationModal();
+        showConfirmationModal(form);
       } else {
         form.classList.add("was-validated");
       }
@@ -37,19 +38,16 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Inicializa Select2 para o campo de campeonato
-  if ($) {
-    $(".select2").select2({
-      placeholder: "Selecione o campeonato...",
-      allowClear: true
-    });
-  }
-
   // Mostra modal de confirmação
-  function showConfirmationModal() {
+  function showConfirmationModal(form) {
     const formData = new FormData(form);
+    
+    // Acessa os valores diretamente sem jQuery
+    const championshipSelect = document.getElementById("match_championship_id");
+    const championshipText = championshipSelect ? championshipSelect.options[championshipSelect.selectedIndex].text : "Não especificado";
+    
     let summaryHTML = `
-      <p><strong>Campeonato:</strong> ${$("#match_championship_id option:selected").text()}</p>
+      <p><strong>Campeonato:</strong> ${championshipText}</p>
       <p><strong>Times:</strong> ${formData.get("match[team_a]")} vs ${formData.get("match[team_b]")}</p>
       <p><strong>Data:</strong> ${new Date(formData.get("match[match_date]")).toLocaleString()}</p>
     `;
@@ -66,5 +64,15 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("confirm-submit").addEventListener("click", function() {
       form.submit();
     });
+  }
+
+  // Inicializa Select2 se jQuery estiver disponível
+  if (typeof $ !== 'undefined') {
+    $(".select2").select2({
+      placeholder: "Selecione o campeonato...",
+      allowClear: true
+    });
+  } else {
+    console.warn("jQuery não está disponível. O Select2 não será inicializado.");
   }
 });
