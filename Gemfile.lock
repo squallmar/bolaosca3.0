@@ -311,10 +311,10 @@ GEM
       ffi (~> 1.12)
       logger
     rubyzip (2.4.1)
-    sass-embedded (1.88.0-x64-mingw-ucrt)
-      google-protobuf (~> 4.30)
-    sass-embedded (1.88.0-x86_64-linux-gnu)
-      google-protobuf (~> 4.30)
+    sass-embedded (1.89.0-x64-mingw-ucrt)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.89.0-x86_64-linux-gnu)
+      google-protobuf (~> 4.31)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -417,6 +417,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
+  mini_magick (~> 5.2)
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)

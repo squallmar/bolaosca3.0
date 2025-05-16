@@ -1,8 +1,8 @@
 class MatchesController < ApplicationController
   before_action :authenticate_user!
-  before_action :check_admin, except: [:index, :show]
-  before_action :set_match, only: [:show, :edit, :update, :destroy]
-  before_action :load_championships, only: [:new, :create, :edit, :update]
+  before_action :check_admin, except: [ :index, :show ]
+  before_action :set_match, only: [ :show, :edit, :update, :destroy ]
+  before_action :load_championships, only: [ :new, :create, :edit, :update ]
 
   def index
     @upcoming_matches = Match.upcoming.includes(:championship).order(match_date: :asc)
@@ -19,10 +19,10 @@ class MatchesController < ApplicationController
 
   def create
     @match = Match.new(match_params)
-    
+
     if @match.save
       attach_logos
-      redirect_to matches_path, notice: 'Partida criada com sucesso!'
+      redirect_to matches_path, notice: "Partida criada com sucesso!"
     else
       flash.now[:alert] = "Erro ao criar partida: #{@match.errors.full_messages.join(', ')}"
       render :new, status: :unprocessable_entity
@@ -35,7 +35,7 @@ class MatchesController < ApplicationController
   def update
     if @match.update(match_params)
       attach_logos
-      redirect_to @match, notice: 'Partida atualizada com sucesso!'
+      redirect_to @match, notice: "Partida atualizada com sucesso!"
     else
       flash.now[:alert] = "Erro ao atualizar partida: #{@match.errors.full_messages.join(', ')}"
       render :edit, status: :unprocessable_entity
@@ -44,7 +44,7 @@ class MatchesController < ApplicationController
 
   def destroy
     @match.destroy
-    redirect_to matches_path, notice: 'Partida removida com sucesso!'
+    redirect_to matches_path, notice: "Partida removida com sucesso!"
   end
 
   private
@@ -77,7 +77,7 @@ class MatchesController < ApplicationController
 
   def check_admin
     unless current_user.admin?
-      redirect_to matches_path, alert: 'Acesso não autorizado'
+      redirect_to matches_path, alert: "Acesso não autorizado"
     end
   end
 end

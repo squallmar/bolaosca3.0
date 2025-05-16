@@ -1,8 +1,8 @@
 class BetsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_match, only: [:new, :create]
-  before_action :set_bet, only: [:update]
-  before_action :check_user_palpite_count, only: [:create, :update]
+  before_action :set_match, only: [ :new, :create ]
+  before_action :set_bet, only: [ :update ]
+  before_action :check_user_palpite_count, only: [ :create, :update ]
 
   def new
     @bet = @match.bets.build(user: current_user)
@@ -50,7 +50,7 @@ class BetsController < ApplicationController
   def check_user_palpite_count
     # Obtém o championship_id do match associado
     championship_id = @match&.championship_id || @bet&.match&.championship_id
-    
+
     # Verifica se o usuário já fez 10 palpites para este campeonato
     if championship_id && current_user.bets.joins(:match).where(matches: { championship_id: championship_id }).count >= 10
       flash[:alert] = "Você já deu o número máximo de 10 palpites para este campeonato."

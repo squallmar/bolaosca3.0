@@ -1,114 +1,292 @@
-<div class="matches-container">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Próximas Partidas</h1>
+<div class="matches-container" role="region" aria-label="Próximas Partidas">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fs-4 mb-0">Próximas Partidas</h2>
     <% if user_signed_in? && current_user.admin? %>
-      <%= link_to new_match_path, class: "btn btn-success" do %>
-        <i class="bi bi-plus-lg"></i> Nova Partida
+      <%= link_to new_match_path, class: "btn btn-sm btn-success" do %>
+        <i class="bi bi-plus-lg align-middle me-1" aria-hidden="true"></i> Nova Partida
       <% end %>
     <% end %>
   </div>
 
   <% if @upcoming_matches.any? %>
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-      <% @upcoming_matches.each do |match| %>
-        <div class="col">
-          <div class="card match-card h-100">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <span class="badge bg-primary"><%= match.championship.name %></span>
-              <% if match.respond_to?(:location) && match.location.present? %>
-                <small class="text-muted">
-                  <i class="bi bi-geo-alt"></i> <%= match.location %>
-                </small>
+    <ul class="list-group">
+      <% @upcoming_matches.first(10).each_with_index do |match, index| %>
+        <% bet = user_signed_in? ? current_user.bets.find_by(match_id: match.id) : nil %>
+        <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
+          <div class="d-flex align-items-center gap-3 flex-wrap">
+            <div class="match-number" aria-label="Número da partida"><%= index + 1 %></div>
+
+            <div class="team-logo-container">
+              <% if match.team_a_logo.attached? %>
+                <%= image_tag match.team_a_logo.variant(resize_to_limit: [40, 40]), alt: "#{match.team_a} logo", class: "team-logo" %>
+              <% else %>
+                <div class="team-logo-placeholder" aria-hidden="true"></div>
               <% end %>
             </div>
-            
-            <div class="card-body text-center">
-              <div class="d-flex justify-content-around align-items-center mb-3">
-                <% if match.team_a_logo.attached? %>
-                  <%= image_tag match.team_a_logo, class: "team-logo" %>
-                <% else %>
-                  <div class="team-logo-placeholder"></div>
-                <% end %>
-                
-                <span class="vs-text mx-3">VS</span>
-                
-                <% if match.team_b_logo.attached? %>
-                  <%= image_tag match.team_b_logo, class: "team-logo" %>
-                <% else %>
-                  <div class="team-logo-placeholder"></div>
-                <% end %>
-              </div>
-              
-              <h3 class="card-title">
-                <%= match.team_a %> <span class="vs-text">vs</span> <%= match.team_b %>
-              </h3>
-              
-              <p class="card-text text-muted mt-3">
-                <i class="bi bi-calendar-event"></i> <%= l(match.match_date, format: :long) %>
-              </p>
 
-              <% if user_signed_in? %>
-                <div class="d-grid mt-3">
-                  <% if bet = current_user.bets.find_by(match_id: match.id) %>
-                    <%= link_to edit_match_bet_path(match, bet), class: "btn btn-warning" do %>
-                      <i class="bi bi-pencil"></i> Editar Palpite (<%= bet.guess_a %>-<%= bet.guess_b %>)
-                    <% end %>
-                  <% else %>
-                    <%= link_to new_match_bet_path(match), class: "btn btn-primary" do %>
-                      <i class="bi bi-joystick"></i> Fazer Palpite
-                    <% end %>
-                  <% end %>
-                </div>
+            <div>
+              <strong><%= match.team_a %></strong>
+              <span class="palpite-highlight" aria-label="Palpite">
+                <% if bet %>
+                  <%= "#{bet.guess_a} vs #{bet.guess_b}" %>
+                <% else %>
+                  vs
+                <% end %>
+              </span>
+              <strong><%= match.team_b %></strong>
+            </div>
+
+            <div class="team-logo-container">
+              <% if match.team_b_logo.attached? %>
+                <%= image_tag match.team_b_logo.variant(resize_to_limit: [40, 40]), alt: "#{match.team_b} logo", class: "team-logo" %>
+              <% else %>
+                <div class="team-logo-placeholder" aria-hidden="true"></div>
+              <% end %>
+            </div>
+
+            <div class="ms-3 text-muted small" aria-label="Data e local da partida">
+              <div><i class="bi bi-calendar-event"></i> <%= l(match.match_date, format: :short) %></div>
+              <% if match.respond_to?(:location) && match.location.present? %>
+                <div><i class="bi bi-geo-alt"></i> <%= match.location %></div>
               <% end %>
             </div>
           </div>
-        </div>
+
+          <% if user_signed_in? %>
+            <div>
+              <% if bet %>
+                <%= link_to edit_match_bet_path(match, bet), class: "btn btn-sm btn-outline-warning", aria: { label: "Editar palpite da partida #{match.team_a} vs #{match.team_b}" } do %>
+                  <i class="bi bi-pencil" aria-hidden="true"></i> Editar Palpite
+                <% end %>
+              <% else %>
+                <%= link_to new_match_bet_path(match), class: "btn btn-sm btn-outline-primary", aria: { label: "Adicionar palpite para a partida #{match.team_a} vs #{match.team_b}" } do %>
+                  <i class="bi bi-joystick" aria-hidden="true"></i> Palpite
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </li>
       <% end %>
-    </div>
+    </ul>
   <% else %>
-    <div class="alert alert-info text-center py-4">
-      <i class="bi bi-info-circle-fill me-2"></i> Não há partidas futuras cadastradas.
+    <div class="alert alert-info text-center py-2 fs-7">
+      <i class="bi bi-info-circle-fill me-1"></i> Não há partidas futuras cadastradas.
     </div>
   <% end %>
 </div>
-
 <style>
   .matches-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #0b3d91, #0a2647);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(10, 38, 71, 0.7);
+  color: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.matches-container h2 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #ffd700; /* amarelo ouro, chamando atenção */
+  letter-spacing: 1px;
+}
+
+.list-group-item {
+  background: #142850;
+  border: none;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+  background: #1b3a77;
+}
+
+.match-number {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffd700;
+  width: 44px;
+  min-width: 44px;
+  text-align: center;
+  user-select: none;
+  text-shadow: 0 0 5px #ffd700aa;
+  margin-right: 1rem;
+}
+
+.team-logo-container {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a2647;
+  border-radius: 8px;
+  box-shadow: inset 0 0 8px #0b3d91;
+  transition: box-shadow 0.3s ease;
+}
+
+.team-logo-container:hover {
+  box-shadow: 0 0 12px #ffd700;
+}
+
+.team-logo {
+  max-height: 44px;
+  max-width: 44px;
+  object-fit: contain;
+  border-radius: 6px;
+  filter: drop-shadow(0 0 2px #0008);
+  transition: transform 0.3s ease;
+}
+
+.team-logo:hover {
+  transform: scale(1.15);
+}
+
+.team-logo-placeholder {
+  width: 44px;
+  height: 44px;
+  background-color: #3a5a40;
+  border-radius: 6px;
+  box-shadow: inset 0 0 6px #1e3a20;
+}
+
+.palpite-highlight {
+  font-weight: 700;
+  color: #ffd700;
+  margin: 0 10px;
+  user-select: none;
+  white-space: nowrap;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 6px #ffd700cc;
+}
+
+.list-group-item > div.d-flex > div:nth-child(3) strong {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #e1e8f0;
+  user-select: none;
+  text-shadow: 0 0 3px #000a;
+}
+
+.ms-3.text-muted.small {
+  color: #a3b1c1 !important;
+  font-size: 0.85rem;
+  text-align: right;
+  min-width: 140px;
+  user-select: none;
+}
+
+.ms-3.text-muted.small i {
+  color: #ffd700;
+  margin-right: 4px;
+}
+
+.btn-sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 0 6px #0b3d91;
+}
+
+.btn-sm:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 12px #ffd700;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+  box-shadow: 0 0 8px #28a745cc;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  box-shadow: 0 0 12px #28a745ff;
+}
+
+.btn-outline-primary {
+  border-color: #00bfff;
+  color: #00bfff;
+  box-shadow: 0 0 6px #00bfff66;
+}
+
+.btn-outline-primary:hover {
+  background-color: #00bfff;
+  color: #0a2647;
+  box-shadow: 0 0 12px #00bfffcc;
+}
+
+.btn-outline-warning {
+  border-color: #ffc107;
+  color: #ffc107;
+  box-shadow: 0 0 6px #ffc10766;
+}
+
+.btn-outline-warning:hover {
+  background-color: #ffc107;
+  color: #142850;
+  box-shadow: 0 0 12px #ffc107cc;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .list-group-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 1rem 1rem;
   }
-  
-  .team-logo {
-    max-height: 80px;
-    max-width: 100px;
-    object-fit: contain;
+
+  .match-number {
+    width: auto;
+    min-width: auto;
+    font-size: 1.6rem;
+    margin-bottom: 0.2rem;
   }
-  
-  .team-logo-placeholder {
-    width: 100px;
-    height: 80px;
-    background-color: #f8f9fa;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6c757d;
+
+  .team-logo-container {
+    width: 40px;
+    height: 40px;
   }
-  
-  .vs-text {
-    color: #dc3545;
-    font-weight: bold;
+
+  .team-logo, .team-logo-placeholder {
+    max-height: 36px;
+    max-width: 36px;
   }
-  
-  .match-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 10px;
-    overflow: hidden;
+
+  .palpite-highlight {
+    margin: 0 6px;
+    font-size: 1rem;
   }
-  
-  .match-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+
+  .ms-3.text-muted.small {
+    text-align: left;
+    min-width: auto;
+    margin-top: 6px;
   }
+
+  .btn-sm {
+    width: 100%;
+    text-align: center;
+    box-shadow: none;
+  }
+}
+
+
 </style>

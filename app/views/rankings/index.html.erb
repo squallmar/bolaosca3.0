@@ -1,64 +1,167 @@
 <div class="container mt-4">
-  <h1 class="text-center mb-4">🏆 Classificação dos Jogadores</h1>
-
-  <div class="table-responsive">
-    <table class="table table-striped table-hover align-middle">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col" style="width: 10%">#</th>
-          <th scope="col" style="width: 30%">Jogador</th>
-          <th scope="col" style="width: 15%">Pontos</th>
-          <th scope="col" style="width: 15%">Acertos</th>
-          <th scope="col" style="width: 15%">Palpites</th>
-          <th scope="col" style="width: 15%">% Acerto</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @rankings.each_with_index do |user, index| %>
-          <tr>
-            <th scope="row">
-              <%= index + 1 %>
-              <% if index < 3 %>
-                <span class="badge bg-<%= ['warning', 'secondary', 'danger'][index] %>">
-                  <%= ['🥇', '🥈', '🥉'][index] %>
-                </span>
-              <% end %>
-            </th>
-            <td>
-              <div class="d-flex align-items-center">
-                <% if user.avatar_url.present? %>
-                  <%= image_tag user.avatar_url, class: "rounded-circle me-2", width: "32", height: "32", alt: user.nickname %>
-                <% else %>
-                  <i class="bi bi-person-circle me-2" style="font-size: 1.5rem"></i>
-                <% end %>
-                <div>
-                  <strong><%= user.nickname.present? ? user.nickname.split('@').first.capitalize : "Jogador #{user.id}" %></strong>
-                </div>
-              </div>
-            </td>
-            <td class="fw-bold"><%= user.total_points || 0 %></td>
-            <td><%= user.correct_bets_count || 0 %></td>
-            <td><%= user.bets_count || 0 %></td>
-            <td>
-              <% if user.bets_count.to_i > 0 %>
-                <%= number_to_percentage((user.correct_bets_count.to_f / user.bets_count.to_f) * 100, precision: 1) %>
-              <% else %>
-                -
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-
-  <% if @rankings.empty? %>
-    <div class="alert alert-info text-center">
-      Nenhum jogador encontrado na classificação. Seja o primeiro a palpitar!
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <h1 class="text-center mb-0 py-2">🏆 Classificação dos Jogadores</h1>
     </div>
-  <% end %>
-
-  <div class="text-end mt-3">
-    <small class="text-muted">Atualizado em: <%= l(Time.current, format: :long) %></small>
+    
+    <div class="card-body p-0">
+      <% if @rankings.empty? %>
+        <div class="alert alert-info text-center m-4">
+          Nenhum jogador encontrado na classificação. Seja o primeiro a palpitar!
+        </div>
+      <% else %>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th scope="col" style="width: 8%" class="ps-4">#</th>
+                <th scope="col" style="width: 32%">Jogador</th>
+                <th scope="col" style="width: 15%" class="text-center">Pontos</th>
+                <th scope="col" style="width: 15%" class="text-center">Acertos</th>
+                <th scope="col" style="width: 15%" class="text-center">Palpites</th>
+                <th scope="col" style="width: 15%" class="text-center pe-4">% Acerto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @rankings.each_with_index do |user, index| %>
+                <tr class="<%= index < 3 ? 'highlight-row' : '' %>">
+                  <th scope="row" class="ps-4">
+                    <div class="d-flex align-items-center gap-2">
+                      <%= index + 1 %>
+                      <% if index < 3 %>
+                       <span class="medal-badge badge rounded-circle bg-<%= ['gold', 'silver', 'bronze'][index] %>">
+                          <%= ['🥇', '🥈', '🥉'][index] %>
+                       </span>
+                      <% end %>
+                    </div>
+                  </th>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <% if user.avatar_url.present? %>
+                        <%= image_tag user.avatar_url, class: "rounded-circle me-3", width: "40", height: "40", alt: user.nickname %>
+                      <% else %>
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                          <i class="bi bi-person-fill text-secondary"></i>
+                        </div>
+                      <% end %>
+                      <div>
+                        <strong><%= user.nickname.present? ? user.nickname.split('@').first.capitalize : "Jogador #{user.id}" %></strong>
+                        <% if index < 3 %>
+                          <div class="text-muted small"><%= ['Campeão', 'Vice', 'Terceiro'][index] %></div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-center fw-bold text-primary"><%= user.total_points || 0 %></td>
+                  <td class="text-center"><%= user.correct_bets_count || 0 %></td>
+                  <td class="text-center"><%= user.bets_count || 0 %></td>
+                  <td class="text-center pe-4">
+                    <% if user.bets_count.to_i > 0 %>
+                      <% accuracy = (user.correct_bets_count.to_f / user.bets_count.to_f) * 100 %>
+                      <span class="accuracy-badge badge bg-<%= accuracy_color(accuracy) %>">
+                        <%= number_to_percentage(accuracy, precision: 1) %>
+                      </span>
+                    <% else %>
+                      <span class="badge bg-light text-dark">-</span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="card-footer bg-light text-end">
+      <small class="text-muted">Atualizado em: <%= l(Time.current, format: :long) %></small>
+    </div>
   </div>
 </div>
+
+<!-- Adicione isso no seu CSS ou style tag -->
+<style>
+  body { 
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  .card {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .table {
+    margin-bottom: 0;
+  }
+  
+  .table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+  }
+  
+  .highlight-row {
+    background-color: rgba(13, 110, 253, 0.05) !important;
+  }
+  
+  .bg-gold {
+    background-color: #ffd700 !important;
+  }
+  
+  .bg-silver {
+    background-color: #c0c0c0 !important;
+  }
+  
+  .bg-bronze {
+    background-color: #cd7f32 !important;
+  }
+  
+  .accuracy-badge {
+    min-width: 60px;
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+  
+  tr:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+  }
+
+  
+.medal-badge {
+  width: 36px;
+  height: 36px;
+  font-size: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  transition: transform 0.3s ease;
+}
+.medal-badge:hover {
+  transform: scale(1.1);
+}
+
+.gold { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+.silver { box-shadow: 0 0 8px rgba(192, 192, 192, 0.7); }
+.bronze { box-shadow: 0 0 6px rgba(205, 127, 50, 0.6); }
+
+</style>
+
+<!--  controller ou helper -->
+<% 
+def accuracy_color(accuracy)
+  case accuracy
+  when 80..100 then 'success'
+  when 60...80 then 'info'
+  when 40...60 then 'warning'
+  else 'danger'
+  end
+end
+%>

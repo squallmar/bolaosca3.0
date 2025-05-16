@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function showConfirmationModal(form) {
     const formData = new FormData(form);
     
-    // Acessa os valores diretamente sem jQuery
+    
     const championshipSelect = document.getElementById("match_championship_id");
     const championshipText = championshipSelect ? championshipSelect.options[championshipSelect.selectedIndex].text : "Não especificado";
     
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Inicializa Select2 se jQuery estiver disponível
+  
   if (typeof $ !== 'undefined') {
     $(".select2").select2({
       placeholder: "Selecione o campeonato...",
