@@ -1,23 +1,28 @@
 class MatchesController < ApplicationController
-  before_action :check_admin, except: [ :index ]
-  before_action :authenticate_user!, except: [ :index ]
-  before_action :set_match, only: [ :edit, :update, :destroy ]
+  before_action :authenticate_user!
+  before_action :check_admin, except: [:index, :show]
+  before_action :set_match, only: [:show, :edit, :update, :destroy]
+  before_action :load_championships, only: [:new, :create, :edit, :update]
 
   def index
-    @matches = Match.where("match_date > ?", Time.current).order(:match_date)
+    @upcoming_matches = Match.upcoming.includes(:championship).order(match_date: :asc)
+    @past_matches = Match.past.includes(:championship).order(match_date: :desc)
+  end
+
+  def show
+    @bets = @match.bets.includes(:user)
   end
 
   def new
-  @match = Match.new
-  @championships = Championship.all.order(:name)
+    @match = Match.new(match_date: Time.current.beginning_of_hour + 1.day)
   end
 
   def create
     @match = Match.new(match_params)
-    @championships = Championship.all.order(:name)
-
+    
     if @match.save
-      redirect_to matches_path, notice: "Partida criada com sucesso!"
+      attach_logos
+      redirect_to matches_path, notice: 'Partida criada com sucesso!'
     else
       flash.now[:alert] = "Erro ao criar partida: #{@match.errors.full_messages.join(', ')}"
       render :new, status: :unprocessable_entity
@@ -25,36 +30,54 @@ class MatchesController < ApplicationController
   end
 
   def edit
-    @championships = Championship.all
   end
 
   def update
     if @match.update(match_params)
-      redirect_to matches_path, notice: "Partida atualizada com sucesso!"
+      attach_logos
+      redirect_to @match, notice: 'Partida atualizada com sucesso!'
     else
-      @championships = Championship.all
-      render :edit
+      flash.now[:alert] = "Erro ao atualizar partida: #{@match.errors.full_messages.join(', ')}"
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @match.destroy
-    redirect_to matches_path, notice: "Partida removida com sucesso!"
+    redirect_to matches_path, notice: 'Partida removida com sucesso!'
   end
 
   private
-
-  def check_admin
-    unless current_user.admin?
-      redirect_to matches_path, alert: "Acesso negado"
-    end
-  end
 
   def set_match
     @match = Match.find(params[:id])
   end
 
+  def load_championships
+    @championships = Championship.order(:name)
+  end
+
   def match_params
-    params.require(:match).permit(:team_a, :team_b, :match_date, :championship_id)
+    params.require(:match).permit(
+      :championship_id,
+      :team_a,
+      :team_b,
+      :match_date,
+      :location,
+      :notes,
+      :team_a_logo,
+      :team_b_logo
+    )
+  end
+
+  def attach_logos
+    @match.team_a_logo.attach(params[:match][:team_a_logo]) if params[:match][:team_a_logo]
+    @match.team_b_logo.attach(params[:match][:team_b_logo]) if params[:match][:team_b_logo]
+  end
+
+  def check_admin
+    unless current_user.admin?
+      redirect_to matches_path, alert: 'Acesso não autorizado'
+    end
   end
 end

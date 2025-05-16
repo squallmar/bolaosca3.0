@@ -4,6 +4,11 @@ class Match < ApplicationRecord
   has_one_attached :team_a_logo
   has_one_attached :team_b_logo
 
+  # Scopes para filtrar partidas
+  scope :upcoming, -> { where("match_date > ?", Time.current).order(:match_date) }
+  scope :past, -> { where("match_date <= ?", Time.current).order(match_date: :desc) }
+
+
   validates :team_a, :team_b, :match_date, presence: true
   validate :future_match_date
   validate :validate_logo_files

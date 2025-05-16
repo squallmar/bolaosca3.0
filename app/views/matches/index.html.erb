@@ -8,30 +8,50 @@
     <% end %>
   </div>
 
-  <% if @matches.any? %>
+  <% if @upcoming_matches.any? %>
     <div class="row row-cols-1 row-cols-md-2 g-4">
-      <% @matches.each do |match| %>
+      <% @upcoming_matches.each do |match| %>
         <div class="col">
           <div class="card match-card h-100">
-            <div class="card-body">
-              <h3 class="card-title text-center">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span class="badge bg-primary"><%= match.championship.name %></span>
+              <% if match.respond_to?(:location) && match.location.present? %>
+                <small class="text-muted">
+                  <i class="bi bi-geo-alt"></i> <%= match.location %>
+                </small>
+              <% end %>
+            </div>
+            
+            <div class="card-body text-center">
+              <div class="d-flex justify-content-around align-items-center mb-3">
+                <% if match.team_a_logo.attached? %>
+                  <%= image_tag match.team_a_logo, class: "team-logo" %>
+                <% else %>
+                  <div class="team-logo-placeholder"></div>
+                <% end %>
+                
+                <span class="vs-text mx-3">VS</span>
+                
+                <% if match.team_b_logo.attached? %>
+                  <%= image_tag match.team_b_logo, class: "team-logo" %>
+                <% else %>
+                  <div class="team-logo-placeholder"></div>
+                <% end %>
+              </div>
+              
+              <h3 class="card-title">
                 <%= match.team_a %> <span class="vs-text">vs</span> <%= match.team_b %>
               </h3>
               
-              <div class="match-details">
-                <p class="card-text">
-                  <i class="bi bi-trophy"></i> <%= match.championship.name %>
-                </p>
-                <p class="card-text">
-                  <i class="bi bi-calendar-event"></i> <%= l(match.match_date, format: :long) %>
-                </p>
-              </div>
+              <p class="card-text text-muted mt-3">
+                <i class="bi bi-calendar-event"></i> <%= l(match.match_date, format: :long) %>
+              </p>
 
               <% if user_signed_in? %>
                 <div class="d-grid mt-3">
-                  <% if bet = match.bets.find_by(user: current_user) %>
+                  <% if bet = current_user.bets.find_by(match_id: match.id) %>
                     <%= link_to edit_match_bet_path(match, bet), class: "btn btn-warning" do %>
-                      <i class="bi bi-pencil"></i> Editar Palpite
+                      <i class="bi bi-pencil"></i> Editar Palpite (<%= bet.guess_a %>-<%= bet.guess_b %>)
                     <% end %>
                   <% else %>
                     <%= link_to new_match_bet_path(match), class: "btn btn-primary" do %>
@@ -46,8 +66,49 @@
       <% end %>
     </div>
   <% else %>
-    <div class="alert alert-info text-center">
-      <i class="bi bi-info-circle-fill"></i> Não há partidas futuras cadastradas.
+    <div class="alert alert-info text-center py-4">
+      <i class="bi bi-info-circle-fill me-2"></i> Não há partidas futuras cadastradas.
     </div>
   <% end %>
 </div>
+
+<style>
+  .matches-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .team-logo {
+    max-height: 80px;
+    max-width: 100px;
+    object-fit: contain;
+  }
+  
+  .team-logo-placeholder {
+    width: 100px;
+    height: 80px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+  }
+  
+  .vs-text {
+    color: #dc3545;
+    font-weight: bold;
+  }
+  
+  .match-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .match-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+</style>
