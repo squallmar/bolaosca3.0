@@ -11,7 +11,7 @@
   <% if @upcoming_matches.any? %>
     <ul class="list-group">
       <% @upcoming_matches.first(10).each_with_index do |match, index| %>
-        <% bet = user_signed_in? ? current_user.bets.find_by(match_id: match.id) : nil %>
+        <% bet = user_signed_in? ? @user_bets[match.id] : nil %>
         <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
           <div class="d-flex align-items-center gap-3 flex-wrap">
             <div class="match-number" aria-label="Número da partida"><%= index + 1 %></div>

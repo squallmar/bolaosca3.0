@@ -1,7 +1,7 @@
 class BetsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_match, only: [ :new, :create ]
-  before_action :set_bet, only: [ :update ]
+  before_action :set_bet, only: [ :edit, :update ]
   before_action :check_user_palpite_count, only: [ :create, :update ]
 
   def new
@@ -20,15 +20,14 @@ class BetsController < ApplicationController
   end
 
   def edit
-    @bet = current_user.bets.find(params[:id])
     @match = @bet.match
   end
 
   def update
+    @match = @bet.match
     if @bet.update(bet_params)
       redirect_to matches_path, notice: "Palpite atualizado com sucesso!"
     else
-      @match = @bet.match
       render :edit, status: :unprocessable_entity
     end
   end
@@ -40,7 +39,10 @@ class BetsController < ApplicationController
   end
 
   def set_bet
-    @bet = current_user.bets.find(params[:id])
+    @bet = current_user.bets.find_by(id: params[:id])
+    unless @bet
+      redirect_to matches_path, alert: "Palpite não encontrado ou não autorizado."
+    end
   end
 
   def bet_params
@@ -48,13 +50,12 @@ class BetsController < ApplicationController
   end
 
   def check_user_palpite_count
-    # Obtém o championship_id do match associado
-    championship_id = @match&.championship_id || @bet&.match&.championship_id
+    championship_id = @bet&.match&.championship_id || @match&.championship_id
+    return unless championship_id
 
-    # Verifica se o usuário já fez 10 palpites para este campeonato
-    if championship_id && current_user.bets.joins(:match).where(matches: { championship_id: championship_id }).count >= 10
+    if current_user.bets.joins(:match).where(matches: { championship_id: championship_id }).count >= 10
       flash[:alert] = "Você já deu o número máximo de 10 palpites para este campeonato."
-      redirect_to matches_path and return
+      redirect_to matches_path
     end
   end
 end

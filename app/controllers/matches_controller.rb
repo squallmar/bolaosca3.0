@@ -5,8 +5,17 @@ class MatchesController < ApplicationController
   before_action :load_championships, only: [ :new, :create, :edit, :update ]
 
   def index
-    @upcoming_matches = Match.upcoming.includes(:championship).order(match_date: :asc)
-    @past_matches = Match.past.includes(:championship).order(match_date: :desc)
+    @upcoming_matches = Match.upcoming
+      .includes(:championship, :bets, team_a_logo_attachment: :blob, team_b_logo_attachment: :blob)
+      .order(match_date: :asc)
+
+    @past_matches = Match.past
+      .includes(:championship, :bets, team_a_logo_attachment: :blob, team_b_logo_attachment: :blob)
+      .order(match_date: :desc)
+
+    if user_signed_in?
+      @user_bets = current_user.bets.where(match_id: (@upcoming_matches + @past_matches).pluck(:id)).index_by(&:match_id)
+    end
   end
 
   def show
@@ -29,8 +38,7 @@ class MatchesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @match.update(match_params)
@@ -76,8 +84,6 @@ class MatchesController < ApplicationController
   end
 
   def check_admin
-    unless current_user.admin?
-      redirect_to matches_path, alert: "Acesso não autorizado"
-    end
+    redirect_to matches_path, alert: "Acesso não autorizado" unless current_user.admin?
   end
 end

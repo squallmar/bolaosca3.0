@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # Rotas públicas
   root "home#index"
   resources :matches, except: [ :show ] do
-    resources :bets, only: [:new, :create, :update, :edit]
+    resources :bets, only: [ :new, :create, :update, :edit ]
   end
   get "/rankings", to: "rankings#index", as: :rankings
   get "/termos", to: "static_pages#termos", as: :termos
