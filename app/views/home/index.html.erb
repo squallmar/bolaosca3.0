@@ -1,0 +1,131 @@
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5">
+  <div class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-4">BolãoSCA 3.0</h1>
+        <p class="lead mb-4">O mais completo sistema de bolão esportivo. Participe, compete e mostre que você é o melhor!</p>
+        <div class="d-flex gap-3">
+          <%= link_to "Começar agora", new_user_registration_path, class: "btn btn-light btn-lg px-4" %>
+          <%= link_to "Saiba mais", sobre_path, class: "btn btn-outline-light btn-lg px-4" %>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <%= image_tag 'hero-image.png', alt: 'Ilustração de troféu', class: 'img-fluid d-none d-lg-block' %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Por que participar?</h2>
+      <p class="text-muted lead">Descubra as vantagens do nosso bolão</p>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <i class="bi bi-trophy-fill text-primary fs-1 mb-3"></i>
+            <h3 class="h4">Competição Saudável</h3>
+            <p class="text-muted">Desafie seus amigos e colegas de trabalho de forma divertida.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <i class="bi bi-graph-up text-primary fs-1 mb-3"></i>
+            <h3 class="h4">Ranking em Tempo Real</h3>
+            <p class="text-muted">Acompanhe sua posição no ranking após cada rodada.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <i class="bi bi-people-fill text-primary fs-1 mb-3"></i>
+            <h3 class="h4">Comunidade Ativa</h3>
+            <p class="text-muted">Participe de discussões e torneios especiais.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="bg-light py-5">
+  <div class="container py-5">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <h2 class="fw-bold mb-4">Como funciona</h2>
+        <div class="d-flex mb-3">
+          <div class="me-4">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</span>
+          </div>
+          <div>
+            <h3 class="h5">Faça seu cadastro</h3>
+            <p class="text-muted mb-0">Crie sua conta gratuitamente em poucos segundos.</p>
+          </div>
+        </div>
+        
+        <div class="d-flex mb-3">
+          <div class="me-4">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">2</span>
+          </div>
+          <div>
+            <h3 class="h5">Envie seus palpites</h3>
+            <p class="text-muted mb-0">Palpite nos resultados das partidas antes do início dos jogos.</p>
+          </div>
+        </div>
+        
+        <div class="d-flex">
+          <div class="me-4">
+            <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">3</span>
+          </div>
+          <div>
+            <h3 class="h5">Acompanhe os resultados</h3>
+            <p class="text-muted mb-0">Veja sua pontuação e posição no ranking após cada rodada.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <%= image_tag 'how-it-works.png', alt: 'Como funciona o bolão', class: 'img-fluid rounded shadow' %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+  <div class="container py-4 text-center">
+    <h2 class="fw-bold mb-4">Pronto para começar?</h2>
+    <p class="lead mb-4">Junte-se a milhares de participantes e mostre que você é o melhor!</p>
+    <%= link_to "Criar minha conta", new_user_registration_path, class: "btn btn-light btn-lg px-5" %>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+  }
+  
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+  
+  section {
+    scroll-margin-top: 80px; /* Para compensar a navbar fixa */
+  }
+</style>
