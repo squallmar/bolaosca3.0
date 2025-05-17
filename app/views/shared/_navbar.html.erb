@@ -5,7 +5,7 @@
       <span class="fw-bold">BolãoSCA 3.0</span>
     <% end %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -29,7 +29,6 @@
         <li class="nav-item">
           <%= link_to "Ajuda", ajuda_path, class: "nav-link #{'active fw-bold' if current_page?(ajuda_path)}" %>
         </li>
-
       </ul>
 
       <ul class="navbar-nav ms-auto">
@@ -37,13 +36,13 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <% if current_user.avatar_url.present? %>
-                <%= image_tag current_user.avatar_url, class: "rounded-circle me-2", width: "30", height: "30", alt: "Avatar" %>
+                <%= image_tag current_user.avatar_url, class: "rounded-circle me-2", width: "30", height: "30", alt: current_user.nickname || "Avatar" %>
               <% else %>
                 <i class="bi bi-person-circle me-1"></i>
               <% end %>
               <span><%= current_user.nickname.present? ? current_user.nickname.split('@').first.capitalize : "Jogador #{current_user.id}" %></span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow" aria-labelledby="userDropdown">
               <% if current_user.admin? %>
                 <li>
                   <%= link_to admin_root_path, class: "dropdown-item d-flex align-items-center" do %>
@@ -85,11 +84,14 @@
 <style>
   /* Estilos personalizados */
   .bg-primary {
-    background-color: #0d6efd !important;
+    background-color: var(--bs-primary) !important;
+    background-image: linear-gradient(to right, #0d6efd, #0b5ed7);
   }
   
   .dropdown-menu {
     min-width: 220px;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   }
   
   .bg-danger-soft-hover:hover {
@@ -98,14 +100,41 @@
   
   .navbar-brand {
     font-size: 1.25rem;
+    transition: transform 0.2s;
+  }
+  
+  .navbar-brand:hover {
+    transform: scale(1.05);
   }
   
   .nav-link {
     padding: 0.5rem 1rem;
     transition: all 0.2s ease;
+    position: relative;
+  }
+  
+  .nav-link.active:not(.dropdown-toggle)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 2px;
+    background-color: white;
+    border-radius: 2px;
   }
   
   .nav-link:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 992px) {
+    .navbar-nav .nav-item {
+      margin-bottom: 0.25rem;
+    }
+    
+    .nav-link.active::after {
+      display: none;
+    }
   }
 </style>

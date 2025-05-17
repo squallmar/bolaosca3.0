@@ -2,17 +2,23 @@
   <div class="col-md-6 col-lg-4">
     <div class="card shadow">
       <div class="card-body p-4">
-        <h2 class="card-title text-center mb-4">Entrar</h2>
+        <div class="text-center mb-4">
+          <i class="bi bi-trophy-fill text-primary" style="font-size: 2.5rem;"></i>
+          <h2 class="card-title mt-2">Acessar BolãoSCA</h2>
+          <p class="text-muted">Informe suas credenciais para entrar</p>
+        </div>
 
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "needs-validation", novalidate: true }) do |f| %>
           <div class="mb-3">
-            <%= f.label :email, "E-mail", class: "form-label" %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+            <%= f.label :email, class: "form-label" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", required: true %>
+            <div class="invalid-feedback">Por favor, informe seu e-mail</div>
           </div>
 
           <div class="mb-3">
             <%= f.label :password, "Senha", class: "form-label" %>
-            <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+            <%= f.password_field :password, autocomplete: "current-password", class: "form-control", required: true %>
+            <div class="invalid-feedback">Por favor, informe sua senha</div>
           </div>
 
           <% if devise_mapping.rememberable? %>
@@ -30,9 +36,67 @@
         <hr class="my-4">
 
         <div class="text-center">
-          <%= render "devise/shared/links" %>
+          <div class="d-flex flex-column gap-2">
+            <%= render "devise/shared/links" %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<style>
+
+.login-card {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.login-logo {
+  font-size: 3rem;
+  color: var(--bs-primary);
+}
+
+.login-footer {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+  border-color: #dc3545;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.was-validated .form-control:valid,
+.form-control.is-valid {
+  border-color: #198754;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+</style>
+<script>
+
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>

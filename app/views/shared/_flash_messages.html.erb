@@ -1,15 +1,13 @@
-<% flash.each do |type, message| %>
-  <% alert_type = case type.to_sym
-                  when :notice then "success"
-                  when :alert then "danger"
-                  else type
-                  end %>
+<% if notice %>
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <%= notice %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
 
-  <div class="alert alert-<%= alert_type %> alert-dismissible fade show mt-3" role="alert">
-    <div class="container">
-      <i class="bi <%= alert_type == 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill' %>"></i>
-      <%= message %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+<% if alert %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= alert %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% end %>
