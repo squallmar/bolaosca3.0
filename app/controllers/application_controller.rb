@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :full_name, :nickname, :phone, :avatar_url ])
     devise_parameter_sanitizer.permit(:account_update, keys: [ :full_name, :nickname, :phone, :avatar_url, :current_password ])
   end
+
+  def after_sign_in_path_for(resource)
+    matches_path
+  end
 end

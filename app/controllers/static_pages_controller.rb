@@ -1,5 +1,4 @@
 class StaticPagesController < ApplicationController
-  
   def termos
     @page_title = "Termos de Uso"
   end

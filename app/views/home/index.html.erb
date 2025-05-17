@@ -1,8 +1,9 @@
 <!-- Hero Section -->
 <section class="hero-section bg-primary text-white py-5">
-  <div class="container py-5">
+  <div class="container py-0">
     <div class="row align-items-center">
       <div class="col-lg-6">
+        <%= image_tag 'escudo.png', alt: 'Escudo do Bolão', class: 'img-fluid d-none d-lg-block mb-4', style: 'max-height: 190px;' %>
         <h1 class="display-4 fw-bold mb-4">BolãoSCA 3.0</h1>
         <p class="lead mb-4">O mais completo sistema de bolão esportivo. Participe, compete e mostre que você é o melhor!</p>
         <div class="d-flex gap-3">
@@ -10,8 +11,43 @@
           <%= link_to "Saiba mais", sobre_path, class: "btn btn-outline-light btn-lg px-4" %>
         </div>
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-5 offset-lg-1">
+        <div class="d-lg-none mb-4">
+          <%= image_tag 'escudo.png', alt: 'Escudo do Bolão', class: 'img-fluid', style: 'max-height: 120px;' %>
+        </div>
         <%= image_tag 'hero-image.png', alt: 'Ilustração de troféu', class: 'img-fluid d-none d-lg-block' %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-4 bg-white">
+  <div class="container">
+    <div class="row justify-content-center g-4 text-center">
+      <div class="col-md-3">
+        <div class="p-3">
+          <h3 class="display-5 fw-bold text-primary">1,200+</h3>
+          <p class="text-muted mb-0"><i class="bi bi-people-fill me-2"></i>Participantes</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-3">
+          <h3 class="display-5 fw-bold text-primary">5,000+</h3>
+          <p class="text-muted mb-0"><i class="bi bi-clipboard2-check-fill me-2"></i>Palpites/mês</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-3">
+          <h3 class="display-5 fw-bold text-primary">50+</h3>
+          <p class="text-muted mb-0"><i class="bi bi-trophy-fill me-2"></i>Torneios</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-3">
+          <h3 class="display-5 fw-bold text-primary">98%</h3>
+          <p class="text-muted mb-0"><i class="bi bi-emoji-smile-fill me-2"></i>Satisfação</p>
+        </div>
       </div>
     </div>
   </div>
@@ -95,8 +131,65 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 order-lg-1">
+      <div class="col-lg-4 order-lg-1">
         <%= image_tag 'how-it-works.png', alt: 'Como funciona o bolão', class: 'img-fluid rounded shadow' %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section (Opcional) -->
+<section class="py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">O que dizem nossos participantes</h2>
+      <p class="text-muted lead">Veja depoimentos de quem já participa</p>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <%= image_tag 'user1.jpg', class: 'rounded-circle me-3', width: '50', alt: 'Participante' %>
+              <div>
+                <h5 class="mb-0">Carlos Silva</h5>
+                <small class="text-muted">Participante há 2 anos</small>
+              </div>
+            </div>
+            <p class="mb-0">"O BolãoSCA transformou nossa forma de acompanhar os jogos. A competição saudável entre amigos é incrível!"</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <%= image_tag 'user2.jpg', class: 'rounded-circle me-3', width: '50', alt: 'Participante' %>
+              <div>
+                <h5 class="mb-0">Ana Oliveira</h5>
+                <small class="text-muted">Participante há 1 ano</small>
+              </div>
+            </div>
+            <p class="mb-0">"Nunca imaginei que palpitar resultados pudesse ser tão divertido. A plataforma é super intuitiva!"</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-3">
+              <%= image_tag 'user3.jpg', class: 'rounded-circle me-3', width: '50', alt: 'Participante' %>
+              <div>
+                <h5 class="mb-0">Cíntia Santos</h5>
+                <small class="text-muted">Campeã do último torneio</small>
+              </div>
+            </div>
+            <p class="mb-0">"Ganhar o torneio foi incrível! O sistema de pontuação é justo e transparente, estou super animada com a próxima edição."</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -107,25 +200,64 @@
   <div class="container py-4 text-center">
     <h2 class="fw-bold mb-4">Pronto para começar?</h2>
     <p class="lead mb-4">Junte-se a milhares de participantes e mostre que você é o melhor!</p>
-    <%= link_to "Criar minha conta", new_user_registration_path, class: "btn btn-light btn-lg px-5" %>
+    <%= link_to "Criar minha conta", new_user_registration_path, class: "btn btn-light btn-lg px-5 mb-3" %>
+    <p class="small mb-0">Já tem uma conta? <%= link_to "Faça login", new_user_session_path, class: "text-white fw-bold" %></p>
   </div>
 </section>
 
 <style>
   .hero-section {
     background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+  }
+  
+  .hero-section::after {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
   }
   
   .card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px !important;
   }
   
   .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1) !important;
   }
   
   section {
-    scroll-margin-top: 80px; /* Para compensar a navbar fixa */
+    scroll-margin-top: 80px;
+    position: relative;
+  }
+  
+  /* Efeito de onda entre seções */
+  .bg-light::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25' fill='%23f8f9fa'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5' fill='%23f8f9fa'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23f8f9fa'%3E%3C/path%3E%3C/svg%3E");
+    background-size: cover;
   }
 </style>
