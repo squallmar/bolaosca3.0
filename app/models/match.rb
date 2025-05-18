@@ -15,6 +15,7 @@ class Match < ApplicationRecord
   validates :team_a, :team_b, :match_date, presence: true
   validate :future_match_date
   validate :validate_logo_files
+  validates :championship, presence: true
 
   # Métodos para compatibilidade
   def team_a_name
