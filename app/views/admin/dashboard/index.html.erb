@@ -148,8 +148,8 @@
                 <td><%= match.championship.name %></td>
                 <td><%= match.team_a.name %> vs <%= match.team_b.name %></td>
                 <td><%= l(match.match_date, format: :long) %></td>
-                <td>
-                  <%= link_to 'Editar', edit_match_path(match), class: 'btn btn-sm btn-primary' %>
+                <td class="text-nowrap" style="width: 100px;">
+                <%= link_to 'Editar', edit_match_path(match), class: 'btn btn-sm btn-outline-primary py-1 px-2' %>
                 </td>
               </tr>
             <% end %>
