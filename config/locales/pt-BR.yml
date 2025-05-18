@@ -1,4 +1,12 @@
 pt-BR:
+  views:
+    pagination:
+      first: "« Primeiro"
+      last: "Último »"
+      previous: "← Anterior"
+      next: "Próximo →"
+      truncate: "…"
+
   date:
     formats:
       default: "%d/%m/%Y"
