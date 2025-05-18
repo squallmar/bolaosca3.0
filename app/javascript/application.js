@@ -1,6 +1,9 @@
+// Turbo e Stimulus (ok com importmap)
 import "@hotwired/turbo-rails"
 import "controllers"
-import Rails from "@rails/ujs";
+
+// Rails UJS
+import * as Rails from '@rails/ujs';
 Rails.start();
 
 // Bootstrap e Popper
@@ -9,7 +12,7 @@ import "bootstrap"
 import * as bootstrap from "bootstrap"
 window.bootstrap = bootstrap
 
-// Inicializa tooltips, popovers e modais
+// Inicializa tooltips, popovers e modais com Bootstrap
 document.addEventListener('turbo:load', () => {
   // Tooltips
   const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -23,7 +26,7 @@ document.addEventListener('turbo:load', () => {
     new bootstrap.Popover(el)
   })
 
-  // Modais - Adicione esta parte
+  // Modais
   const modalTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="modal"]'))
   modalTriggerList.forEach(modalTriggerEl => {
     modalTriggerEl.addEventListener('click', () => {
