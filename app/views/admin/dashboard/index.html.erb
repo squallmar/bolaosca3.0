@@ -21,6 +21,7 @@
           <h5 class="card-title">Partidas</h5>
           <p class="display-6"><%= @stats[:upcoming_matches] %></p>
           <small>próximas</small>
+          <%= link_to 'Ver todas', matches_path, class: 'text-white stretched-link' %>
         </div>
       </div>
     </div>

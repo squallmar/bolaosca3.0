@@ -1,6 +1,7 @@
 // Turbo e Stimulus (ok com importmap)
 import "@hotwired/turbo-rails"
 import "controllers"
+import "styles/admin.css"
 
 // Bootstrap e Popper
 import "@popperjs/core"
@@ -34,3 +35,5 @@ document.addEventListener('turbo:load', () => {
     })
   })
 })
+
+

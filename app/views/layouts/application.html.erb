@@ -15,9 +15,10 @@
     
     <!-- CSS principal -->
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+     <%= stylesheet_link_tag "admin", "data-turbo-track": "reload" %>
     
-    <!-- JavaScript com tratamento de erro -->
-    <%= javascript_importmap_tags %>
+    <!-- JavaScript -->
+    <%= javascript_include_tag "admin", "data-turbo-track": "reload" %>
     <script>
       // Tratamento global de erros de fetch
       addEventListener('turbo:load', () => {
