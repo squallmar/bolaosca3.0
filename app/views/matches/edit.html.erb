@@ -46,9 +46,9 @@
     </div>
   <% end %>
 
-  <div class="navigation-links">
-    <%= link_to "← Voltar para a página de partidas", matches_path, class: "nav-link" %>
-    <%= link_to "↩ Voltar para página inicial", root_path, class: "nav-link" %>
+  <div class="navigation-links-Editar-Partida">
+    <%= link_to "← Página de partidas", matches_path, class: "nav-link-editar-partida" %>
+    <%= link_to "↩ Página inicial", root_path, class: "nav-link-editar-partida" %>
   </div>
 </div>
 
@@ -116,79 +116,87 @@
     border-color: #3498db;
     box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
   }
+/* ----------------Botoes--------------------- */
+ .form-actions {
+  display: inline-flex; /* Mudamos para inline-flex */
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  align-items: flex-end; /* Alinha os itens à parte inferior */
+}
 
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
+.submit-button, .cancel-button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+  height: auto;
+  vertical-align: middle; /* Mantemos isso para o alinhamento interno do texto */
+}
+
+.submit-button {
+  background-color: #27ae60;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #219653;
+}
+
+.cancel-button {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #c0392b;
+}
+
+/* ------------------------------------------- */
+.navigation-links-Editar-Partida {
+    text-align: center;
     margin-top: 2rem;
-  }
-
-  .submit-button {
-    background-color: #27ae60;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
     font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  .submit-button:hover {
-    background-color: #219653;
-  }
-
-  .cancel-button {
-    background-color: #e74c3c;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
-  }
-
-  .cancel-button:hover {
-    background-color: #c0392b;
-  }
-
-  .error-messages {
-    background-color: #fdecea;
-    color: #c62828;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
-  }
-
-  .error-title {
-    font-size: 1rem;
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-  }
-
-  .error-list {
-    margin: 0;
-    padding-left: 1.5rem;
-  }
-
-  .navigation-links {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .nav-link {
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-
-  .nav-link:hover {
     color: #2980b9;
-    text-decoration: underline;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+    background-color: #ecf0f1;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
+
+  .nav-link-editar-partida {
+    color: #2980b9;
+    text-decoration: none;
+    font-size: 1rem;
+    margin: 0 1rem;
+    transition: color 0.3s;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: #ecf0f1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: inline-block;
+    text-align: center;
+    width: auto; /* Largura fixa para os links */
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .nav-link-editar-partida:hover {
+    text-decoration: underline;
+    background-color: #1387d4;
+    color: #000000; /* Cor do texto ao passar o mouse */
+    box-shadow: 0 4px 8px rgb(0, 0, 0);
+    transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
+  }
+
 </style>
