@@ -1,0 +1,48 @@
+<!-- app/views/admin/teams/edit.html.erb -->
+<div class="team-edit-container">
+  <div class="team-edit-header">
+    <h1 class="team-edit-title">
+      <i class="fas fa-users-cog"></i> Editar Equipe
+    </h1>
+    <%= link_to admin_teams_path, class: "back-link" do %>
+      <i class="fas fa-arrow-left"></i> Voltar para equipes
+    <% end %>
+  </div>
+
+  <div class="team-edit-card">
+    <%= form_with(model: [:admin, @team], local: true, html: { multipart: true, class: "team-form" }) do |form| %>
+      <div class="form-group">
+        <%= form.label :name, "Nome da Equipe de Futebol", class: "form-label" %>
+        <%= form.text_field :name, class: "form-input", placeholder: "Digite o nome da equipe" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :logo, "Escudo da Equipe", class: "form-label" %>
+        
+        <div class="file-upload-container">
+          <label class="file-upload-label">
+            <%= form.file_field :logo, class: "file-upload-input" %>
+            <span class="file-upload-button">
+              <i class="fas fa-cloud-upload-alt"></i> Selecione um arquivo
+            </span>
+            <span class="file-upload-text">Nenhum arquivo selecionado</span>
+          </label>
+        </div>
+
+        <% if @team.logo.attached? %>
+          <div class="current-logo-container">
+            <p class="current-logo-label">Logo atual:</p>
+            <div class="current-logo">
+              <%= image_tag @team.logo.variant(resize_to_limit: [200, 200]), class: "logo-preview" %>
+              <%= link_to 'Remover logo', remove_logo_admin_team_path(@team), method: :delete, data: { confirm: 'Tem certeza que deseja remover a logo?' } %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "Atualizar Equipe", class: "submit-button" %>
+      </div>
+    <% end %>
+  </div>
+</div>

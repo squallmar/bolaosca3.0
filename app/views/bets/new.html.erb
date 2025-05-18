@@ -9,9 +9,9 @@
         <div class="text-center team-vs">
           <div class="vs-text">VS</div>
           <div class="teams-names">
-            <strong><%= @match.team_a %></strong> 
+            <strong><%= @match.team_a.name %></strong> 
             <span class="mx-2">x</span> 
-            <strong><%= @match.team_b %></strong>
+            <strong><%= @match.team_b.name %></strong>
           </div>
         </div>
 
@@ -28,7 +28,7 @@
             <label class="form-label small fw-semibold d-flex align-items-center gap-2">
               <% if @match.team_a_logo.attached? %>
               <% end %>
-              Gols do <%= @match.team_a %>
+              Gols do <%= @match.team_a.name %>
             </label>
             <%= f.number_field :guess_a, class: "form-control form-control-sm text-center", min: 0 %>
           </div>
@@ -37,7 +37,7 @@
             <label class="form-label small fw-semibold d-flex align-items-center gap-2">
               <% if @match.team_b_logo.attached? %>
               <% end %>
-              Gols do <%= @match.team_b %>
+              Gols do <%= @match.team_b.name %>
             </label>
             <%= f.number_field :guess_b, class: "form-control form-control-sm text-center", min: 0 %>
           </div>

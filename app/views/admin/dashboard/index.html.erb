@@ -34,14 +34,67 @@
         </div>
       </div>
     </div>
+
+    <!-- NOVO CARD PARA TIMES -->
+    <div class="col-md-3">
+      <div class="card text-white bg-info">
+        <div class="card-body">
+          <h5 class="card-title">Times</h5>
+          <p class="display-6"><%= @stats[:total_teams] %></p>
+          <%= link_to 'Gerenciar', admin_teams_path, class: 'text-white stretched-link' %>
+        </div>
+      </div>
+    </div>
   </div>
+
+       <!-- NOVA SEÇÃO PARA TIMES CADASTRADOS -->
+<div class="card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5><i class="bi bi-people-fill"></i> Times Cadastrados</h5>
+    <%= link_to 'Novo Time', new_admin_team_path, class: 'btn btn-sm btn-success' %>
+  </div>
+  <div class="card-body">
+    <% if @recent_teams.any? %>
+      <div class="row">
+        <% @recent_teams.each do |team| %>
+          <div class="col-md-3 mb-3">
+            <div class="card h-100">
+              <div class="card-img-top text-center py-3">
+                <% if team.logo.attached? %>
+                  <%= image_tag team.logo.variant(resize_to_limit: [100, 100]), class: 'img-fluid' %>
+                <% else %>
+                  <div class="bg-light p-4">
+                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                  </div>
+                <% end %>
+              </div>
+              <div class="card-body text-center">
+                <h6><%= team.name %></h6>
+              </div>
+              <div class="card-footer bg-white text-center">
+                <%= link_to 'Editar', edit_admin_team_path(team), class: 'btn btn-sm btn-outline-primary' %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Paginação -->
+      <div class="d-flex justify-content-center mt-4">
+        <%== pagy_bootstrap_nav(@pagy) if @pagy.pages > 1 %>
+      </div>
+    <% else %>
+      <div class="alert alert-info">Nenhum time cadastrado ainda.</div>
+    <% end %>
+  </div>
+</div>
 
   <!-- Seção de Usuários Recentes -->
   <div class="card mb-4">
     <div class="card-header">
       <h5><i class="bi bi-people-fill"></i> Usuários Recentes</h5>
     </div>
-    <div class="card-body">
+   <div class="card-body">
       <div class="table-responsive">
         <table class="table">
           <thead>

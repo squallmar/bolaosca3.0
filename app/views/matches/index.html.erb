@@ -17,15 +17,21 @@
             <div class="match-number" aria-label="Número da partida"><%= index + 1 %></div>
 
             <div class="team-logo-container">
-              <% if match.team_a_logo.attached? %>
-                <%= image_tag match.team_a_logo.variant(resize_to_limit: [40, 40]), alt: "#{match.team_a} logo", class: "team-logo" %>
+              <% if match.team_a&.logo&.attached? %>
+                <%= image_tag match.team_a.logo.variant(resize_to_limit: [40, 40]), 
+                      alt: "#{match.team_a_name} logo", 
+                      class: "team-logo" %>
+              <% elsif match.team_a_logo.attached? %>
+                <%= image_tag match.team_a_logo.variant(resize_to_limit: [40, 40]), 
+                      alt: "#{match.team_a_name} logo", 
+                      class: "team-logo" %>
               <% else %>
                 <div class="team-logo-placeholder" aria-hidden="true"></div>
               <% end %>
             </div>
 
             <div>
-              <strong><%= match.team_a %></strong>
+              <strong><%= match.team_a_name %></strong>
               <span class="palpite-highlight" aria-label="Palpite">
                 <% if bet %>
                   <%= "#{bet.guess_a} vs #{bet.guess_b}" %>
@@ -33,12 +39,18 @@
                   vs
                 <% end %>
               </span>
-              <strong><%= match.team_b %></strong>
+              <strong><%= match.team_b_name %></strong>
             </div>
 
             <div class="team-logo-container">
-              <% if match.team_b_logo.attached? %>
-                <%= image_tag match.team_b_logo.variant(resize_to_limit: [40, 40]), alt: "#{match.team_b} logo", class: "team-logo" %>
+              <% if match.team_b&.logo&.attached? %>
+                <%= image_tag match.team_b.logo.variant(resize_to_limit: [40, 40]), 
+                      alt: "#{match.team_b_name} logo", 
+                      class: "team-logo" %>
+              <% elsif match.team_b_logo.attached? %>
+                <%= image_tag match.team_b_logo.variant(resize_to_limit: [40, 40]), 
+                      alt: "#{match.team_b_name} logo", 
+                      class: "team-logo" %>
               <% else %>
                 <div class="team-logo-placeholder" aria-hidden="true"></div>
               <% end %>
@@ -46,7 +58,7 @@
 
             <div class="ms-3 text-muted small" aria-label="Data e local da partida">
               <div><i class="bi bi-calendar-event"></i> <%= l(match.match_date, format: :short) %></div>
-              <% if match.respond_to?(:location) && match.location.present? %>
+              <% if match.location.present? %>
                 <div><i class="bi bi-geo-alt"></i> <%= match.location %></div>
               <% end %>
             </div>
@@ -55,11 +67,11 @@
           <% if user_signed_in? %>
             <div>
               <% if bet %>
-                <%= link_to edit_match_bet_path(match, bet), class: "btn btn-sm btn-outline-warning", aria: { label: "Editar palpite da partida #{match.team_a} vs #{match.team_b}" } do %>
+                <%= link_to edit_match_bet_path(match, bet), class: "btn btn-sm btn-outline-warning", aria: { label: "Editar palpite da partida #{match.team_a_name} vs #{match.team_b_name}" } do %>
                   <i class="bi bi-pencil" aria-hidden="true"></i> Editar Palpite
                 <% end %>
               <% else %>
-                <%= link_to new_match_bet_path(match), class: "btn btn-sm btn-outline-primary", aria: { label: "Adicionar palpite para a partida #{match.team_a} vs #{match.team_b}" } do %>
+                <%= link_to new_match_bet_path(match), class: "btn btn-sm btn-outline-primary", aria: { label: "Adicionar palpite para a partida #{match.team_a_name} vs #{match.team_b_name}" } do %>
                   <i class="bi bi-joystick" aria-hidden="true"></i> Palpite
                 <% end %>
               <% end %>

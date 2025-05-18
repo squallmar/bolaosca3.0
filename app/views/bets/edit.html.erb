@@ -1,5 +1,5 @@
 <h1>Editar Palpite</h1>
-<p>Você está editando um palpite para o jogo <%= @match.team_a %> vs <%= @match.team_b %></p>
+<p>Você está editando um palpite para o jogo <%= @match.team_a.name %> vs <%= @match.team_b.name %></p>
 <p>Você pode alterar o seu palpite abaixo:</p>
 
 <%= form_with(model: [@match, @bet], local: true) do |form| %>
@@ -15,13 +15,13 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :guess_a, "Seu palpite para #{@match.team_a}" %>
-    <%= form.number_field :guess_a %>
+    <%= form.label :guess_a, "Seu palpite para #{@match.team_a.name}" %>
+    <%= form.number_field :guess_a, min: 0 %>
   </div>
 
   <div class="field">
-    <%= form.label :guess_b, "Seu palpite para #{@match.team_b}" %>
-    <%= form.number_field :guess_b %>
+    <%= form.label :guess_b, "Seu palpite para #{@match.team_b.name}" %>
+    <%= form.number_field :guess_b, min: 0 %>
   </div>
 
   <div class="actions">

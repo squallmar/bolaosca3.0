@@ -6,6 +6,14 @@ Rails.application.routes.draw do
   resources :matches, except: [ :show ] do
     resources :bets, only: [ :new, :create, :update, :edit ]
   end
+
+  # Adicione esta linha para o endpoint dos logos
+  resources :teams, only: [] do
+    member do
+      get "logo_info" # Rota para obter informações do logo
+    end
+  end
+
   get "/rankings", to: "rankings#index", as: :rankings
   get "/termos", to: "static_pages#termos", as: :termos
   get "/privacidade", to: "static_pages#privacidade", as: :privacidade
@@ -42,10 +50,15 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :teams, except: [ :show ] do
+    resources :teams, only: [ :index, :show, :new, :edit, :create, :update, :destroy ] do
       member do
         get :edit_players
         patch :update_players
+        get :logo # Rota para obter o logo
+        patch :update_logo # Rota para atualizar o logo
+        get :logo_info # Rota para obter informações do logo
+        patch :update_logo_info # Rota para atualizar informações do logo
+        delete :remove_logo
       end
     end
 

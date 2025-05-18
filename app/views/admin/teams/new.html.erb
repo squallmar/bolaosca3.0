@@ -1,0 +1,40 @@
+<!-- app/views/admin/teams/new.html.erb -->
+<div class="team-form-container">
+  <div class="team-form-header">
+    <h1 class="team-form-title">
+      <i class="bi bi-plus-circle"></i> Nova Equipe
+    </h1>
+    <%= link_to admin_teams_path, class: "back-link" do %>
+      <i class="bi bi-arrow-left"></i> Voltar para equipes
+    <% end %>
+  </div>
+
+  <div class="team-form-card">
+    <%= form_with(model: [:admin, @team], local: true, html: { multipart: true, class: "team-form" }) do |form| %>
+      <div class="form-group">
+        <%= form.label :name, "Nome da Equipe", class: "form-label" %>
+        <%= form.text_field :name, class: "form-control", placeholder: "Ex: Flamengo-RJ", required: true %>
+        <small class="form-text">Digite o nome completo da equipe</small>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :logo, "Logo da Equipe", class: "form-label" %>
+        
+        <div class="file-upload-box">
+          <label class="file-upload-label">
+            <%= form.file_field :logo, class: "file-upload-input", accept: "image/png, image/jpeg", required: true %>
+            <div class="file-upload-content">
+              <i class="bi bi-cloud-arrow-up"></i>
+              <span class="file-upload-text">Arraste ou selecione uma imagem</span>
+              <span class="file-upload-hint">Formatos aceitos: PNG, JPG (max. 2MB)</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "Criar Equipe", class: "btn btn-primary btn-lg" %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<!-- app/views/admin/teams/show.html.erb -->
+<h1><%= @team.name %></h1>
+
+<% if @team.logo.attached? %>
+  <p>
+    <strong>Logo:</strong><br>
+    <%= image_tag @team.logo, width: 200 %>
+  </p>
+<% end %>
+
+<%= link_to 'Editar', edit_admin_team_path(@team) %> |
+<%= link_to 'Voltar', admin_teams_path %>

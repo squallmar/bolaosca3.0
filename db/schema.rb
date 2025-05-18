@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_16_013637) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_17_204841) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,6 +47,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_013637) do
     t.integer "points"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status"
     t.index ["match_id"], name: "index_bets_on_match_id"
     t.index ["user_id"], name: "index_bets_on_user_id"
   end
@@ -72,7 +73,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_013637) do
     t.string "team_b_logo"
     t.string "location"
     t.text "notes"
+    t.integer "team_a_id"
+    t.integer "team_b_id"
     t.index ["championship_id"], name: "index_matches_on_championship_id"
+    t.index ["team_a_id"], name: "index_matches_on_team_a_id"
+    t.index ["team_b_id"], name: "index_matches_on_team_b_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -102,4 +113,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_013637) do
   add_foreign_key "bets", "matches"
   add_foreign_key "bets", "users"
   add_foreign_key "matches", "championships"
+  add_foreign_key "matches", "teams", column: "team_a_id"
+  add_foreign_key "matches", "teams", column: "team_b_id"
 end

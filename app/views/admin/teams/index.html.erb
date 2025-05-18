@@ -1,0 +1,42 @@
+<!-- app/views/admin/teams/index.html.erb -->
+<div class="teams-container">
+  <header class="teams-header">
+    <h1 class="teams-title">Gerenciamento de Equipes</h1>
+    <div class="teams-actions">
+      <%= link_to "Nova Equipe", new_admin_team_path, class: "btn btn-primary" %>
+      <%= link_to "Voltar", admin_root_path, class: "btn btn-secondary" %>
+    </div>
+  </header>
+
+  <div class="teams-table-container">
+    <table class="teams-table">
+      <thead class="teams-table-header">
+        <tr>
+          <th class="logo-column">Logo</th>
+          <th class="name-column">Nome</th>
+          <th class="actions-column">Ações</th>
+        </tr>
+      </thead>
+      <tbody class="teams-table-body">
+        <% @teams.each do |team| %>
+          <tr class="team-row">
+            <td class="team-logo">
+              <% if team.logo.attached? %>
+                <%= image_tag team.logo.variant(resize_to_limit: [60, 60]), alt: "Logo de #{team.name}", class: "logo-image" %>
+              <% else %>
+                <span class="no-logo">Sem logo</span>
+              <% end %>
+            </td>
+            <td class="team-name"><%= team.name %></td>
+            <td class="team-actions">
+              <%= link_to "Editar", edit_admin_team_path(team), class: "btn btn-edit" %>
+              <%= link_to 'Excluir', admin_team_path(team), method: :delete, 
+                          data: { confirm: "Tem certeza que deseja excluir esta equipe?" }, 
+                          class: "btn btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

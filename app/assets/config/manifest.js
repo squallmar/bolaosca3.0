@@ -8,4 +8,4 @@
 //= link controllers/hello_controller.js
 //= link controllers/index.js
 //= link matches_form.js
-
+//= link rails-ujs.js
