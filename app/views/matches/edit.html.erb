@@ -1,2 +1,194 @@
-<h1>Matches#edit</h1>
-<p>Find me in app/views/matches/edit.html.erb</p>
+<div class="match-edit-container">
+  <h1 class="title">Editar Partida</h1>
+  
+  <div class="match-info">
+    <p class="subtitle">Você está editando a partida entre <strong><%= @match.team_a.name %></strong> e <strong><%= @match.team_b.name %></strong>.</p>
+    <p class="instructions">Altere os detalhes da partida abaixo:</p>
+  </div>
+
+  <%= form_with(model: @match, local: true, class: "match-form") do |form| %>
+    <% if @match.errors.any? %>
+      <div class="error-messages">
+        <h2 class="error-title"><%= pluralize(@match.errors.count, "erro") %> proibiu que esta partida fosse salva:</h2>
+        <ul class="error-list">
+          <% @match.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-grid">
+      <div class="form-field">
+        <%= form.label :team_a_id, "Time A", class: "field-label" %>
+        <%= form.collection_select :team_a_id, Team.order(:name), :id, :name, { prompt: "Selecione o Time A" }, class: "field-select" %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :team_b_id, "Time B", class: "field-label" %>
+        <%= form.collection_select :team_b_id, Team.order(:name), :id, :name, { prompt: "Selecione o Time B" }, class: "field-select" %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :match_date, "Data e Hora da Partida", class: "field-label" %>
+        <%= form.datetime_local_field :match_date, class: "field-input" %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :location, "Local da Partida", class: "field-label" %>
+        <%= form.text_field :location, class: "field-input", placeholder: "Ex: Estádio Municipal" %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Salvar Alterações", class: "submit-button" %>
+      <%= link_to "Cancelar", matches_path, class: "cancel-button" %>
+    </div>
+  <% end %>
+
+  <div class="navigation-links">
+    <%= link_to "← Voltar para a página de partidas", matches_path, class: "nav-link" %>
+    <%= link_to "↩ Voltar para página inicial", root_path, class: "nav-link" %>
+  </div>
+</div>
+
+<style>
+  .match-edit-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .title {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 0.5rem;
+  }
+
+  .instructions {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+  }
+
+  .match-form {
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .form-field {
+    margin-bottom: 1rem;
+  }
+
+  .field-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .field-select, .field-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+
+  .field-select:focus, .field-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .submit-button {
+    background-color: #27ae60;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .submit-button:hover {
+    background-color: #219653;
+  }
+
+  .cancel-button {
+    background-color: #e74c3c;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+  }
+
+  .cancel-button:hover {
+    background-color: #c0392b;
+  }
+
+  .error-messages {
+    background-color: #fdecea;
+    color: #c62828;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+
+  .error-title {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .error-list {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+
+  .navigation-links {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .nav-link {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+  }
+</style>

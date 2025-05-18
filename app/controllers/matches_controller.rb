@@ -48,6 +48,12 @@ class MatchesController < ApplicationController
   end
 
   def edit
+    @match = Match.find(params[:id])
+    @match.team_a.name ||= Team.first.name
+    @match.team_b.name ||= Team.second.name
+    @match.match_date ||= Time.current.beginning_of_hour + 1.day
+    @match.location ||= "Local da partida"
+
   end
 
   def update

@@ -124,7 +124,7 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <h5><i class="bi bi-calendar-event"></i> Próximas Partidas</h5>
-      <%= link_to 'Nova Partida', new_admin_match_path, class: 'btn btn-sm btn-success' %>
+      <%= link_to 'Nova Partida', new_match_path, class: 'btn btn-sm btn-success' %>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -141,10 +141,10 @@
             <% @recent_matches.each do |match| %>
               <tr>
                 <td><%= match.championship.name %></td>
-                <td><%= match.team_a %> vs <%= match.team_b %></td>
+                <td><%= match.team_a.name %> vs <%= match.team_b.name %></td>
                 <td><%= l(match.match_date, format: :long) %></td>
                 <td>
-                  <%= link_to 'Editar', edit_admin_match_path(match), class: 'btn btn-sm btn-primary' %>
+                  <%= link_to 'Editar', edit_match_path(match), class: 'btn btn-sm btn-primary' %>
                 </td>
               </tr>
             <% end %>
