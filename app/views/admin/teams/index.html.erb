@@ -7,7 +7,7 @@
       <%= link_to "Voltar", admin_root_path, class: "btn btn-secondary" %>
     </div>
   </header>
-
+     
   <div class="teams-table-container">
     <table class="teams-table">
       <thead class="teams-table-header">
@@ -38,5 +38,6 @@
         <% end %>
       </tbody>
     </table>
+     <%= paginate @teams %>
   </div>
 </div>

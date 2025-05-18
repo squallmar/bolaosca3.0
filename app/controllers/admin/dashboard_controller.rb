@@ -5,21 +5,21 @@ class Admin::DashboardController < ApplicationController
   before_action :authenticate_user!
   before_action :check_admin
 
-  def index
-  @stats = {
-    total_users: User.count,
-    active_users: User.where("last_sign_in_at >= ?", 1.week.ago).count,
-    upcoming_matches: Match.upcoming.count,
-    pending_bets: Bet.pending.count,
-    total_teams: Team.count
-  }
+    def index
+    @recent_teams = Team.order(created_at: :desc).page(params[:page]).per(4)
 
-  @recent_users = User.order(created_at: :desc).limit(5)
-  @recent_matches = Match.upcoming.order(match_date: :asc).limit(5).includes(:championship)
-  
- 
-  @pagy, @recent_teams = pagy(Team.order(created_at: :desc), items: 12)
-end
+    @stats = {
+      total_users: User.count,
+      active_users: User.where("last_sign_in_at >= ?", 1.week.ago).count,
+      upcoming_matches: Match.upcoming.count,
+      pending_bets: Bet.pending.count,
+      total_teams: Team.count
+    }
+
+    @recent_users = User.order(created_at: :desc).limit(5)
+    @recent_matches = Match.upcoming.order(match_date: :asc).limit(5).includes(:championship)
+  end
+
 
   private
 

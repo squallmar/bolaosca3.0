@@ -53,7 +53,6 @@ class MatchesController < ApplicationController
     @match.team_b.name ||= Team.second.name
     @match.match_date ||= Time.current.beginning_of_hour + 1.day
     @match.location ||= "Local da partida"
-
   end
 
   def update

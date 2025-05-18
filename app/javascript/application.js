@@ -2,10 +2,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-// Rails UJS
-import * as Rails from '@rails/ujs';
-Rails.start();
-
 // Bootstrap e Popper
 import "@popperjs/core"
 import "bootstrap"

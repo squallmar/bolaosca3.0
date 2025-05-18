@@ -47,7 +47,6 @@ class Match < ApplicationRecord
   end
 
   def validate_logo_files
-    
     return if team_a.present? || team_b.present?
 
     [ team_a_logo, team_b_logo ].each do |logo|
