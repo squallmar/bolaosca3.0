@@ -5,10 +5,10 @@ class Admin::DashboardController < ApplicationController
 
   def index
     @top_scorers = User.top_scorers(5)
-    @recent_teams = Team.order(created_at: :desc).page(params[:page]).per(4) 
+    @recent_teams = Team.order(created_at: :desc).page(params[:page]).per(4)
     @recent_users = User.latest(5)
     @recent_matches = Match.upcoming.with_championship(5)
-    
+
     @stats = {
       total_users: User.count,
       active_users: User.active_since(1.week.ago).count,
