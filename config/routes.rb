@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   # Rotas públicas
   root "home#index"
 
-  resources :matches, except: [ :show ] do
-    resources :bets, only: [ :new, :create, :edit, :update ]
+  resources :matches, except: [:show] do
+    resources :bets, only: [:new, :create, :edit, :update]
   end
 
   resources :teams, only: [] do
@@ -28,28 +28,31 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
 
     resources :matches do
-      
-      get 'result', to: 'match_results#edit', as: 'result_edit'
-      patch 'result', to: 'match_results#update', as: 'result_update'
-      post "finalize", on: :member
+      member do
+        # Rotas para lançamento de resultados
+        get 'result/edit', to: 'match_results#edit', as: 'edit_result'
+        patch 'result', to: 'match_results#update', as: 'update_result'
+        
+        # Rota alternativa (opcional)
+        post 'finalize', to: 'match_results#finalize', as: 'finalize'
+      end
     end
 
-
-    resources :championships, except: [ :show ] do
+    resources :championships, except: [:show] do
       member do
         get :edit_teams
         patch :update_teams
       end
     end
 
-    resources :bets, only: [ :index, :show, :edit, :update ] do
+    resources :bets, only: [:index, :show, :edit, :update] do
       member do
         get :edit_status
         patch :update_status
       end
     end
 
-    resources :rankings, only: [ :index, :show ] do
+    resources :rankings, only: [:index, :show] do
       member do
         get :edit_teams
         patch :update_teams
@@ -68,14 +71,14 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :players, except: [ :show ] do
+    resources :players, except: [:show] do
       member do
         get :edit_stats
         patch :update_stats
       end
     end
 
-    resources :users, only: [ :index, :show, :edit, :update ] do
+    resources :users, only: [:index, :show, :edit, :update] do
       member do
         get :edit_password
         patch :update_password

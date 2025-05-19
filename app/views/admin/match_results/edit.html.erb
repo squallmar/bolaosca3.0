@@ -1,34 +1,60 @@
-<div class="container py-4">
-  <h2 class="mb-4">
-    <i class="bi bi-flag-fill"></i> Lançar Resultado: 
-    <%= @match.home_team.name %> vs <%= @match.away_team.name %>
-  </h2>
+<div class="container py-2">
+  <h2 class="text-center mb-4">Lançar Resultado</h2>
+  <h4 class="text-center text-muted mb-5">
+    <%= @match.team_a_name %> vs <%= @match.team_b_name %>
+  </h4>
 
-  <%= form_with url: result_update_admin_match_path(@match), method: :patch do |f| %>
-    <div class="card">
-      <div class="card-body">
-        <div class="row align-items-center">
-          <div class="col-md-5 text-center">
-            <h4><%= @match.home_team.name %></h4>
-            <%= image_tag @match.home_team.logo_url, class: 'team-logo mb-3' %>
-            <%= f.number_field :home_score, class: 'form-control text-center', min: 0 %>
+  <%= form_with url: admin_match_path(@match), method: :patch, local: true do |f| %>
+    <div class="row justify-content-center align-items-center">
+      
+      <!-- Time A -->
+      <div class="col-md-4 text-center">
+        <div class="form-group">
+          <div class="team-logo-container mb-2">
+            <% if @match.team_a&.logo&.attached? %>
+              <%= image_tag @match.team_a.logo.variant(resize_to_limit: [70, 70]),
+                    alt: "#{@match.team_a_name} logo", class: "img-fluid" %>
+            <% elsif @match.team_a_logo.attached? %>
+              <%= image_tag @match.team_a_logo.variant(resize_to_limit: [70, 70]),
+                    alt: "#{@match.team_a_name} logo", class: "img-fluid" %>
+            <% else %>
+              <div class="team-logo-placeholder" style="width:70px; height:70px; background:#eaeaea; display:inline-block;"></div>
+            <% end %>
           </div>
-
-          <div class="col-md-2 text-center">
-            <h3>X</h3>
-          </div>
-
-          <div class="col-md-5 text-center">
-            <h4><%= @match.away_team.name %></h4>
-            <%= image_tag @match.away_team.logo_url, class: 'team-logo mb-3' %>
-            <%= f.number_field :away_score, class: 'form-control text-center', min: 0 %>
-          </div>
+          <label><strong><%= @match.team_a_name %></strong></label>
+          <%= f.number_field :home_score, class: 'form-control text-center mt-2', min: 0, required: true %>
         </div>
       </div>
-      <div class="card-footer text-end">
-        <%= link_to 'Cancelar', admin_matches_path, class: 'btn btn-secondary' %>
-        <%= f.submit 'Lançar Resultado', class: 'btn btn-primary' %>
+
+      <!-- X -->
+      <div class="col-md-1 d-flex align-items-center justify-content-center">
+        <h3>X</h3>
       </div>
+
+      <!-- Time B -->
+      <div class="col-md-4 text-center">
+        <div class="form-group">
+          <div class="team-logo-container mb-2">
+            <% if @match.team_b&.logo&.attached? %>
+              <%= image_tag @match.team_b.logo.variant(resize_to_limit: [70, 70]),
+                    alt: "#{@match.team_b_name} logo", class: "img-fluid" %>
+            <% elsif @match.team_b_logo.attached? %>
+              <%= image_tag @match.team_b_logo.variant(resize_to_limit: [70, 70]),
+                    alt: "#{@match.team_b_name} logo", class: "img-fluid" %>
+            <% else %>
+              <div class="team-logo-placeholder" style="width:70px; height:70px; background:#eaeaea; display:inline-block;"></div>
+            <% end %>
+          </div>
+          <label><strong><%= @match.team_b_name %></strong></label>
+          <%= f.number_field :away_score, class: 'form-control text-center mt-2', min: 0, required: true %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+      <%= f.submit 'Salvar Resultado', class: 'btn btn-success px-4 me-2' %>
+      <%= link_to 'Cancelar', admin_matches_path, class: 'btn btn-outline-secondary px-4' %>
     </div>
   <% end %>
 </div>

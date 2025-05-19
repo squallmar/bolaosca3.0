@@ -80,7 +80,7 @@
 
           <% if user_signed_in? && current_user.admin? %>
             <% if match.finalized_at.nil? %>
-              <%= link_to 'Lançar Resultado', result_edit_admin_match_path(match), class: 'btn btn-sm btn-warning' %>
+              <%= link_to 'Lançar Resultado', edit_result_admin_match_path(match), class: 'btn btn-sm btn-warning' %>
             <% else %>
               <span class="badge bg-success">Finalizada</span>
             <% end %>
