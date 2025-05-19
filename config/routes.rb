@@ -28,8 +28,12 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
 
     resources :matches do
+      
+      get 'result', to: 'match_results#edit', as: 'result_edit'
+      patch 'result', to: 'match_results#update', as: 'result_update'
       post "finalize", on: :member
     end
+
 
     resources :championships, except: [ :show ] do
       member do

@@ -89,3 +89,17 @@
   }
 }
 /* -------------------------------------------- */
+
+.team-logo {
+  max-height: 80px;
+  max-width: 100%;
+}
+
+/* Estilo para placar */
+.score-input {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  max-width: 80px;
+  margin: 0 auto;
+}

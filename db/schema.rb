@@ -75,6 +75,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_19_004208) do
     t.text "notes"
     t.integer "team_a_id"
     t.integer "team_b_id"
+    t.datetime "finalized_at"
     t.index ["championship_id"], name: "index_matches_on_championship_id"
     t.index ["team_a_id"], name: "index_matches_on_team_a_id"
     t.index ["team_b_id"], name: "index_matches_on_team_b_id"
