@@ -767,3 +767,67 @@ footer {
 
 /* ----------------------------------------------------------------------- */
 
+/* Estilos para os itens do menu - DESKTOP */
+.navbar-nav .menu-item {
+  position: relative;
+  margin: 0 0.1rem; /* Espaçamento entre os itens */
+}
+
+/* Texto branco e efeito de linha animada */
+.navbar-nav .menu-item .nav-link {
+  color: white !important; /* Garante texto branco */
+  padding: 0.5rem 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+  text-decoration: none !important;
+}
+
+/* Linha branca animada no hover */
+.navbar-nav .menu-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-nav .menu-item:hover::after {
+  width: 70%;
+}
+
+/* Estilo para item ativo (sem linha) */
+.navbar-nav .menu-item .nav-link.active {
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+/* Versão MOBILE */
+@media (max-width: 992px) {
+  .navbar-nav .menu-item {
+    margin: 0.2rem 0;
+    width: 100%;
+  }
+  
+  .navbar-nav .menu-item .nav-link {
+    padding: 0.8rem 1.5rem; /* Mais espaço para toque */
+    display: block;
+  }
+  
+  /* Remove a linha animada em mobile */
+  .navbar-nav .menu-item::after {
+    display: none;
+  }
+  
+  /* Efeito hover alternativo para mobile */
+  .navbar-nav .menu-item:hover .nav-link {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+  }
+}
+
+/* ----------------------------------------------------------------------- */
