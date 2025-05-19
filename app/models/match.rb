@@ -18,6 +18,21 @@ class Match < ApplicationRecord
   validate :validate_logo_files
   validates :championship, presence: true
 
+  # Estado da partida
+  def can_be_finalized?
+    !finalized? && 
+    match_date.present? && 
+    match_date <= Time.current && 
+    team_a.present? && 
+    team_b.present? &&
+    home_team_score.nil? && 
+    away_team_score.nil?
+  end
+
+  def finalized?
+    status == "finalized" || finalized_at.present?
+  end
+
   def finalize!(home_score, away_score)
     update(
       home_team_score: home_score,
@@ -86,10 +101,8 @@ class Match < ApplicationRecord
   end
 
   def update_rankings!
-    # Atualiza rankings após calcular pontos
     Ranking.update_all_rankings
   end
-
 
   def future_match_date
     return unless match_date.present?
@@ -104,7 +117,7 @@ class Match < ApplicationRecord
   def validate_logo_files
     return if team_a.present? || team_b.present?
 
-    [ team_a_logo, team_b_logo ].each do |logo|
+    [team_a_logo, team_b_logo].each do |logo|
       if logo.attached?
         unless logo.content_type.in?(%w[image/jpeg image/png])
           errors.add(:base, "Os escudos devem ser no formato JPG ou PNG")
