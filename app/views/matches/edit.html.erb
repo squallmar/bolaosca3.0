@@ -53,6 +53,13 @@
   </div>
 </div>
 
+<!-- finalizar partida -->
+<% if @match.can_be_finalized? %>
+  <hr>
+  <h4 class="mb-4">Finalizar Partida</h4>
+  <%= render 'finalize_form' %>
+<% end %>
+<!-- ------------------------------------- -->
 <style>
   .match-edit-container {
     max-width: 800px;

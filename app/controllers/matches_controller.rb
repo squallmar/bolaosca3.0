@@ -71,6 +71,17 @@ class MatchesController < ApplicationController
     redirect_to matches_path, notice: "Partida removida com sucesso!"
   end
 
+  def finalize
+    @match = Match.find(params[:id])
+
+    if @match.finalize!(params[:home_score], params[:away_score])
+      redirect_to matches_path, notice: "Partida finalizada com sucesso!"
+    else
+      render :edit
+    end
+  end
+
+
   private
 
   def set_match

@@ -3,14 +3,14 @@ Rails.application.routes.draw do
 
   # Rotas públicas
   root "home#index"
+
   resources :matches, except: [ :show ] do
-    resources :bets, only: [ :new, :create, :update, :edit ]
+    resources :bets, only: [ :new, :create, :edit, :update ]
   end
 
-  # Adicione esta linha para o endpoint dos logos
   resources :teams, only: [] do
     member do
-      get "logo_info" # Rota para obter informações do logo
+      get "logo_info"
     end
   end
 
@@ -26,9 +26,11 @@ Rails.application.routes.draw do
   # Namespace administrativo
   namespace :admin do
     root to: "dashboard#index"
-    get "dashboard/index"
 
-    resources :matches
+    resources :matches do
+      post "finalize", on: :member
+    end
+
     resources :championships, except: [ :show ] do
       member do
         get :edit_teams
@@ -50,14 +52,14 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :teams, only: [ :index, :show, :new, :edit, :create, :update, :destroy ] do
+    resources :teams do
       member do
         get :edit_players
         patch :update_players
-        get :logo # Rota para obter o logo
-        patch :update_logo # Rota para atualizar o logo
-        get :logo_info # Rota para obter informações do logo
-        patch :update_logo_info # Rota para atualizar informações do logo
+        get :logo
+        patch :update_logo
+        get :logo_info
+        patch :update_logo_info
         delete :remove_logo
       end
     end

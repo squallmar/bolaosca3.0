@@ -8,6 +8,8 @@ class Team < ApplicationRecord
   # Validações do logo
   validate :correct_logo_type
 
+  scope :latest, ->(limit = 5) { order(created_at: :desc).limit(limit) }
+
   private
 
   def correct_logo_type

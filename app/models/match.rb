@@ -8,14 +8,27 @@ class Match < ApplicationRecord
   has_one_attached :team_b_logo
 
   # Scopes
-  scope :upcoming, -> { where("match_date > ?", Time.current).order(:match_date) }
+  scope :upcoming, -> { where("match_date >= ?", Time.current).order(match_date: :asc) }
   scope :past, -> { where("match_date <= ?", Time.current).order(match_date: :desc) }
+  scope :with_championship, ->(limit = 5) { includes(:championship).limit(limit) }
 
   # Validações
   validates :team_a, :team_b, :match_date, presence: true
   validate :future_match_date
   validate :validate_logo_files
   validates :championship, presence: true
+
+  def finalize!(home_score, away_score)
+    update(
+      home_team_score: home_score,
+      away_team_score: away_score,
+      status: "finalized",
+      finalized_at: Time.current
+    )
+
+    calculate_bets_points!
+    update_rankings!
+  end
 
   # Métodos para compatibilidade
   def team_a_name
@@ -35,6 +48,48 @@ class Match < ApplicationRecord
   end
 
   private
+
+  def calculate_bets_points!
+    bets.each do |bet|
+      points = calculate_points_for(bet)
+      bet.update(points: points)
+      bet.user.increment!(:total_points, points)
+    end
+  end
+
+  def calculate_points_for(bet)
+    return 0 unless finalized?
+
+    if exact_score?(bet)
+      10
+    elsif correct_winner_with_goal_difference?(bet)
+      7
+    elsif correct_winner?(bet)
+      5
+    else
+      0
+    end
+  end
+
+  def exact_score?(bet)
+    bet.home_score == home_team_score && bet.away_score == away_team_score
+  end
+
+  def correct_winner_with_goal_difference?(bet)
+    (bet.home_score - bet.away_score) == (home_team_score - away_team_score)
+  end
+
+  def correct_winner?(bet)
+    (bet.home_score > bet.away_score && home_team_score > away_team_score) ||
+      (bet.home_score < bet.away_score && home_team_score < away_team_score) ||
+      (bet.home_score == bet.away_score && home_team_score == away_team_score)
+  end
+
+  def update_rankings!
+    # Atualiza rankings após calcular pontos
+    Ranking.update_all_rankings
+  end
+
 
   def future_match_date
     return unless match_date.present?

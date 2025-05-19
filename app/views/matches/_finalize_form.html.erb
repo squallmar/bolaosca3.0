@@ -1,0 +1,27 @@
+<%= form_with url: finalize_match_path(@match), method: :post do |f| %>
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5>Finalizar Partida</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-5 text-center">
+          <h4><%= @match.home_team.name %></h4>
+          <%= f.number_field :home_score, class: 'form-control text-center', min: 0 %>
+        </div>
+        
+        <div class="col-md-2 text-center align-self-center">
+          <h4>X</h4>
+        </div>
+        
+        <div class="col-md-5 text-center">
+          <h4><%= @match.away_team.name %></h4>
+          <%= f.number_field :away_score, class: 'form-control text-center', min: 0 %>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-end">
+      <%= f.submit 'Finalizar Partida', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

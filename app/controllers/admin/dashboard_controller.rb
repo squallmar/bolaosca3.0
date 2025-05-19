@@ -1,25 +1,22 @@
 # app/controllers/admin/dashboard_controller.rb
 class Admin::DashboardController < ApplicationController
-  include Pagy::Backend
-
   before_action :authenticate_user!
   before_action :check_admin
 
-    def index
-    @recent_teams = Team.order(created_at: :desc).page(params[:page]).per(4)
-
+  def index
+    @top_scorers = User.top_scorers(5)
+    @recent_teams = Team.latest(4)
+    @recent_users = User.latest(5)
+    @recent_matches = Match.upcoming.with_championship(5)
+    
     @stats = {
       total_users: User.count,
-      active_users: User.where("last_sign_in_at >= ?", 1.week.ago).count,
+      active_users: User.active_since(1.week.ago).count,
       upcoming_matches: Match.upcoming.count,
       pending_bets: Bet.pending.count,
       total_teams: Team.count
     }
-
-    @recent_users = User.order(created_at: :desc).limit(5)
-    @recent_matches = Match.upcoming.order(match_date: :asc).limit(5).includes(:championship)
   end
-
 
   private
 

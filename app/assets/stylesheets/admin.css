@@ -63,3 +63,29 @@
 .nav-link-admin:hover i {
   transform: rotate(30deg); /* Efeito sutil no ícone */
 }
+
+/* Estilo para a tabela de top jogadores */
+.table-top-players {
+  width: 100%;
+  
+  th {
+    background-color: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  td {
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+  
+  .first-place {
+    background-color: #fff3cd;
+    font-weight: bold;
+  }
+}
+/* -------------------------------------------- */

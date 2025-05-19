@@ -95,6 +95,36 @@
           </div> 
           </div> 
 
+          </div> <!-- Fim da seção de times cadastrados -->
+          <!-- Seção de Top Jogadores -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5><i class="bi bi-trophy"></i> Top Jogadores</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Posição</th>
+                      <th>Jogador</th>
+                      <th>Pontos</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @top_scorers.each do |user| %>
+                      <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.total_points %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Fim da seção de top jogadores -->
+
   <!-- Seção de Usuários Recentes -->
   <div class="card mb-4">
     <div class="card-header">
