@@ -1,38 +1,41 @@
-class Admin::MatchResultsController < Admin::BaseController
-  before_action :set_match
-  before_action :authenticate_user!
-  before_action :verify_admin
+# app/controllers/admin/match_results_controller.rb
+module Admin
+  class MatchResultsController < Admin::BaseController # Herda de Admin::BaseController
 
-  def edit
-    @match
-  end
+    before_action :set_match, only: [:edit, :update] # Garante que @match é definido
 
-  def update
-    if @match.finalize!(params[:home_score].to_i, params[:away_score].to_i)
-      redirect_to admin_matches_path, notice: "Resultado lançado com sucesso!"
-    else
-      render :edit
+    # GET /admin/matches/:id/result
+    def edit
+      # Simplesmente renderiza o formulário. @match já está disponível.
+    end
+
+    # PATCH /admin/matches/:id/result
+    def update
+      # Usa strong parameters para permitir apenas score_a e score_b.
+      # O status da partida será atualizado para 'finalized' quando a rodada for finalizada.
+      match_params = params.require(:match).permit(:score_a, :score_b)
+
+      if @match.update(match_params)
+        # Redireciona para a página da partida ou para a lista de partidas do admin
+        redirect_to admin_match_path(@match), notice: 'Placar da partida salvo com sucesso.'
+      else
+        # Se houver erros de validação, renderiza novamente o formulário
+        flash.now[:alert] = 'Erro ao salvar placar da partida: ' + @match.errors.full_messages.to_sentence
+        render :edit, status: :unprocessable_entity
+      end
+    end
+
+    # REMOVA A AÇÃO `finalize` INTEIRA, pois ela não será mais usada no novo fluxo.
+    # def finalize
+    #   # ... (código antigo) ...
+    # end
+
+    private
+
+    def set_match
+      @match = Match.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to admin_matches_path, alert: 'Partida não encontrada.'
     end
   end
-
-  def finalize
-  if @match.update(status: :finalizado, finalized_at: Time.current)
-    redirect_to admin_matches_path, notice: "Partida finalizada com sucesso!"
-  else
-    redirect_to result_admin_match_path(@match), alert: "Erro ao finalizar partida"
-  end
-end
-
-  private
-
-    def verify_admin
-    unless current_user.admin?
-      redirect_to root_path, alert: "Acesso não autorizado"
-    end
-  end
-
-  def set_match
-    @match = Match.find(params[:id])
-  end
-
 end

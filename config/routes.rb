@@ -1,3 +1,5 @@
+# config/routes.rb
+
 Rails.application.routes.draw do
   devise_for :users
 
@@ -31,7 +33,15 @@ Rails.application.routes.draw do
       member do
         get "result", to: "match_results#edit", as: "result"
         patch "result", to: "match_results#update"
-        post "finalize", to: "match_results#finalize"
+        # REMOVA A LINHA ABAIXO: A finalização agora é feita pela rodada
+        # post "finalize", to: "match_results#finalize"
+      end
+    end
+
+    # NOVO: Rotas para gerenciar Rodadas
+    resources :rounds do
+      member do
+        patch :finalize # Rota para finalizar uma rodada (PATCH /admin/rounds/:id/finalize)
       end
     end
 

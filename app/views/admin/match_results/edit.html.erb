@@ -1,70 +1,81 @@
+<%# app/views/admin/match_results/edit.html.erb %>
+
 <div class="container py-2">
   <h2 class="text-center mb-4">Lançar Resultado</h2>
   <h4 class="text-center text-muted mb-5">
-    <%= @match.team_a_name %> vs <%= @match.team_b_name %>
+    <%= @match.team_a.name %> vs <%= @match.team_b.name %> <%# Use @match.team_a.name e @match.team_b.name %>
   </h4>
 
-  <%= form_with url: result_admin_match_path(@match), method: :patch, local: true do |f| %>
+  <%# Ajuste o form_with para usar o model: [:admin, @match] para que os campos sejam corretamente aninhados %>
+  <%= form_with(model: [:admin, @match], url: result_admin_match_path(@match), method: :patch, local: true) do |f| %>
+
+    <% if @match.errors.any? %>
+      <div id="error_explanation" class="alert alert-danger mb-4">
+        <h4 class="alert-heading"><%= pluralize(@match.errors.count, "erro") %> impediu que o placar fosse salvo:</h4>
+        <ul class="mb-0">
+          <% @match.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
     <div class="row justify-content-center align-items-center">
-      
-      <!-- Time A -->
+
       <div class="col-md-4 text-center">
         <div class="form-group">
           <div class="team-logo-container mb-2">
-            <% if @match.team_a&.logo&.attached? %>
+            <%# Simplifique a lógica de logo. Se attached?, use-o. Caso contrário, placeholder. %>
+            <% if @match.team_a.logo.attached? %>
               <%= image_tag @match.team_a.logo.variant(resize_to_limit: [70, 70]),
-                    alt: "#{@match.team_a_name} logo", class: "img-fluid" %>
-            <% elsif @match.team_a_logo.attached? %>
-              <%= image_tag @match.team_a_logo.variant(resize_to_limit: [70, 70]),
-                    alt: "#{@match.team_a_name} logo", class: "img-fluid" %>
+                  alt: "#{@match.team_a.name} logo", class: "img-fluid" %>
             <% else %>
               <div class="team-logo-placeholder" style="width:70px; height:70px; background:#eaeaea; display:inline-block;"></div>
             <% end %>
           </div>
-          <label><strong><%= @match.team_a_name %></strong></label>
-          <%= f.number_field :home_score, 
-                value: @match.score_a,
-                class: 'form-control text-center mt-2', 
-                min: 0, 
-                required: true %>
+          <label><strong><%= @match.team_a.name %></strong></label> <%# Use @match.team_a.name %>
+          <%# Altere o nome do campo para :score_a %>
+          <%= f.number_field :score_a,
+              value: @match.score_a,
+              class: 'form-control text-center mt-2',
+              min: 0,
+              required: true %>
         </div>
       </div>
 
-      <!-- X -->
       <div class="col-md-1 d-flex align-items-center justify-content-center">
         <h3>X</h3>
       </div>
 
-      <!-- Time B -->
       <div class="col-md-4 text-center">
         <div class="form-group">
           <div class="team-logo-container mb-2">
-            <% if @match.team_b&.logo&.attached? %>
+            <%# Simplifique a lógica de logo. Se attached?, use-o. Caso contrário, placeholder. %>
+            <% if @match.team_b.logo.attached? %>
               <%= image_tag @match.team_b.logo.variant(resize_to_limit: [70, 70]),
-                    alt: "#{@match.team_b_name} logo", class: "img-fluid" %>
-            <% elsif @match.team_b_logo.attached? %>
-              <%= image_tag @match.team_b_logo.variant(resize_to_limit: [70, 70]),
-                    alt: "#{@match.team_b_name} logo", class: "img-fluid" %>
+                  alt: "#{@match.team_b.name} logo", class: "img-fluid" %>
             <% else %>
               <div class="team-logo-placeholder" style="width:70px; height:70px; background:#eaeaea; display:inline-block;"></div>
             <% end %>
           </div>
-          <label><strong><%= @match.team_b_name %></strong></label>
-          <%= f.number_field :away_score, 
-                value: @match.score_b,
-                class: 'form-control text-center mt-2', 
-                min: 0, 
-                required: true %>
+          <label><strong><%= @match.team_b.name %></strong></label> <%# Use @match.team_b.name %>
+          <%# Altere o nome do campo para :score_b %>
+          <%= f.number_field :score_b,
+              value: @match.score_b,
+              class: 'form-control text-center mt-2',
+              min: 0,
+              required: true %>
         </div>
       </div>
 
     </div>
 
     <div class="text-center mt-4">
-      <%= f.submit 'Salvar Resultado', class: 'btn btn-success px-4 me-2' %>
-      <%= link_to 'Finalizar Partida', finalize_admin_match_path(@match), 
-            method: :post,
-            class: 'btn btn-primary px-4 me-2' %>
+      <%= f.submit 'Salvar Placar', class: 'btn btn-success px-4 me-2' %>
+      <%# REMOVA O BOTÃO "FINALIZAR PARTIDA" POR COMPLETO %>
+      <%# <%= link_to 'Finalizar Partida', finalize_admin_match_path(@match), %>
+      <%#           method: :post, %>
+      <%#           class: 'btn btn-primary px-4 me-2' %>
       <%= link_to 'Cancelar', admin_matches_path, class: 'btn btn-outline-secondary px-4' %>
     </div>
   <% end %>

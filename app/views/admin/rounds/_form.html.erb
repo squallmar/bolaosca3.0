@@ -1,0 +1,37 @@
+<%# app/views/admin/rounds/_form.html.erb %>
+
+<%= form_with(model: [:admin, round], class: 'bg-white shadow-md rounded-lg p-6') do |form| %>
+  <% if round.errors.any? %>
+    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <h2 class="font-bold"><%= pluralize(round.errors.count, "erro") %> impediu que esta rodada fosse salva:</h2>
+      <ul class="list-disc ml-5">
+        <% round.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :number, 'Número da Rodada', class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <%= form.number_field :number, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', required: true %>
+  </div>
+
+  <%# Remova ou comente os campos abaixo se você não quiser permitir alteração manual de status/finalized_at %>
+  <%# A finalização deve ser feita via ação `finalize!` do controller %>
+  <%#
+  <div class="mb-4">
+    <%= form.label :status, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <%= form.select :status, Round.statuses.keys.map { |s| [s.humanize, s] }, {}, class: 'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :finalized_at, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <%= form.datetime_field :finalized_at, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' %>
+  </div>
+  %>
+
+  <div class="flex items-center justify-between">
+    <%= form.submit round.new_record? ? 'Criar Rodada' : 'Atualizar Rodada', class: 'btn btn-primary' %>
+  </div>
+<% end %>
