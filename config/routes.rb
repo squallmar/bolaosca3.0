@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # Rotas públicas
   root "home#index"
 
-  resources :matches, except: [ :show ] do
+  resources :matches do
     resources :bets, only: [ :new, :create, :edit, :update ]
   end
 

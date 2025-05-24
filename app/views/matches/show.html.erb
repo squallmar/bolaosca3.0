@@ -1,2 +1,72 @@
-<h1>Matches#show</h1>
-<p>Find me in app/views/matches/show.html.erb</p>
+<div class="container my-4">
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white text-center">
+      <h1 class="h3 mb-0">Detalhes da Partida</h1>
+    </div>
+    <div class="card-body">
+      <h2 class="text-center mb-4">
+        <%= @match.team_a.name %>
+        <i class="bi bi-x-lg mx-2"></i>
+        <%= @match.team_b.name %>
+      </h2>
+
+      <p class="lead text-center">
+        <strong>Data e Hora:</strong> <%= l @match.match_date, format: :long %>
+      </p>
+
+      <% if @match.location.present? %>
+        <p class="text-center">
+          <strong>Local:</strong> <%= @match.location %>
+        </p>
+      <% end %>
+
+      <% if @match.finalizado? %>
+        <hr>
+        <h3 class="text-center mt-4">Placar Final:</h3>
+        <p class="display-4 text-center fw-bold">
+          <%= @match.score_a %> x <%= @match.score_b %>
+        </p>
+      <% else %>
+        <p class="text-muted text-center mt-4">
+          Partida ainda não finalizada.
+        </p>
+      <% end %>
+
+      <hr>
+
+      <div class="text-center mt-4">
+        <%= link_to 'Voltar para Partidas', matches_path, class: 'btn btn-secondary me-2' %>
+        <% if current_user&.admin? %>
+          <%= link_to 'Editar Partida', edit_admin_match_path(@match), class: 'btn btn-info' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @bets.any? %>
+    <div class="card shadow-sm mt-5">
+      <div class="card-header bg-secondary text-white text-center">
+        <h4 class="mb-0">Apostas para esta partida (<%= @bets.count %>)</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <% @bets.each do |bet| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong><%= bet.user.email %></strong> apostou:
+                <%= bet.home_score %> x <%= bet.away_score %>
+              </div>
+              <% if @match.finalizado? %>
+                <span class="badge bg-primary rounded-pill">Pontos: <%= bet.points %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-info text-center mt-5" role="alert">
+      Nenhuma aposta registrada para esta partida ainda.
+    </div>
+  <% end %>
+  </div>
