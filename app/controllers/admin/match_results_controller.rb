@@ -2,17 +2,11 @@ class Admin::MatchResultsController < Admin::BaseController
   before_action :set_match
 
   def edit
-    # Mostra o formulário para lançar resultados
+    
   end
 
   def update
-    if @match.update(
-      score_a: params[:home_score].to_i,
-      score_b: params[:away_score].to_i,
-      status: "finalizado",
-      finalized_at: Time.current
-    )
-      @match.update_rankings
+    if @match.finalize!(params[:home_score].to_i, params[:away_score].to_i)
       redirect_to admin_matches_path, notice: "Resultado lançado com sucesso!"
     else
       render :edit
@@ -20,8 +14,7 @@ class Admin::MatchResultsController < Admin::BaseController
   end
 
   def finalize
-    if @match.update(status: "finalizado", finalized_at: Time.current)
-      @match.update_rankings
+    if @match.update(status: :finalizado, finalized_at: Time.current)
       redirect_to admin_matches_path, notice: "Partida finalizada com sucesso!"
     else
       redirect_to result_admin_match_path(@match), alert: "Erro ao finalizar partida"

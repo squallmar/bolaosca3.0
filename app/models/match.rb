@@ -6,8 +6,8 @@ class Match < ApplicationRecord
   has_one_attached :team_a_logo
   has_one_attached :team_b_logo
 
-  enum :status, { scheduled: 0, finalized: 1 }, prefix: true
-
+  enum :status, {agendado: 0, em_andamento: 1, finalizado: 2, cancelado: 3}, default: :agendado
+   
   validates :team_a_id, :team_b_id, presence: true
   validates :team_a_id, uniqueness: { scope: [ :team_b_id, :match_date ], message: "já existe uma partida agendada com esses times na mesma data" }
   validates :team_b_id, uniqueness: { scope: [ :team_a_id, :match_date ], message: "já existe uma partida agendada com esses times na mesma data" }
@@ -24,7 +24,7 @@ class Match < ApplicationRecord
   after_update :update_rankings, if: :saved_change_to_status?
 
   def can_be_finalized?
-    !status_finalized? &&
+    !finalizado? &&  
       match_date.present? &&
       match_date <= Time.current &&
       team_a.present? &&
@@ -33,9 +33,9 @@ class Match < ApplicationRecord
 
   def finalize!(home_score, away_score)
     update(
-      home_team_score: home_score,
-      away_team_score: away_score,
-      status: :finalized,
+      score_a: home_score,  
+      score_b: away_score,
+      status: :finalizado,
       finalized_at: Time.current
     )
   end
@@ -59,10 +59,9 @@ class Match < ApplicationRecord
 
   private
 
-  def update_rankings
-    return unless status_finalized?
-
-    # Atualiza pontos de todos os palpites desta partida
+    def update_rankings
+    return unless finalizado?  
+    
     bets.includes(:user).find_each do |bet|
       points = calculate_points_for(bet)
       bet.update(points: points)
@@ -97,14 +96,14 @@ class Match < ApplicationRecord
   end
 
   def future_match_date
-    return unless match_date.present?
+  return unless match_date.present?
 
-    if match_date <= Time.current && !status_finalized?
-      errors.add(:match_date, "deve ser no futuro para partidas não finalizadas")
-    elsif match_date > 1.year.from_now
-      errors.add(:match_date, "não pode ser mais de 1 ano no futuro")
-    end
+  if match_date <= Time.current && !finalizado? 
+    errors.add(:match_date, "deve ser no futuro para partidas não finalizadas")
+  elsif match_date > 1.year.from_now
+    errors.add(:match_date, "não pode ser mais de 1 ano no futuro")
   end
+end
 
   def validate_logo_files
     [ team_a_logo, team_b_logo ].each do |logo|

@@ -7,7 +7,7 @@ class User < ApplicationRecord
   # Associations
   has_many :bets, dependent: :destroy
   has_many :matches, through: :bets
-  mount_uploader :avatar, AvatarUploader
+  mount_uploader :avatar_url, AvatarUploader
 
   # Validations
   validates :email,
@@ -37,7 +37,7 @@ class User < ApplicationRecord
   end
 
   def name
-    super || email.split("@").first.capitalize
+    self[:name] || full_name.presence || email.split("@").first.capitalize
   end
 
   def display_name
@@ -66,13 +66,9 @@ class User < ApplicationRecord
     bets.where(points: [ 5, 7 ]).count
   end
 
-  def avatar_url
-    if avatar.present?
-      avatar.url
-    else
-      ActionController::Base.helpers.asset_path("default-avatar.png")
+    def avatar_url
+      super || ActionController::Base.helpers.asset_path("default-avatar.png")
     end
-  end
 
   private
 

@@ -1,7 +1,7 @@
 class Bet < ApplicationRecord
   # Enums
-  enum status: { pending: 0, confirmed: 1, canceled: 2 }, _prefix: true
-
+  enum :status, { pending: 0, confirmed: 1, canceled: 2 }, prefix: true
+  
   # Associações
   belongs_to :user
   belongs_to :match
