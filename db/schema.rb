@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_19_004208) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_24_043301) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -76,9 +76,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_19_004208) do
     t.integer "team_a_id"
     t.integer "team_b_id"
     t.datetime "finalized_at"
+    t.integer "round_id"
     t.index ["championship_id"], name: "index_matches_on_championship_id"
+    t.index ["round_id"], name: "index_matches_on_round_id"
     t.index ["team_a_id"], name: "index_matches_on_team_a_id"
     t.index ["team_b_id"], name: "index_matches_on_team_b_id"
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.integer "number"
+    t.string "status", default: "pending"
+    t.datetime "finalized_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "teams", force: :cascade do |t|
@@ -115,6 +125,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_19_004208) do
   add_foreign_key "bets", "matches"
   add_foreign_key "bets", "users"
   add_foreign_key "matches", "championships"
+  add_foreign_key "matches", "rounds"
   add_foreign_key "matches", "teams", column: "team_a_id"
   add_foreign_key "matches", "teams", column: "team_b_id"
 end

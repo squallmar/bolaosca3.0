@@ -66,21 +66,45 @@ class Match < ApplicationRecord
     # só roda se a partida foi finalizada
     return unless finalizado?
 
+    puts "\n--- Processando Ranking para Partida #{self.id} (Finalizada) ---"
+    puts "Placar da Partida: #{self.score_a} x #{self.score_b}"
+
     bets.includes(:user).find_each do |bet|
+      puts "  Processando Aposta #{bet.id} do Usuário #{bet.user.email} (Palpite: #{bet.guess_a} x #{bet.guess_b})"
+
       points = calculate_points_for(bet) # Chama a lógica de cálculo de pontos
-      bet.update(points: points) # Salva os pontos na aposta
+      puts "  Pontos calculados para aposta #{bet.id}: #{points}"
+
+      if bet.points != points
+        puts "  Atualizando pontos da aposta #{bet.id} de #{bet.points} para #{points}"
+        bet.update_column(:points, points) # Salva os pontos na aposta (update_column para evitar callbacks e validações)
+      else
+        puts "  Pontos da aposta #{bet.id} já são #{points}. Nenhuma atualização necessária."
+      end
 
       # Chama o método no User para atualizar o total de pontos
       bet.user.update_total_points
+      puts "  Total de pontos do Usuário #{bet.user.email} após atualização: #{bet.user.total_points}"
     end
+    puts "--- Fim do Processamento de Ranking para Partida #{self.id} ---\n"
   end
 
   def calculate_points_for(bet)
-    if exact_score?(bet)
+    # Debugging individual conditions
+    is_exact = exact_score?(bet)
+    is_diff_winner = correct_winner_with_goal_difference?(bet)
+    is_winner = correct_winner?(bet)
+
+    puts "    Verificações para Aposta #{bet.id}:"
+    puts "      Placar Exato? #{is_exact}"
+    puts "      Vencedor com Diferença de Gols? #{is_diff_winner}"
+    puts "      Vencedor Correto? #{is_winner}"
+
+    if is_exact
       10
-    elsif correct_winner_with_goal_difference?(bet)
+    elsif is_diff_winner
       7
-    elsif correct_winner?(bet)
+    elsif is_winner
       5
     else
       0
@@ -89,19 +113,48 @@ class Match < ApplicationRecord
 
   # Use self.score_a e self.score_b
   def exact_score?(bet)
-    bet.home_score == self.score_a && bet.away_score == self.score_b
+    result = (bet.guess_a == self.score_a && bet.guess_b == self.score_b)
+    puts "      exact_score? -> Palpite: #{bet.guess_a}x#{bet.guess_b}, Placar Real: #{self.score_a}x#{self.score_b} => #{result}"
+    result
   end
 
-  #  Use self.score_a e self.score_b
+  # Use self.score_a e self.score_b
   def correct_winner_with_goal_difference?(bet)
-    (bet.home_score - bet.away_score) == (self.score_a - self.score_b)
+    result = (bet.guess_a - bet.guess_b) == (self.score_a - self.score_b)
+    puts "      correct_winner_with_goal_difference? -> Diferença Palpite: #{bet.guess_a - bet.guess_b}, Diferença Real: #{self.score_a - self.score_b} => #{result}"
+    result
   end
 
   # Use self.score_a e self.score_b
   def correct_winner?(bet)
-    (bet.home_score > bet.away_score && self.score_a > self.score_b) ||
-      (bet.home_score < bet.away_score && self.score_a < self.score_b) ||
-      (bet.home_score == bet.away_score && self.score_a == self.score_b)
+    bet_outcome = nil
+    match_outcome = nil
+
+    # Determina o resultado da aposta
+    if bet.guess_a.present? && bet.guess_b.present?
+      if bet.guess_a > bet.guess_b
+        bet_outcome = :team_a_wins
+      elsif bet.guess_a < bet.guess_b
+        bet_outcome = :team_b_wins
+      else
+        bet_outcome = :draw
+      end
+    end
+
+    # Determina o resultado real da partida
+    if self.score_a.present? && self.score_b.present?
+      if self.score_a > self.score_b
+        match_outcome = :team_a_wins
+      elsif self.score_a < self.score_b
+        match_outcome = :team_b_wins
+      else
+        match_outcome = :draw
+      end
+    end
+
+    result = (bet_outcome == match_outcome)
+    puts "      correct_winner? -> Resultado Palpite: #{bet_outcome}, Resultado Real: #{match_outcome} => #{result}"
+    result
   end
 
   def future_match_date

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: 1
+  status: MyString
+  finalized_at: 2025-05-24 01:30:59
+
+two:
+  number: 1
+  status: MyString
+  finalized_at: 2025-05-24 01:30:59

@@ -4,7 +4,7 @@ class Admin::MatchResultsController < Admin::BaseController
   before_action :verify_admin
 
   def edit
-    
+    @match
   end
 
   def update
@@ -16,12 +16,12 @@ class Admin::MatchResultsController < Admin::BaseController
   end
 
   def finalize
-    if @match.update(status: :finalizado, finalized_at: Time.current)
-      redirect_to admin_matches_path, notice: "Partida finalizada com sucesso!"
-    else
-      redirect_to result_admin_match_path(@match), alert: "Erro ao finalizar partida"
-    end
+  if @match.update(status: :finalizado, finalized_at: Time.current)
+    redirect_to admin_matches_path, notice: "Partida finalizada com sucesso!"
+  else
+    redirect_to result_admin_match_path(@match), alert: "Erro ao finalizar partida"
   end
+end
 
   private
 
