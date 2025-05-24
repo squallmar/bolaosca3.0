@@ -1,5 +1,7 @@
 class Admin::MatchResultsController < Admin::BaseController
   before_action :set_match
+  before_action :authenticate_user!
+  before_action :verify_admin
 
   def edit
     
@@ -23,7 +25,14 @@ class Admin::MatchResultsController < Admin::BaseController
 
   private
 
+    def verify_admin
+    unless current_user.admin?
+      redirect_to root_path, alert: "Acesso não autorizado"
+    end
+  end
+
   def set_match
     @match = Match.find(params[:id])
   end
+
 end
