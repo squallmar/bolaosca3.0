@@ -1,5 +1,6 @@
 class RankingsController < ApplicationController
   def index
+    @users = User.ranked
     @rankings = User.left_joins(:bets)
                    .select('users.*,
                            COALESCE(SUM(bets.points), 0) as total_points,

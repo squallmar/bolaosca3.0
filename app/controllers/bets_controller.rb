@@ -53,8 +53,8 @@ class BetsController < ApplicationController
     championship_id = @bet&.match&.championship_id || @match&.championship_id
     return unless championship_id
 
-    if current_user.bets.joins(:match).where(matches: { championship_id: championship_id }).count >= 10
-      flash[:alert] = "Você já deu o número máximo de 10 palpites para este campeonato."
+    if current_user.bets.joins(:match).where(matches: { championship_id: championship_id }).count >= 15
+      flash[:alert] = "Você já deu o número máximo de 15 palpites para este campeonato."
       redirect_to matches_path
     end
   end

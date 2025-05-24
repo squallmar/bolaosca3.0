@@ -1,0 +1,36 @@
+<div class="container">
+  <h1>Lista de Partidas</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Time A</th>
+        <th>Placar</th>
+        <th>Time B</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @matches.each do |match| %>
+        <tr>
+          <td><%= match.team_a_name %></td>
+          <td><%= match.score_a %> - <%= match.score_b %></td>
+          <td><%= match.team_b_name %></td>
+          <td><%= match.status %></td>
+          <td>
+            <%= link_to 'Editar', edit_admin_match_path(match), class: 'btn btn-sm btn-primary' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <!-- Paginação -->
+    <div class="pagination-container">
+    <div class="d-flex justify-content-center">
+    <%= paginate @matches %>
+  </div>
+</div>
+
+    

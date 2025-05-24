@@ -53,11 +53,11 @@
                     </div>
                   </td>
                   <td class="text-center fw-bold text-primary"><%= user.total_points || 0 %></td>
-                  <td class="text-center"><%= user.correct_bets_count || 0 %></td>
-                  <td class="text-center"><%= user.bets_count || 0 %></td>
+                  <td class="text-center"><%= user.exact_score_count || 0 %></td>
+                  <td class="text-center"><%= user.correct_winner_count || 0 %></td>
                   <td class="text-center pe-4">
-                    <% if user.bets_count.to_i > 0 %>
-                      <% accuracy = (user.correct_bets_count.to_f / user.bets_count.to_f) * 100 %>
+                    <% if user.correct_winner_count.to_i > 0 %>
+                      <% accuracy = (user.exact_score_count.to_f / user.correct_winner_count.to_f) * 100 %>
                       <span class="accuracy-badge badge bg-<%= accuracy_color(accuracy) %>">
                         <%= number_to_percentage(accuracy, precision: 1) %>
                       </span>

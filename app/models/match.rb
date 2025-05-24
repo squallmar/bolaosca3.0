@@ -1,4 +1,3 @@
-# app/models/match.rb
 class Match < ApplicationRecord
   has_many :bets, dependent: :destroy
   belongs_to :championship
@@ -7,74 +6,71 @@ class Match < ApplicationRecord
   has_one_attached :team_a_logo
   has_one_attached :team_b_logo
 
-  # Scopes
+  enum :status, { scheduled: 0, finalized: 1 }, prefix: true
+
+  validates :team_a_id, :team_b_id, presence: true
+  validates :team_a_id, uniqueness: { scope: [ :team_b_id, :match_date ], message: "já existe uma partida agendada com esses times na mesma data" }
+  validates :team_b_id, uniqueness: { scope: [ :team_a_id, :match_date ], message: "já existe uma partida agendada com esses times na mesma data" }
+  validates :team_a, :team_b, :match_date, presence: true
+  validates :championship, presence: true
+
+  validate :future_match_date
+  validate :validate_logo_files
+
   scope :upcoming, -> { where("match_date >= ?", Time.current).order(match_date: :asc) }
   scope :past, -> { where("match_date <= ?", Time.current).order(match_date: :desc) }
   scope :with_championship, ->(limit = 5) { includes(:championship).limit(limit) }
 
-  # Validações
-  validates :team_a, :team_b, :match_date, presence: true
-  validate :future_match_date
-  validate :validate_logo_files
-  validates :championship, presence: true
+  after_update :update_rankings, if: :saved_change_to_status?
 
-  # Estado da partida
   def can_be_finalized?
-    !finalized? && 
-    match_date.present? && 
-    match_date <= Time.current && 
-    team_a.present? && 
-    team_b.present? &&
-    home_team_score.nil? && 
-    away_team_score.nil?
-  end
-
-  def finalized?
-    status == "finalized" || finalized_at.present?
+    !status_finalized? &&
+      match_date.present? &&
+      match_date <= Time.current &&
+      team_a.present? &&
+      team_b.present?
   end
 
   def finalize!(home_score, away_score)
     update(
       home_team_score: home_score,
       away_team_score: away_score,
-      status: "finalized",
+      status: :finalized,
       finalized_at: Time.current
     )
-
-    calculate_bets_points!
-    update_rankings!
   end
 
   # Métodos para compatibilidade
   def team_a_name
-    team_a&.name || team_a
+    team_a&.name || "Time A"
   end
 
   def team_b_name
-    team_b&.name || team_b
+    team_b&.name || "Time B"
   end
 
   def team_a_logo_or_default
-    team_a&.logo || team_a_logo
+    team_a&.logo || team_a_logo || "default_team.png"
   end
 
   def team_b_logo_or_default
-    team_b&.logo || team_b_logo
+    team_b&.logo || team_b_logo || "default_team.png"
   end
 
   private
 
-  def calculate_bets_points!
-    bets.each do |bet|
+  def update_rankings
+    return unless status_finalized?
+
+    # Atualiza pontos de todos os palpites desta partida
+    bets.includes(:user).find_each do |bet|
       points = calculate_points_for(bet)
       bet.update(points: points)
-      bet.user.increment!(:total_points, points)
+      bet.user.update_total_points
     end
   end
 
   def calculate_points_for(bet)
-    return 0 unless finalized?
-
     if exact_score?(bet)
       10
     elsif correct_winner_with_goal_difference?(bet)
@@ -100,32 +96,26 @@ class Match < ApplicationRecord
       (bet.home_score == bet.away_score && home_team_score == away_team_score)
   end
 
-  def update_rankings!
-    Ranking.update_all_rankings
-  end
-
   def future_match_date
     return unless match_date.present?
 
-    if match_date <= Time.current
-      errors.add(:match_date, "deve ser no futuro")
+    if match_date <= Time.current && !status_finalized?
+      errors.add(:match_date, "deve ser no futuro para partidas não finalizadas")
     elsif match_date > 1.year.from_now
       errors.add(:match_date, "não pode ser mais de 1 ano no futuro")
     end
   end
 
   def validate_logo_files
-    return if team_a.present? || team_b.present?
+    [ team_a_logo, team_b_logo ].each do |logo|
+      next unless logo.attached?
 
-    [team_a_logo, team_b_logo].each do |logo|
-      if logo.attached?
-        unless logo.content_type.in?(%w[image/jpeg image/png])
-          errors.add(:base, "Os escudos devem ser no formato JPG ou PNG")
-        end
+      unless logo.content_type.in?(%w[image/jpeg image/png])
+        errors.add(:base, "Os escudos devem ser no formato JPG ou PNG")
+      end
 
-        if logo.byte_size > 2.megabytes
-          errors.add(:base, "Cada escudo deve ter no máximo 2MB")
-        end
+      if logo.byte_size > 2.megabytes
+        errors.add(:base, "Cada escudo deve ter no máximo 2MB")
       end
     end
   end

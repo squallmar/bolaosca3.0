@@ -103,3 +103,21 @@
   max-width: 80px;
   margin: 0 auto;
 }
+/*-----app/views/admin/matches/index.html.erb*-----*/
+.matches-table {
+  th {
+    white-space: nowrap;
+  }
+  
+  .team-logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+  
+  .actions-column {
+    width: 1%;
+    white-space: nowrap;
+  }
+}
+/* -------------------------------------------- */

@@ -4,7 +4,7 @@
     <%= @match.team_a_name %> vs <%= @match.team_b_name %>
   </h4>
 
-  <%= form_with url: admin_match_path(@match), method: :patch, local: true do |f| %>
+  <%= form_with url: result_admin_match_path(@match), method: :patch, local: true do |f| %>
     <div class="row justify-content-center align-items-center">
       
       <!-- Time A -->
@@ -22,7 +22,11 @@
             <% end %>
           </div>
           <label><strong><%= @match.team_a_name %></strong></label>
-          <%= f.number_field :home_score, class: 'form-control text-center mt-2', min: 0, required: true %>
+          <%= f.number_field :home_score, 
+                value: @match.score_a,
+                class: 'form-control text-center mt-2', 
+                min: 0, 
+                required: true %>
         </div>
       </div>
 
@@ -46,7 +50,11 @@
             <% end %>
           </div>
           <label><strong><%= @match.team_b_name %></strong></label>
-          <%= f.number_field :away_score, class: 'form-control text-center mt-2', min: 0, required: true %>
+          <%= f.number_field :away_score, 
+                value: @match.score_b,
+                class: 'form-control text-center mt-2', 
+                min: 0, 
+                required: true %>
         </div>
       </div>
 
@@ -54,6 +62,9 @@
 
     <div class="text-center mt-4">
       <%= f.submit 'Salvar Resultado', class: 'btn btn-success px-4 me-2' %>
+      <%= link_to 'Finalizar Partida', finalize_admin_match_path(@match), 
+            method: :post,
+            class: 'btn btn-primary px-4 me-2' %>
       <%= link_to 'Cancelar', admin_matches_path, class: 'btn btn-outline-secondary px-4' %>
     </div>
   <% end %>
