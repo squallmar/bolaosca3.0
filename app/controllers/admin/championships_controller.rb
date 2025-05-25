@@ -15,12 +15,15 @@ module Admin
       @championship = Championship.new
     end
 
-    def create
+     def create
       @championship = Championship.new(championship_params)
 
       if @championship.save
-        redirect_to new_path, notice: "Campeonato criado com sucesso." # VERIFICAR SE O CAMPEONATO CRIADO É O ÚLTIMO!!!!!!!!!!!!!
+        # Redireciona para a página de detalhes do campeonato recém-criado
+        redirect_to admin_championship_path(@championship), notice: "Campeonato criado com sucesso."
       else
+        # Se houver erros de validação, renderiza novamente o formulário 'new'
+        # para que as mensagens de erro sejam exibidas.
         render :new, status: :unprocessable_entity
       end
     end

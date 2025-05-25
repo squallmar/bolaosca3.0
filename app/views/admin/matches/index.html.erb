@@ -19,7 +19,13 @@
           <td><%= match.team_b_name %></td>
           <td><%= match.status %></td>
           <td>
-            <%= link_to 'Editar', edit_admin_match_path(match), class: 'btn btn-sm btn-primary' %>
+            <% if match.can_be_finalized? %>
+              <%= link_to 'Finalizar Partida', admin_match_path(match), method: :post, class: 'btn btn-sm btn-success' %>
+            <% end %>
+            <%= link_to 'Ver Detalhes', admin_match_path(match), class: 'btn btn-sm btn-info' %>
+            <%= link_to 'Editar', edit_admin_match_path(match), class: 'btn btn-sm btn-warning' %>
+            <%= link_to 'Resultados', result_admin_match_path(match), class: 'btn btn-sm btn-secondary' %>
+            <%= link_to 'Excluir', admin_match_path(match), method: :delete, data: { confirm: 'Você tem certeza que deseja excluir esta partida?' }, class: 'btn btn-sm btn-danger' %>
           </td>
         </tr>
       <% end %>

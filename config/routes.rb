@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # Rotas públicas
   root "home#index"
 
-  resources :matches do
+    resources :matches do
     resources :bets, only: [ :new, :create, :edit, :update ]
   end
 
@@ -45,21 +45,21 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :championships, except: [ :show ] do
+    resources :championships do
       member do
         get :edit_teams
         patch :update_teams
       end
     end
 
-    resources :bets, only: [ :index, :show, :edit, :update ] do
+    resources :bets do
       member do
         get :edit_status
         patch :update_status
       end
     end
 
-    resources :rankings, only: [ :index, :show ]
+    resources :rankings
 
     resources :teams do
       member do
@@ -73,14 +73,14 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :players, except: [ :show ] do
+    resources :players do
       member do
         get :edit_stats
         patch :update_stats
       end
     end
 
-    resources :users, only: [ :index, :show, :edit, :update ] do
+    resources :users do
       member do
         get :edit_password
         patch :update_password
