@@ -105,17 +105,18 @@ class User < ApplicationRecord
   end
 
   def correct_bets_percentage
-  total_bets = bets.confirmed.joins(:match).where(matches: { status: :finalizado }).count
-  return 0 if total_bets.zero?
+    total_bets = bets.confirmed.joins(:match).where(matches: { status: :finalizado }).count
+    return 0 if total_bets.zero?
 
-  correct_bets = bets.confirmed.joins(:match)
-                     .where(matches: { status: :finalizado })
-                     .where("(bets.guess_a = matches.score_a AND bets.guess_b = matches.score_b) OR
-                             ((bets.guess_a > bets.guess_b AND matches.score_a > matches.score_b) OR
-                              (bets.guess_a < bets.guess_b AND matches.score_a < matches.score_b))")
-                     .count
+    correct_bets = bets.confirmed.joins(:match)
+                      .where(matches: { status: :finalizado })
+                      .where("(bets.guess_a = matches.score_a AND bets.guess_b = matches.score_b) OR
+                              ((bets.guess_a > bets.guess_b AND matches.score_a > matches.score_b) OR
+                                (bets.guess_a < bets.guess_b AND matches.score_a < matches.score_b))")
+                      .count
 
-  ((correct_bets.to_f / total_bets) * 100).round(1)
+    ((correct_bets.to_f / total_bets) * 100).round(1)
+    end
   end
 
   def correct_bets_percentage
@@ -147,4 +148,4 @@ class User < ApplicationRecord
       errors.add(:avatar, 'não pode ser maior que 2MB')
     end
   end
-  
+end

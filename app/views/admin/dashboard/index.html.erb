@@ -109,10 +109,10 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
           <% @recent_teams.each do |team| %>
             <div class="col">
-              <div class="card h-100">
+              <div class="card h-70">
                 <div class="card-img-top text-center p-3 bg-light">
                   <% if team.logo.attached? %>
-                    <%= image_tag team.logo.variant(resize_to_limit: [200, 200]), class: 'img-fluid rounded', alt: team.name %>
+                    <%= image_tag team.logo.variant(resize_to_limit: [70, 70]), class: 'img-fluid rounded', alt: team.name %>
                   <% else %>
                     <div class="placeholder-image p-4 text-muted">
                       <i class="bi bi-image" style="font-size: 3rem;"></i>
@@ -192,7 +192,7 @@
                     <% if user.avatar.attached? %>
                       <%= image_tag user.avatar.variant(resize_to_limit: [100, 100]), class: 'rounded-circle avatar-img', alt: user.name %>
                     <% else %>
-                      <span class="avatar-placeholder" style="background-color: <%= user.initials_color %>">
+                      <span class="avatar-placeholder">
                         <%= user.name_initials %>
                       </span>
                     <% end %>
@@ -359,6 +359,6 @@
     </div>
   </div>
 </div>
-
 <!-- Modal Genérico (para forms) -->
 <%= turbo_frame_tag 'modal' %>
+</div>

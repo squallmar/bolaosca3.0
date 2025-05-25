@@ -30,6 +30,8 @@ Rails.application.routes.draw do
 
   # Namespace administrativo
   namespace :admin do
+    get "users/index"
+    get "bets/index"
     root to: "dashboard#index"
     
     # Rotas customizadas do dashboard

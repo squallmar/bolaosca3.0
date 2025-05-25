@@ -11,6 +11,7 @@
 
 @import "bootstrap";
 
+
 /* Verde para acertos acima de 70% */
 .text-success-high {
   color: #28a745;
@@ -178,9 +179,6 @@ footer {
   height: 100%;
 }
 
-.admin-dashboard .card:hover {
-  transform: translateY(-3px);
-}
 
 .admin-dashboard .display-6 {
   font-size: 2.5rem;
