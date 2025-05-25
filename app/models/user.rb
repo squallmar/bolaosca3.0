@@ -45,7 +45,15 @@ class User < ApplicationRecord
   end
 
   def update_total_points
-    update_column(:total_points, bets.sum(:points))
+    new_total = bets.sum(:points)
+    puts "--- [User ##{id} - #{nickname || email}] Recalculando total_points. Soma das apostas: #{new_total} ---"
+
+    if self.total_points != new_total
+      puts "--- [User ##{id} - #{nickname || email}] Atualizando total_points de #{self.total_points} para #{new_total} ---"
+      update_column(:total_points, new_total)
+    else
+      puts "--- [User ##{id} - #{nickname || email}] Total de pontos já é #{new_total}. Nenhuma atualização necessária. ---"
+    end
   end
 
   def recent_bets(limit = 5)

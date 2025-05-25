@@ -17,19 +17,17 @@
     <%= form.number_field :number, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', required: true %>
   </div>
 
-  <%# Remova ou comente os campos abaixo se você não quiser permitir alteração manual de status/finalized_at %>
-  <%# A finalização deve ser feita via ação `finalize!` do controller %>
-  <%#
+  <%# Campos de status e finalized_at - AGORA DESCOMENTADOS %>
   <div class="mb-4">
-    <%= form.label :status, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <%= form.label :status, 'Status da Rodada', class: 'block text-gray-700 text-sm font-bold mb-2' %>
     <%= form.select :status, Round.statuses.keys.map { |s| [s.humanize, s] }, {}, class: 'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' %>
   </div>
 
   <div class="mb-4">
-    <%= form.label :finalized_at, class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <%= form.label :finalized_at, 'Data de Finalização', class: 'block text-gray-700 text-sm font-bold mb-2' %>
     <%= form.datetime_field :finalized_at, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' %>
   </div>
-  %>
+  <%# Fim dos campos de status e finalized_at %>
 
   <div class="flex items-center justify-between">
     <%= form.submit round.new_record? ? 'Criar Rodada' : 'Atualizar Rodada', class: 'btn btn-primary' %>

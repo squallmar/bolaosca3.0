@@ -12,6 +12,7 @@ class Round < ApplicationRecord
 
   # Enum para o status da rodada
   # Define os possíveis status e o valor padrão para 'pending'.
+  # As chaves são em inglês, e os valores são as strings que serão salvas no banco.
   enum :status, { pending: 'pending', finalized: 'finalized' }, default: :pending
 
   # Callbacks
@@ -31,22 +32,34 @@ class Round < ApplicationRecord
   # Lógica para finalizar todas as partidas associadas a esta rodada
   def finalize_matches_in_round
     puts "--- [Round ##{id}] Finalizando partidas da rodada #{number} ---"
-    # Itera sobre as partidas desta rodada que ainda não estão finalizadas.
-    # Isso evita reprocessar partidas já finalizadas.
-    matches.where.not(status: :finalized).each do |match|
-      # Verifica se a partida tem placar preenchido antes de finalizar.
-      # Se não tiver, decide o que fazer:
+
+    # Itera sobre todas as partidas associadas a esta rodada.
+    # Usamos `find_each` para lidar com grandes volumes de dados de forma eficiente.
+    # Adicionamos `includes` para evitar N+1 queries ao acessar `score_a` e `score_b`.
+    matches.includes(:team_a, :team_b).find_each do |match|
+      # Verifica se a partida já está no status 'finalizado' (em português, do enum de Match)
+      if match.finalizado? # Usa o método booleano do enum do Match
+        puts "    [Match ##{match.id}] Já está finalizada. Ignorando."
+        next # Pula para a próxima partida se já estiver finalizada
+      end
+
+      # Verifica se a partida tem placar preenchido antes de tentar finalizar.
       if match.score_a.present? && match.score_b.present?
-        # Se tem placar, finalize-a. O `after_update_commit` da Match será acionado.
-        match.update(status: :finalizado, finalized_at: Time.current)
-        puts "    [Match ##{match.id}] Finalizada com placar: #{match.score_a} - #{match.score_b}"
+        # Atualiza o status da partida para ':finalizado' (em português, do enum de Match)
+        # e define a data de finalização.
+        # Usamos `update!` para que uma exceção seja levantada se houver problemas de validação
+        # no modelo Match ao tentar mudar o status.
+        if match.update!(status: :finalizado, finalized_at: Time.current)
+          puts "    [Match ##{match.id}] Finalizada com placar: #{match.score_a} - #{match.score_b}"
+        else
+          # Isso só seria alcançado se `update!` falhar sem levantar exceção (menos comum)
+          Rails.logger.error "Erro ao finalizar partida ##{match.id}: #{match.errors.full_messages.join(', ')}"
+          puts "    [Match ##{match.id}] ERRO: Não foi possível finalizar a partida. Verifique os logs."
+        end
       else
-        # Se não tem placar, você pode decidir:
-        # 1. Avisar que a partida não foi finalizada por falta de placar (current behavior)
+        # Se não tem placar, registra um aviso.
         Rails.logger.warn "Partida ##{match.id} (Rodada #{self.number}) não tem placar e não foi finalizada automaticamente."
-        # 2. Forçar a finalização com 0-0 e avisar (descomente a linha abaixo e comente a de cima se preferir)
-        # match.update(score_a: 0, score_b: 0, status: :finalized, finalized_at: Time.current)
-        # puts "    [Match ##{match.id}] Finalizada com placar 0 - 0 (originalmente sem placar)."
+        puts "    [Match ##{match.id}] AVISO: Sem placar, não foi finalizada."
       end
     end
     puts "--- [Round ##{id}] Processamento de Partidas da Rodada Concluído ---"
