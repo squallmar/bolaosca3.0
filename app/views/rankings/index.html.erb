@@ -17,8 +17,8 @@
                 <th scope="col" style="width: 8%" class="ps-4">#</th>
                 <th scope="col" style="width: 32%">Jogador</th>
                 <th scope="col" style="width: 15%" class="text-center">Pontos</th>
-                <th scope="col" style="width: 15%" class="text-center">Acertos</th>
-                <th scope="col" style="width: 15%" class="text-center">Palpites</th>
+                <th scope="col" style="width: 15%" class="text-center">Acertos Exatos</th>
+                <th scope="col" style="width: 15%" class="text-center">Total Palpites</th>
                 <th scope="col" style="width: 15%" class="text-center pe-4">% Acerto</th>
               </tr>
             </thead>
@@ -54,10 +54,10 @@
                   </td>
                   <td class="text-center fw-bold text-primary"><%= user.total_points || 0 %></td>
                   <td class="text-center"><%= user.exact_score_count || 0 %></td>
-                  <td class="text-center"><%= user.correct_winner_count || 0 %></td>
+                  <td class="text-center"><%= user.bets_count || 0 %></td>
                   <td class="text-center pe-4">
-                    <% if user.correct_winner_count.to_i > 0 %>
-                      <% accuracy = (user.exact_score_count.to_f / user.correct_winner_count.to_f) * 100 %>
+                    <% if user.bets_count.to_i > 0 %>
+                      <% accuracy = (user.correct_bets_count.to_f / user.bets_count.to_f) * 100 %>
                       <span class="accuracy-badge badge bg-<%= accuracy_color(accuracy) %>">
                         <%= number_to_percentage(accuracy, precision: 1) %>
                       </span>
@@ -79,8 +79,8 @@
   </div>
 </div>
 
-<!-- Adicione isso no seu CSS ou style tag -->
 <style>
+  /* Seus estilos CSS permanecem os mesmos */
   body { 
     font-family: 'Poppins', sans-serif;
     background-color: #f8f9fa;
@@ -132,30 +132,28 @@
     transition: all 0.2s ease;
   }
 
-  
-.medal-badge {
-  width: 36px;
-  height: 36px;
-  font-size: 1.4rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
-  transition: transform 0.3s ease;
-}
-.medal-badge:hover {
-  transform: scale(1.1);
-}
+  .medal-badge {
+    width: 36px;
+    height: 36px;
+    font-size: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+    transition: transform 0.3s ease;
+  }
+  .medal-badge:hover {
+    transform: scale(1.1);
+  }
 
-.gold { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
-.silver { box-shadow: 0 0 8px rgba(192, 192, 192, 0.7); }
-.bronze { box-shadow: 0 0 6px rgba(205, 127, 50, 0.6); }
-
+  .gold { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+  .silver { box-shadow: 0 0 8px rgba(192, 192, 192, 0.7); }
+  .bronze { box-shadow: 0 0 6px rgba(205, 127, 50, 0.6); }
 </style>
 
-<!--  controller ou helper -->
 <% 
+# Helper method para cor de precisão
 def accuracy_color(accuracy)
   case accuracy
   when 80..100 then 'success'

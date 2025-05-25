@@ -4,8 +4,19 @@ module Admin
     before_action :verify_admin
     before_action :set_championship, only: [ :show, :edit, :update, :destroy, :edit_teams, :update_teams ]
 
+  # Para listar apenas campeonatos ativos:
+    @active_championships = Championship.active
+
+  # Para listar campeonatos finalizados:
+    @inactive_championships = Championship.inactive
+
     def index
       @championships = Championship.all.order(name: :asc)
+      respond_to do |format|
+      format.html 
+      format.json { render json: @championships }
+    end
+
     end
 
     def show
@@ -20,7 +31,8 @@ module Admin
 
       if @championship.save
         # Redireciona para a página de detalhes do campeonato recém-criado
-        redirect_to admin_championship_path(@championship), notice: "Campeonato criado com sucesso."
+        redirect_back fallback_location: admin_championships_path,
+              notice: 'Campeonato criado com sucesso.'
       else
         # Se houver erros de validação, renderiza novamente o formulário 'new'
         # para que as mensagens de erro sejam exibidas.
@@ -62,7 +74,9 @@ module Admin
     end
 
     def championship_params
-      params.require(:championship).permit(:name, :start_date, :end_date, :description)
+      permitted = [:name, :start_date, :end_date, :description]
+      permitted << :active unless action_name == 'create'
+      params.require(:championship).permit(permitted)
     end
 
     def verify_admin

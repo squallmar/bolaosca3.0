@@ -22,3 +22,7 @@
     <%= link_to "Voltar", new_match_path, class: "btn btn-secondary", style: "margin-left: 10px;" %>
   </div>
 <% end %>
+
+<% flash.each do |type, message| %>
+  <div class="alert alert-<%= type %>"><%= message %></div>
+<% end %>

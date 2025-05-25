@@ -1,0 +1,10 @@
+<div class="form-group">
+  <%= form.label :active, "Status do Campeonato" %>
+  <div class="form-check">
+    <%= form.check_box :active, class: 'form-check-input' %>
+    <%= form.label :active, "Campeonato ativo?", class: 'form-check-label' %>
+  </div>
+  <small class="form-text text-muted">
+    Desmarque para finalizar o campeonato (ex: temporada 2024)
+  </small>
+</div>

@@ -16,7 +16,7 @@ class Bet < ApplicationRecord
   validate :validate_guess_status
 
   # Callbacks
-  after_save :calculate_points, if: :should_calculate_points?
+  after_save :calculate_points!, if: :should_calculate_points?
 
   # Scopes
   scope :pending, -> { where(status: :pending) }
@@ -28,7 +28,7 @@ class Bet < ApplicationRecord
   def calculate_points!
     return unless calculable?
 
-    update(points: calculate_points_value)
+    update_column(:points, calculate_points_value)
     user.update_total_points
   end
 
@@ -40,6 +40,10 @@ class Bet < ApplicationRecord
     (guess_a > guess_b && match.score_a > match.score_b) ||
     (guess_a < guess_b && match.score_a < match.score_b) ||
     (guess_a == guess_b && match.score_a == match.score_b)
+  end
+
+  def correct_goal_difference?
+    (guess_a - guess_b) == (match.score_a - match.score_b)
   end
 
   private
@@ -60,19 +64,9 @@ class Bet < ApplicationRecord
       7
     elsif correct_winner?
       5
-    elsif partial_correct?
-      2
     else
       0
     end
-  end
-
-  def correct_goal_difference?
-    (guess_a - guess_b) == (match.score_a - match.score_b)
-  end
-
-  def partial_correct?
-    guess_a == match.score_a || guess_b == match.score_b
   end
 
   def saved_change_to_guess_a_or_guess_b?

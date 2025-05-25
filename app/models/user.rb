@@ -45,15 +45,7 @@ class User < ApplicationRecord
   end
 
   def update_total_points
-    new_total = bets.sum(:points)
-    puts "--- [User ##{id} - #{nickname || email}] Recalculando total_points. Soma das apostas: #{new_total} ---"
-
-    if self.total_points != new_total
-      puts "--- [User ##{id} - #{nickname || email}] Atualizando total_points de #{self.total_points} para #{new_total} ---"
-      update_column(:total_points, new_total)
-    else
-      puts "--- [User ##{id} - #{nickname || email}] Total de pontos já é #{new_total}. Nenhuma atualização necessária. ---"
-    end
+    update_column(:total_points, bets.confirmed.sum(:points))
   end
 
   def recent_bets(limit = 5)
@@ -65,18 +57,27 @@ class User < ApplicationRecord
   def self.ranked
     order(total_points: :desc)
   end
-
+  # ----------------------------Método para o ranking--------------------------------------- #
   def exact_score_count
-    bets.where(points: 10).count
+    bets.confirmed.joins(:match)
+        .where(matches: { status: :finalizado })
+        .where("bets.guess_a = matches.score_a AND bets.guess_b = matches.score_b")
+        .count
   end
 
   def correct_winner_count
-    bets.where(points: [ 5, 7 ]).count
+    bets.confirmed.joins(:match)
+        .where(matches: { status: :finalizado })
+        .where("(bets.guess_a > bets.guess_b AND matches.score_a > matches.score_b) OR 
+                (bets.guess_a < bets.guess_b AND matches.score_a < matches.score_b) OR
+                (bets.guess_a = bets.guess_b AND matches.score_a = matches.score_b)")
+        .count
   end
 
-    def avatar_url
-      super || ActionController::Base.helpers.asset_path("default-avatar.png")
-    end
+  # ---------------------------------------------------------------------------------------- #
+  def avatar_url
+    super || ActionController::Base.helpers.asset_path("default-avatar.png")
+  end
 
   private
 
