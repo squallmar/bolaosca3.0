@@ -13,6 +13,7 @@ class Admin::MatchesController < Admin::BaseController
 
   def new
     @match = Match.new
+    
   end
 
   def edit

@@ -6,7 +6,7 @@ class Match < ApplicationRecord
   belongs_to :team_b, class_name: "Team", optional: true
   has_one_attached :team_a_logo
   has_one_attached :team_b_logo
-  belongs_to :round, optional: true # Correto!
+  belongs_to :round, optional: true 
 
   enum :status, {agendado: 0, em_andamento: 1, finalizado: 2, cancelado: 3}, default: :agendado
 

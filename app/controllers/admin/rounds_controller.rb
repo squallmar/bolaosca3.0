@@ -10,8 +10,10 @@ module Admin
 
     # GET /admin/rounds/1
     def show
-      # Partidas da rodada, ordenadas por data e times para melhor visualização
-      @matches = @round.matches.order(match_date: :asc, team_a_id: :asc)
+      # ATENÇÃO AQUI: Inclua as associações das partidas para evitar N+1 queries na view
+      # Isso já está correto no seu código.
+      @matches = @round.matches.includes(:team_a, :team_b, :championship)
+                        .order(match_date: :asc, team_a_id: :asc)
     end
 
     # GET /admin/rounds/new
@@ -45,11 +47,7 @@ module Admin
 
     # DELETE /admin/rounds/1
     def destroy
-      # Antes de destruir, verifique se há partidas associadas para evitar erro no `dependent: :nullify`
-      # Embora `dependent: :nullify` no modelo Round teoricamente já cuide disso, é bom ter certeza.
       if @round.matches.exists?
-        # Se quiser permitir a exclusão mesmo com partidas, remova este if/else ou modifique-o
-        # Se você permitir a exclusão, `round_id` nas partidas será nulo.
         redirect_to admin_rounds_path, alert: 'Não é possível excluir uma rodada que possui partidas associadas. Remova as partidas ou reasocie-as primeiro.'
       elsif @round.destroy
         redirect_to admin_rounds_path, notice: 'Rodada excluída com sucesso.'
@@ -79,13 +77,10 @@ module Admin
       redirect_to admin_rounds_path, alert: 'Rodada não encontrada.'
     end
 
+    # AJUSTADO: Permite apenas o 'number' para criação/edição via formulário.
+    # O 'status' e 'finalized_at' são controlados pelo método `finalize!`.
     def round_params
-      params.require(:round).permit(:number, :status, :finalized_at)
-      # Nota: geralmente 'status' e 'finalized_at' não são permitidos via formulário
-      # de criação/edição comum. O `finalize!` cuida disso.
-      # Se você quer permitir a alteração manual via admin, mantenha.
-      # Caso contrário, remova `:status, :finalized_at` daqui e use o `finalize!`
-      # para a finalização.
+      params.require(:round).permit(:number)
     end
   end
 end

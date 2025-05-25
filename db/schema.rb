@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_24_043301) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_24_215534) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -66,7 +66,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_24_043301) do
     t.integer "score_a"
     t.integer "score_b"
     t.datetime "match_date"
-    t.string "status"
+    t.string "status", default: "0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "team_a_logo"

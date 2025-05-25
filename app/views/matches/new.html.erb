@@ -45,7 +45,33 @@
           <% end %>
         </div>
 
-        <!-- Times -->
+        <!-- NOVO CAMPO PARA RODADA -->
+        <div class="mb-4 border-bottom pb-3">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-primary">
+              <i class="bi bi-arrow-repeat"></i> Rodada
+            </h5>
+            <%# Adicione um link para criar uma nova rodada, se necessário %>
+            <%= link_to new_admin_round_path, class: "btn btn-sm btn-outline-primary" do %>
+              <i class="bi bi-plus-lg"></i> Nova Rodada
+            <% end %>
+          </div>
+
+          <% if @rounds.empty? %>
+            <div class="alert alert-warning">Nenhuma rodada disponível. <%= link_to "Clique aqui para criar uma.", new_admin_round_path %></div>
+          <% else %>
+            <div class="mb-3">
+              <%= form.label :round_id, "Rodada", class: "form-label fw-bold" %>
+              <%= form.collection_select :round_id, @rounds, :id, :number, # Assumindo que 'number' é o campo que você quer exibir
+                  { prompt: "Selecione a rodada..." },
+                  { class: "form-select select2", required: true, id: "match_round_id" } %>
+              <div class="invalid-feedback">Por favor, selecione uma rodada.</div>
+            </div>
+          <% end %>
+        </div>
+        <!-- FIM DO NOVO CAMPO PARA RODADA --->
+
+       <!-- Times -->
         <div class="mb-4 border-bottom pb-3">
           <h5 class="fw-bold text-primary mb-3"><i class="bi bi-people-fill"></i> Times</h5>
 

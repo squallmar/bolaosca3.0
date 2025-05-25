@@ -35,6 +35,9 @@
             <%= match.team_a.name %> vs <%= match.team_b.name %>
           </h3>
           <p class="text-gray-700 text-sm mb-1">
+            <strong>Campeonato:</strong> <%= match.championship&.name %>
+          </p>
+          <p class="text-gray-700 text-sm mb-1">
             <strong>Data:</strong> <%= l match.match_date, format: :long %>
           </p>
           <p class="text-gray-700 text-sm mb-1">
@@ -47,14 +50,14 @@
           </p>
           <p class="text-gray-700 text-sm mb-4">
             <strong>Status:</strong>
-            <span class="relative inline-block px-2 py-0.5 font-semibold leading-tight <%= match.finalized? ? 'text-green-900' : 'text-gray-900' %>">
-              <span aria-hidden="true" class="absolute inset-0 <%= match.finalized? ? 'bg-green-200' : 'bg-gray-200' %> opacity-50 rounded-full"></span>
-              <span class="relative"><%= match.status.capitalize %></span>
+            <span class="relative inline-block px-2 py-0.5 font-semibold leading-tight <%= match.finalizado? ? 'text-green-900' : 'text-gray-900' %>">
+              <span aria-hidden="true" class="absolute inset-0 <%= match.finalizado? ? 'bg-green-200' : 'bg-gray-200' %> opacity-50 rounded-full"></span>
+              <span class="relative"><%= match.status&.capitalize %></span>
             </span>
           </p>
           <div class="flex space-x-2">
             <%= link_to 'Ver Detalhes', admin_match_path(match), class: 'btn btn-secondary btn-sm' %>
-            <% unless match.finalized? %>
+            <% unless match.finalizado? %>
               <%= link_to 'Lançar Placar', result_admin_match_path(match), class: 'btn btn-primary btn-sm' %>
             <% end %>
           </div>

@@ -38,7 +38,7 @@ class Round < ApplicationRecord
       # Se não tiver, decide o que fazer:
       if match.score_a.present? && match.score_b.present?
         # Se tem placar, finalize-a. O `after_update_commit` da Match será acionado.
-        match.update(status: :finalized, finalized_at: Time.current)
+        match.update(status: :finalizado, finalized_at: Time.current)
         puts "    [Match ##{match.id}] Finalizada com placar: #{match.score_a} - #{match.score_b}"
       else
         # Se não tem placar, você pode decidir:
