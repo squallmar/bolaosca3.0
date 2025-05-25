@@ -138,20 +138,68 @@ pt-BR:
       user: "Usuário"
       match: "Partida"
       championship: "Campeonato"
+      team: "Time"
+      bet: "Aposta"
 
     attributes:
       user:
+        email: "E-mail"
+        password: "Senha"
         admin: "Administrador"
       match:
         championship: "Campeonato"
+        team_a: "Time A"
+        team_b: "Time B"
+        score_a: "Placar A"
+        score_b: "Placar B"
+        match_date: "Data da Partida"
+      championship:
+        name: "Nome"
+        description: "Descrição"
+        start_date: "Data de Início"
+        end_date: "Data de Término"
+        active: "Ativo"
+      team:
+        name: "Nome"
+      bet:
+        guess_a: "Palpite Time A"
+        guess_b: "Palpite Time B"
 
     errors:
       models:
+        championship:
+          attributes:
+            name:
+              blank: "não pode ficar em branco"
+            start_date:
+              blank: "não pode ficar em branco"
+              invalid: "não é uma data válida"
+            end_date:
+              invalid: "não é uma data válida"
         user:
           attributes:
-            admin:
-              inclusion: "não é um valor válido."
+            email:
+              blank: "não pode ficar em branco"
+              taken: "já está em uso"
+            password:
+              blank: "não pode ficar em branco"
+              too_short: "é muito curto (mínimo %{count} caracteres)"
         match:
           attributes:
             championship:
               required: "não pode ficar em branco"
+            team_a:
+              blank: "não pode ficar em branco"
+            team_b:
+              blank: "não pode ficar em branco"
+            match_date:
+              blank: "não pode ficar em branco"
+
+  number:
+    currency:
+      format:
+        delimiter: "."
+        separator: ","
+        precision: 2
+        unit: "R$"
+        format: "%u%n"

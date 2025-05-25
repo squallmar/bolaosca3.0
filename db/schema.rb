@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_25_164746) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_25_181527) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -58,6 +58,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_25_164746) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active"
+    t.date "start_date"
+    t.date "end_date"
+  end
+
+  create_table "championships_teams", id: false, force: :cascade do |t|
+    t.integer "championship_id", null: false
+    t.integer "team_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["championship_id", "team_id"], name: "index_championships_teams_on_championship_id_and_team_id", unique: true
+    t.index ["team_id", "championship_id"], name: "index_championships_teams_on_team_id_and_championship_id"
   end
 
   create_table "matches", force: :cascade do |t|

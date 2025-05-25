@@ -1,187 +1,217 @@
-<div class="container py-4">
-  <h1 class="mb-4">
-    <i class="bi bi-speedometer2"></i> Painel Administrativo
-  </h1>
+<div class="container py-4 admin-dashboard" data-controller="admin">
+  <!-- Cabeçalho -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">
+      <i class="bi bi-speedometer2 me-2"></i>Painel Administrativo
+    </h1>
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dashboardActions" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-gear"></i> Ações
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dashboardActions">
+        <li><%= link_to 'Atualizar Cache', admin_refresh_cache_path, class: 'dropdown-item', data: { turbo_method: :post } %></li>
+        <li><%= link_to 'Exportar Dados', admin_export_path, class: 'dropdown-item' %></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><%= link_to 'Visitar Site', root_path, class: 'dropdown-item', target: '_blank' %></li>
+      </ul>
+    </div>
+  </div>
 
   <!-- Cards de Estatísticas -->
-  <div class="row mb-4">
-    <div class="col-md-3">
-      <div class="card text-white bg-primary">
-        <div class="card-body">
-          <h5 class="card-title">Usuários</h5>
-          <p class="display-6"><%= @stats[:total_users] %></p>
-          <small><%= @stats[:active_users] %> ativos esta semana</small>
+  <div class="row mb-4 g-3 stats-cards">
+    <div class="col-xl-3 col-md-6">
+      <div class="card text-white bg-primary h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="card-title mb-0">Usuários</h5>
+            <i class="bi bi-people-fill fs-4"></i>
+          </div>
+          <div class="mt-auto">
+            <p class="display-6 mb-1"><%= @stats[:total_users] %></p>
+            <div class="d-flex justify-content-between align-items-end">
+              <small class="opacity-75"><%= @stats[:active_users] %> ativos</small>
+              <%= link_to 'Ver todos', admin_users_path, class: 'text-white stretched-link' %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card text-white bg-success">
-        <div class="card-body">
-          <h5 class="card-title">Partidas</h5>
-          <p class="display-6"><%= @stats[:upcoming_matches] %></p>
-          <small>próximas</small>
-          <%= link_to 'Ver todas', matches_path, class: 'text-white stretched-link' %>
+    <div class="col-xl-3 col-md-6">
+      <div class="card text-white bg-success h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="card-title mb-0">Partidas</h5>
+            <i class="bi bi-calendar-event fs-4"></i>
+          </div>
+          <div class="mt-auto">
+            <p class="display-6 mb-1"><%= @stats[:upcoming_matches] %></p>
+            <div class="d-flex justify-content-between align-items-end">
+              <small class="opacity-75"><%= @stats[:recent_matches] %> esta semana</small>
+              <%= link_to 'Ver todas', matches_path, class: 'text-white stretched-link', data: { turbo_frame: '_top' } %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card text-white bg-warning">
-        <div class="card-body">
-          <h5 class="card-title">Palpites</h5>
-          <p class="display-6"><%= @stats[:pending_bets] %></p>
-          <small>pendentes</small>
+    <div class="col-xl-3 col-md-6">
+      <div class="card text-white bg-warning h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="card-title mb-0">Palpites</h5>
+            <i class="bi bi-clipboard-check fs-4"></i>
+          </div>
+          <div class="mt-auto">
+            <p class="display-6 mb-1"><%= @stats[:pending_bets] %></p>
+            <div class="d-flex justify-content-between align-items-end">
+              <small class="opacity-75"><%= @stats[:today_bets] %> hoje</small>
+              <%= link_to 'Ver todos', admin_bets_path, class: 'text-white stretched-link' %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- NOVO CARD PARA TIMES -->
-    <div class="col-md-3">
-      <div class="card text-white bg-info">
-        <div class="card-body">
-          <h5 class="card-title">Times</h5>
-          <p class="display-6"><%= @stats[:total_teams] %></p>
-          <%= link_to 'Gerenciar', admin_teams_path, class: 'text-white stretched-link' %>
+    <div class="col-xl-3 col-md-6">
+      <div class="card text-white bg-info h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="card-title mb-0">Times</h5>
+            <i class="bi bi-people-fill fs-4"></i>
+          </div>
+          <div class="mt-auto">
+            <p class="display-6 mb-1"><%= @stats[:total_teams] %></p>
+            <div class="d-flex justify-content-between align-items-end">
+              <small class="opacity-75"><%= @stats[:active_teams] %> ativos</small>
+              <%= link_to 'Gerenciar', admin_teams_path, class: 'text-white stretched-link' %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- NOVA SEÇÃO PARA TIMES CADASTRADOS -->
-  <div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5><i class="bi bi-people-fill"></i> Times Cadastrados</h5>
-      <%= link_to 'Novo Time', new_admin_team_path, class: 'btn btn-sm btn-success' %>
+  <!-- Seção de Times Recentes -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="bi bi-people-fill text-primary me-2"></i>
+        <span class="align-middle">Times Cadastrados</span>
+      </h5>
+      <%= link_to new_admin_team_path, class: 'btn btn-sm btn-success', data: { turbo_frame: 'modal' } do %>
+        <i class="bi bi-plus-circle me-1"></i> Novo Time
+      <% end %>
     </div>
+    
     <div class="card-body">
       <% if @recent_teams.any? %>
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
           <% @recent_teams.each do |team| %>
-            <div class="col-md-3 mb-3">
+            <div class="col">
               <div class="card h-100">
-                <div class="card-img-top text-center py-3">
+                <div class="card-img-top text-center p-3 bg-light">
                   <% if team.logo.attached? %>
-                    <%= image_tag team.logo.variant(resize_to_limit: [100, 100]), class: 'img-fluid' %>
+                    <%= image_tag team.logo.variant(resize_to_limit: [200, 200]), class: 'img-fluid rounded', alt: team.name %>
                   <% else %>
-                    <div class="bg-light p-4">
-                      <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                    <div class="placeholder-image p-4 text-muted">
+                      <i class="bi bi-image" style="font-size: 3rem;"></i>
                     </div>
                   <% end %>
                 </div>
                 <div class="card-body text-center">
-                  <h6><%= team.name %></h6>
+                  <h5 class="card-title mb-1"><%= team.name %></h5>
+                  <% if team.championships.any? %>
+                    <small class="text-muted"><%= team.championships.pluck(:name).join(', ') %></small>
+                  <% end %>
                 </div>
                 <div class="card-footer bg-white text-center">
-                  <%= link_to 'Editar', edit_admin_team_path(team), class: 'btn btn-sm btn-outline-primary' %>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <%= link_to edit_admin_team_path(team), class: 'btn btn-outline-primary', data: { turbo_frame: 'modal' } do %>
+                      <i class="bi bi-pencil"></i> Editar
+                    <% end %>
+                    <%= link_to admin_team_path(team), class: 'btn btn-outline-secondary', data: { turbo_frame: '_top' } do %>
+                      <i class="bi bi-eye"></i> Ver
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </div>
           <% end %>
         </div>
-          <!-- Paginação -->
 
-          <div class="pagination-container">
-          <div class="d-flex justify-content-center">
-            <%= paginate @recent_teams %>
-          </div>
-          <% else %>
-            <div class="empty-state bg-light p-4 rounded text-center">
-              <i class="bi bi-people-fill fs-1 text-muted mb-3"></i>
-              <h5 class="text-secondary">Nenhum time cadastrado</h5>
-              <p class="text-muted">Quando times forem criados, eles aparecerão aqui.</p>
-            </div>
-          <% end %>
-          </div> 
-          </div> 
-
-          </div> <!-- Fim da seção de times cadastrados -->
-          <!-- Seção de Top Jogadores -->
-          <div class="card mb-4">
-            <div class="card-header">
-              <h5><i class="bi bi-trophy"></i> Top Jogadores</h5>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Posição</th>
-                      <th>Jogador</th>
-                      <th>Pontos</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @top_scorers.each do |user| %>
-                      <tr>
-                        <td><%= user.name %></td>                    
-                        <td><%= user.total_points %></td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <!-- Fim da seção de top jogadores -->
-
-  <!-- Seção de Usuários Recentes -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h5><i class="bi bi-people-fill"></i> Usuários Recentes</h5>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Email</th>
-              <th>Cadastro</th>
-              <th>Último Acesso</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @recent_users.each do |user| %>
-              <tr>
-                <td><%= user.id %></td>
-                <td><%= user.email %></td>
-                <td><%= l(user.created_at, format: :short) %></td>
-                <td><%= user.last_sign_in_at ? l(user.last_sign_in_at, format: :short) : 'Nunca' %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+      <!---- paginação ------------------>
+      <div class="pagination-container">
+        <div class="d-flex justify-content-center">
+          <%= paginate @recent_teams, 
+              pagination_class: "pagination pagination-sm justify-content-center" %>
+        </div>
       </div>
+      <!-- --------------- -->
+
+      <% else %>
+        <div class="empty-state text-center py-5">
+          <i class="bi bi-people-fill fs-1 text-muted mb-3"></i>
+          <h5 class="text-secondary">Nenhum time cadastrado</h5>
+          <p class="text-muted mb-4">Quando times forem criados, eles aparecerão aqui.</p>
+          <%= link_to 'Cadastrar primeiro time', new_admin_team_path, class: 'btn btn-primary', data: { turbo_frame: 'modal' } %>
+        </div>
+      <% end %>
     </div>
   </div>
 
-  <!-- Seção de Próximas Partidas -->
-  <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5><i class="bi bi-calendar-event"></i> Jogos</h5>
-      <%= link_to 'Novo Jogo', new_match_path, class: 'btn btn-sm btn-success' %>
+  <!-- Seção de Top Jogadores -->
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="bi bi-trophy text-warning me-2"></i>
+        <span class="align-middle">Top Jogadores</span>
+      </h5>
+      <%= link_to 'Ver ranking completo', admin_leaderboard_path, 
+        class: 'btn btn-sm btn-outline-secondary',
+        data: { turbo_frame: '_top' } %>
     </div>
     
-    <div class="card-body">
+    <div class="card-body p-0">
       <div class="table-responsive">
-        <table class="table">
-          <thead>
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
             <tr>
-              <th>Campeonato</th>
-              <th>Partida</th>
-              <th>Data</th>
-              <th>Ações</th>
+              <th class="ps-4">#</th>
+              <th>Jogador</th>
+              <th class="text-end pe-4">Pontos</th>
+              <th class="text-end pe-4">Acertos</th>
             </tr>
           </thead>
           <tbody>
-            <% @recent_matches.each do |match| %>
+            <% @top_scorers.each_with_index do |user, index| %>
               <tr>
-                <td><%= match.championship.name %></td>
-                <td><%= match.team_a.name %> vs <%= match.team_b.name %></td>
-                <td><%= l(match.match_date, format: :long) %></td>
-                <td class="text-nowrap" style="width: 100px;">
-                <%= link_to 'Editar', edit_match_path(match), class: 'btn btn-sm btn-outline-primary py-1 px-2' %>
+                <td class="ps-4"><%= index + 1 %></td>
+                <td>
+                <div class="d-flex align-items-center">
+                    <% if user.avatar.attached? %>
+                      <%= image_tag user.avatar.variant(resize_to_limit: [100, 100]), class: 'rounded-circle avatar-img', alt: user.name %>
+                    <% else %>
+                      <span class="avatar-placeholder" style="background-color: <%= user.initials_color %>">
+                        <%= user.name_initials %>
+                      </span>
+                    <% end %>
+                    <div>
+                      <div><%= user.name %></div>
+                      <small class="text-muted"><%= user.email %></small>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-end pe-4">
+                  <span class="badge bg-primary rounded-pill">
+                    <%= user.total_points %>
+                  </span>
+                </td>
+                <td class="text-end pe-4">
+                  <small class="<%= user.correct_bets_percentage > 70 ? 'text-success fw-bold' : 
+                                  user.correct_bets_percentage > 40 ? 'text-warning' : 'text-danger' %>">
+                    <%= number_to_percentage(user.correct_bets_percentage, precision: 1) %>
+                  </small>
                 </td>
               </tr>
             <% end %>
@@ -190,4 +220,145 @@
       </div>
     </div>
   </div>
-</div> <!-- Fechamento do container -->
+
+  <!-- Abas para Usuários Recentes e Partidas -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom p-0">
+      <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users-tab-pane" type="button" role="tab">
+            <i class="bi bi-people-fill me-1"></i> Usuários Recentes
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="matches-tab" data-bs-toggle="tab" data-bs-target="#matches-tab-pane" type="button" role="tab">
+            <i class="bi bi-calendar-event me-1"></i> Próximas Partidas
+          </button>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="card-body tab-content" id="dashboardTabsContent">
+      <!-- Tab Usuários -->
+      <div class="tab-pane fade show active" id="users-tab-pane" role="tabpanel">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuário</th>
+                <th>Cadastro</th>
+                <th>Último Acesso</th>
+                <th class="text-end">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @recent_users.each do |user| %>
+                <tr>
+                  <td><%= user.id %></td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <% if user.avatar.attached? %>
+                        <%= image_tag user.avatar.variant(resize_to_limit: [30, 30]), class: 'rounded-circle me-2', alt: user.name %>
+                      <% end %>
+                      <div>
+                        <div><%= user.name %></div>
+                        <small class="text-muted"><%= user.email %></small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><%= l(user.created_at, format: :short) %></td>
+                  <td><%= user.last_sign_in_at ? time_ago_in_words(user.last_sign_in_at) : 'Nunca' %></td>
+                  <td class="text-end">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <%= link_to edit_admin_user_path(user), class: 'btn btn-outline-primary', data: { turbo_frame: 'modal' } do %>
+                        <i class="bi bi-pencil"></i>
+                      <% end %>
+                      <%= link_to admin_user_path(user), class: 'btn btn-outline-secondary', data: { turbo_frame: '_top' } do %>
+                        <i class="bi bi-eye"></i>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <small class="text-muted">Mostrando <%= @recent_users.size %> de <%= @stats[:total_users] %> usuários</small>
+          <%= link_to 'Ver todos usuários', admin_users_path, class: 'btn btn-sm btn-outline-primary' %>
+        </div>
+      </div>
+      
+      <!-- Tab Partidas -->
+      <div class="tab-pane fade" id="matches-tab-pane" role="tabpanel">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Campeonato</th>
+                <th>Partida</th>
+                <th>Data/Hora</th>
+                <th>Status</th>
+                <th class="text-end">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @recent_matches.each do |match| %>
+                <tr>
+                  <td>
+                    <% if match.championship.logo.attached? %>
+                      <%= image_tag match.championship.logo.variant(resize_to_limit: [30, 30]), class: 'rounded me-2', alt: match.championship.name %>
+                    <% end %>
+                    <%= match.championship.name %>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <small class="me-2"><%= match.team_a.short_name %></small>
+                      <%= image_tag match.team_a.logo.variant(resize_to_limit: [20, 20]), class: 'mx-1', alt: match.team_a.name if match.team_a.logo.attached? %>
+                      <strong class="mx-2">vs</strong>
+                      <%= image_tag match.team_b.logo.variant(resize_to_limit: [20, 20]), class: 'mx-1', alt: match.team_b.name if match.team_b.logo.attached? %>
+                      <small class="ms-2"><%= match.team_b.short_name %></small>
+                    </div>
+                  </td>
+                  <td>
+                    <div><%= l(match.match_date, format: :short) %></div>
+                    <small class="text-muted"><%= time_ago_in_words(match.match_date) %></small>
+                  </td>
+                  <td>
+                    <% if match.finished? %>
+                      <span class="badge bg-success">Finalizada</span>
+                    <% elsif match.in_progress? %>
+                      <span class="badge bg-warning text-dark">Em andamento</span>
+                    <% else %>
+                      <span class="badge bg-info text-dark">Agendada</span>
+                    <% end %>
+                  </td>
+                  <td class="text-end">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <%= link_to edit_match_path(match), class: 'btn btn-outline-primary', data: { turbo_frame: 'modal' } do %>
+                        <i class="bi bi-pencil"></i>
+                      <% end %>
+                      <%= link_to match_path(match), class: 'btn btn-outline-secondary', data: { turbo_frame: '_top' } do %>
+                        <i class="bi bi-eye"></i>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <small class="text-muted">Mostrando <%= @recent_matches.size %> próximas partidas</small>
+          <%= link_to 'Nova Partida', new_match_path, class: 'btn btn-sm btn-success', data: { turbo_frame: 'modal' } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Genérico (para forms) -->
+<%= turbo_frame_tag 'modal' %>

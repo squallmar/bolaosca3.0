@@ -14,8 +14,9 @@
 
     <div class="flex space-x-4">
       <%= link_to 'Editar Rodada', edit_admin_round_path(@round), class: 'btn btn-secondary' %>
-      <%= link_to 'Voltar para Rodadas', admin_rounds_path, class: 'btn btn-light' %>
+      <%= link_to 'Voltar para Rodadas', admin_rounds_path, class: 'btn btn-info' %>
       <% unless @round.finalized? %>
+      <p></p>
         <%= button_to 'Finalizar Rodada', finalize_admin_round_path(@round), method: :patch,
                       data: { turbo_confirm: 'Tem certeza que deseja FINALIZAR esta rodada? Isso irá finalizar todas as partidas associadas e calcular os pontos dos bolões!', confirm_button_text: 'Sim, Finalizar', cancel_button_text: 'Cancelar' },
                       class: 'btn btn-success' %>

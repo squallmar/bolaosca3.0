@@ -18,9 +18,36 @@ class Admin::DashboardController < ApplicationController
     }
   end
 
+  def refresh_cache
+    Rails.cache.clear
+    redirect_to admin_root_path, notice: 'Cache atualizado com sucesso!'
+  end
+
+  def export
+    respond_to do |format|
+      format.csv do
+        send_data generate_export_data, filename: "dados-#{Date.today}.csv"
+      end
+    end
+  end
+
   private
+
+  def generate_export_data
+    CSV.generate do |csv|
+      csv << ['ID', 'Nome', 'Email'] # Cabeçalhos
+      User.all.each do |user|
+        csv << [user.id, user.name, user.email]
+      end
+    end
+  end
 
   def check_admin
     redirect_to root_path, alert: "Acesso não autorizado" unless current_user.admin?
   end
+
+  def user_params
+    params.require(:user).permit(:email, :password, :avatar) # Adicione :avatar
+  end
+
 end

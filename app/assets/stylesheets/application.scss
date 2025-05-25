@@ -11,6 +11,117 @@
 
 @import "bootstrap";
 
+/* Verde para acertos acima de 70% */
+.text-success-high {
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Amarelo para 40-70% */
+.text-warning-med {
+  color: #ffc107;
+}
+
+/* Vermelho para abaixo de 40% */
+.text-danger-low {
+  color: #dc3545;
+}
+
+/*---gerar iniciais a partir do nome do usuário---*/
+
+.initials-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  margin-right: 8px;
+}
+.avatar-img {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+// Estilos para os botões de ação
+.hover-effect {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Estilos específicos para cada botão
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+  
+  &:hover {
+    background-color: darken($primary, 8%);
+    border-color: darken($primary, 10%);
+  }
+}
+
+.btn-warning {
+  background-color: $warning;
+  border-color: $warning;
+  
+  &:hover {
+    background-color: darken($warning, 8%);
+    border-color: darken($warning, 10%);
+  }
+}
+
+.btn-danger {
+  background-color: $danger;
+  border-color: $danger;
+  
+  &:hover {
+    background-color: darken($danger, 8%);
+    border-color: darken($danger, 10%);
+  }
+}
+
+// Melhorias para a tabela
+.table-hover tbody tr {
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+
+.table-active {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+/*--------------------------------------*/
+.table td, .table th {
+  padding: 0.75rem 1rem;
+}
+
 .field {
   margin-bottom: 15px;
 }

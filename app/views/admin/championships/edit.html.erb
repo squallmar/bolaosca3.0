@@ -1,10 +1,52 @@
-<div class="form-group">
-  <%= form.label :active, "Status do Campeonato" %>
-  <div class="form-check">
-    <%= form.check_box :active, class: 'form-check-input' %>
-    <%= form.label :active, "Campeonato ativo?", class: 'form-check-label' %>
+<%# app/views/admin/championships/edit.html.erb %>
+
+<h1>Editar Campeonato: <%= @championship.name %></h1>
+
+<%= form_with(model: @championship, url: admin_championship_path(@championship), local: true) do |form| %>
+
+  <% if @championship.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@championship.errors.count, "erro") %> impediu este campeonato de ser salvo:</h2>
+      <ul>
+        <% @championship.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, "Nome do Campeonato" %>
+    <%= form.text_field :name, class: 'form-control' %>
   </div>
-  <small class="form-text text-muted">
-    Desmarque para finalizar o campeonato (ex: temporada 2024)
-  </small>
-</div>
+
+  <div class="form-group">
+    <%= form.label :start_date, "Data de Início" %>
+    <%= form.date_field :start_date, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :end_date, "Data de Término" %>
+    <%= form.date_field :end_date, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description, "Descrição" %>
+    <%= form.text_area :description, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :active, "Status do Campeonato" %>
+    <div class="form-check">
+      <%= form.check_box :active, class: 'form-check-input' %>
+      <%= form.label :active, "Campeonato ativo?", class: 'form-check-label' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Atualizar Campeonato", class: 'btn btn-primary' %>
+  </div>
+
+<% end %>
+<p></p>
+<%= link_to 'Voltar', admin_championships_path, class: 'btn btn-danger' %>

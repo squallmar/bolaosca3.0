@@ -37,8 +37,8 @@
                   </th>
                   <td>
                     <div class="d-flex align-items-center">
-                      <% if user.avatar_url.present? %>
-                        <%= image_tag user.avatar_url, class: "rounded-circle me-3", width: "40", height: "40", alt: user.nickname %>
+                      <% if user.avatar.attached? %>
+                        <%= image_tag user.avatar.variant, class: "rounded-circle me-3", width: "40", height: "40", alt: user.nickname %>
                       <% else %>
                         <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
                           <i class="bi bi-person-fill text-secondary"></i>

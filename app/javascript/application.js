@@ -1,39 +1,48 @@
-// Turbo e Stimulus (ok com importmap)
+// Importações básicas (compartilhadas)
 import "@hotwired/turbo-rails"
 import "controllers"
-import "styles/admin.css"
-
-// Bootstrap e Popper
 import "@popperjs/core"
 import "bootstrap"
 import * as bootstrap from "bootstrap"
 window.bootstrap = bootstrap
 
-// Inicializa tooltips, popovers e modais com Bootstrap
-document.addEventListener('turbo:load', () => {
-  // Tooltips
-  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  tooltipTriggerList.forEach(el => {
-    new bootstrap.Tooltip(el)
+// Funções de inicialização globais
+const initializeTooltips = () => {
+  const tooltips = []
+  
+  document.querySelectorAll('[title], [data-bs-toggle="tooltip"]').forEach(el => {
+    tooltips.push(new bootstrap.Tooltip(el, {
+      trigger: 'hover focus'
+    }))
   })
+  
+  return tooltips
+}
 
-  // Popovers
-  const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-  popoverTriggerList.forEach(el => {
-    new bootstrap.Popover(el)
-  })
-
-  // Modais
-  const modalTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="modal"]'))
-  modalTriggerList.forEach(modalTriggerEl => {
-    modalTriggerEl.addEventListener('click', () => {
-      const target = modalTriggerEl.getAttribute('data-bs-target')
-      if (target) {
-        const modal = new bootstrap.Modal(document.querySelector(target))
-        modal.show()
+const initializeFormValidation = () => {
+  document.querySelectorAll('.needs-validation').forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
       }
+      form.classList.add('was-validated')
     })
   })
+}
+
+// Event listeners globais
+document.addEventListener('turbo:load', () => {
+  window._tooltipInstances = initializeTooltips()
+  initializeFormValidation()
 })
 
+document.addEventListener('turbo:frame-render', () => {
+  initializeFormValidation()
+})
 
+document.addEventListener('turbo:before-render', () => {
+  if (window._tooltipInstances) {
+    window._tooltipInstances.forEach(tooltip => tooltip.dispose())
+  }
+})

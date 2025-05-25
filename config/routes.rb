@@ -1,13 +1,15 @@
 # config/routes.rb
-
 Rails.application.routes.draw do
-  devise_for :users
+  # Configuração principal do Devise (fora do namespace admin)
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
 
   # Rotas públicas
   root "home#index"
 
-    resources :matches do
-    resources :bets, only: [ :new, :create, :edit, :update ]
+  resources :matches do
+    resources :bets, only: [:new, :create, :edit, :update]
   end
 
   resources :teams, only: [] do
@@ -16,6 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
+  # Rotas estáticas
   get "/rankings", to: "rankings#index", as: :rankings
   get "/termos", to: "static_pages#termos", as: :termos
   get "/privacidade", to: "static_pages#privacidade", as: :privacidade
@@ -28,18 +31,23 @@ Rails.application.routes.draw do
   # Namespace administrativo
   namespace :admin do
     root to: "dashboard#index"
+    
+    # Rotas customizadas do dashboard
+    post 'refresh_cache', to: 'dashboard#refresh_cache', as: :refresh_cache
+    get 'export', to: 'dashboard#export', as: :export
+    get '/leaderboard', to: 'rankings#index', as: :leaderboard
 
+    # Resources com rotas customizadas
     resources :matches do
       member do
         get "result", to: "match_results#edit", as: "result"
-        patch "result", to: "match_results#update"     
+        patch "result", to: "match_results#update"
       end
     end
 
-    # NOVO: Rotas para gerenciar Rodadas
     resources :rounds do
       member do
-        patch :finalize # Rota para finalizar uma rodada (PATCH /admin/rounds/:id/finalize)
+        patch :finalize
       end
     end
 
