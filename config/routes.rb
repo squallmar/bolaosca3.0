@@ -32,9 +32,7 @@ Rails.application.routes.draw do
     resources :matches do
       member do
         get "result", to: "match_results#edit", as: "result"
-        patch "result", to: "match_results#update"
-        # REMOVA A LINHA ABAIXO: A finalização agora é feita pela rodada
-        # post "finalize", to: "match_results#finalize"
+        patch "result", to: "match_results#update"     
       end
     end
 
@@ -49,6 +47,10 @@ Rails.application.routes.draw do
       member do
         get :edit_teams
         patch :update_teams
+        get :edit_rounds
+        patch :update_rounds
+        get :edit_matches
+        patch :update_matches
       end
     end
 
@@ -56,11 +58,13 @@ Rails.application.routes.draw do
       member do
         get :edit_status
         patch :update_status
+        get :edit_result
+        patch :update_result
       end
     end
 
     resources :rankings
-
+      
     resources :teams do
       member do
         get :edit_players

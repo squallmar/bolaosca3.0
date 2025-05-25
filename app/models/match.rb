@@ -37,7 +37,18 @@ class Match < ApplicationRecord
   # antes de tentar calcular os pontos.
   # `if: -> { saved_change_to_status? && finalizado? }` garante que este callback
   # só roda se o status da partida mudou para 'finalizado'.
-  after_update_commit :calculate_points_for_bets, if: -> { saved_change_to_status? && finalizado? }
+  after_update_commit :calculate_points_for_bets, if: -> { finalizado? && score_a.present? && score_b.present? }
+
+  # Validações de presença para times A e B
+  validates :team_a, presence: { message: "não pode ser nulo." }
+  validates :team_b, presence: { message: "não pode ser nulo." }
+
+  # Validações de presença para placares
+  validates :score_a, presence: { message: "não pode ser nulo." }, if: :finalizado?
+  validates :score_b, presence: { message: "não pode ser nulo." }, if: :finalizado?
+
+  # Validações de presença para data da partida
+  validates :match_date, presence: { message: "não pode ser nula." }
 
   # Scopes
   scope :upcoming, -> { where("match_date >= ?", Time.current).order(match_date: :asc) }
