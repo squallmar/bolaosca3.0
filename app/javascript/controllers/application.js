@@ -1,10 +1,10 @@
 // app/javascript/controllers/application.js
 import { Application } from "@hotwired/stimulus"
-// import { definitionsFromContext } from "@hotwired/stimulus-loading"
+
 
 const application = Application.start()
 export default application
-// application.load(definitionsFromContext(import.meta.context))
+
 
 // Inicialize tooltips/popovers
 import { Tooltip, Popover } from "bootstrap"
