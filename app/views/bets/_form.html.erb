@@ -1,71 +1,75 @@
 <!-- app/views/bets/_form.html.erb -->
-<%= form_with(model: [@match, @bet], local: true, html: { class: "bet-form" }) do |form| %>
-  <% if @bet.errors.any? %>
-    <div class="alert alert-danger mb-4">
-      <h4 class="alert-heading"><%= pluralize(@bet.errors.count, "erro") %> impediram este palpite de ser salvo:</h4>
-      <ul class="mb-0">
-        <% @bet.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<%= turbo_frame_tag "modal" do %>
+  <%= form_with(model: [@match, @bet], local: true, html: { class: "bet-form" }) do |form| %>
+    <% if @bet.errors.any? %>
+      <div class="alert alert-danger mb-4">
+        <h4 class="alert-heading">
+          <%= pluralize(@bet.errors.count, "erro") %> impediram este palpite de ser salvo:
+        </h4>
+        <ul class="mb-0">
+          <% @bet.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <!-- Time A -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <% if @match.team_a_logo.attached? %>
+              <%= image_tag @match.team_a_logo, class: "img-fluid mb-3", style: "max-height: 100px" %>
+            <% end %>
+            <h5 class="card-title"><%= @match.team_a %></h5>
+            <div class="form-group">
+              <%= form.label :guess_a, "Placar", class: "form-label" %>
+              <%= form.number_field :guess_a, class: "form-control text-center", min: 0, style: "font-size: 1.5rem", required: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VS Badge -->
+      <div class="col-md-12 d-md-none text-center my-2">
+        <span class="badge bg-secondary fs-5">VS</span>
+      </div>
+      <div class="col-md-1 d-none d-md-flex align-items-center justify-content-center">
+        <span class="badge bg-secondary fs-3">VS</span>
+      </div>
+
+      <!-- Time B -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <% if @match.team_b_logo.attached? %>
+              <%= image_tag @match.team_b_logo, class: "img-fluid mb-3", style: "max-height: 100px" %>
+            <% end %>
+            <h5 class="card-title"><%= @match.team_b %></h5>
+            <div class="form-group">
+              <%= form.label :guess_b, "Placar", class: "form-label" %>
+              <%= form.number_field :guess_b, class: "form-control text-center", min: 0, style: "font-size: 1.5rem", required: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+      <%= link_to "Cancelar", matches_path, class: "btn btn-secondary me-md-2" %>
+      <%= form.submit "Salvar Palpite", class: "btn btn-primary" %>
     </div>
   <% end %>
 
-  <div class="row">
-    <!-- Time A -->
-    <div class="col-md-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body text-center">
-          <% if @match.team_a_logo.attached? %>
-            <%= image_tag @match.team_a_logo, class: "img-fluid mb-3", style: "max-height: 100px" %>
-          <% end %>
-          <h5 class="card-title"><%= @match.team_a %></h5>
-          <div class="form-group">
-            <%= form.label :guess_a, "Placar", class: "form-label" %>
-            <%= form.number_field :guess_a, class: "form-control text-center", min: 0, style: "font-size: 1.5rem", required: true %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- VS Badge -->
-    <div class="col-md-12 d-md-none text-center my-2">
-      <span class="badge bg-secondary fs-5">VS</span>
-    </div>
-    <div class="col-md-1 d-none d-md-flex align-items-center justify-content-center">
-      <span class="badge bg-secondary fs-3">VS</span>
-    </div>
-
-    <!-- Time B -->
-    <div class="col-md-6 mb-4">
-      <div class="card h-100">
-        <div class="card-body text-center">
-          <% if @match.team_b_logo.attached? %>
-            <%= image_tag @match.team_b_logo, class: "img-fluid mb-3", style: "max-height: 100px" %>
-          <% end %>
-          <h5 class="card-title"><%= @match.team_b %></h5>
-          <div class="form-group">
-            <%= form.label :guess_b, "Placar", class: "form-label" %>
-            <%= form.number_field :guess_b, class: "form-control text-center", min: 0, style: "font-size: 1.5rem", required: true %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-    <%= link_to "Cancelar", matches_path, class: "btn btn-secondary me-md-2" %>
-    <%= form.submit "Salvar Palpite", class: "btn btn-primary" %>
-  </div>
+  <style>
+    .bet-form input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    .bet-form input[type="number"]::-webkit-outer-spin-button,
+    .bet-form input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
 <% end %>
-
-<style>
-  .bet-form input[type="number"] {
-    -moz-appearance: textfield;
-  }
-  .bet-form input[type="number"]::-webkit-outer-spin-button,
-  .bet-form input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-</style>

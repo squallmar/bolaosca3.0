@@ -4,46 +4,48 @@
     <meta charset="utf-8">
     <title><%= @page_title || 'BolãoSCA 3.0' %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= turbo_include_tags %>
+
     <!-- Favicon -->
     <%= favicon_link_tag 'favicon.png' %>
-    
+
     <!-- Ícones do Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
+
     <!-- CSS principal -->
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-     <%= stylesheet_link_tag "admin", "data-turbo-track": "reload" %>
-    
-    <!-- JavaScript -->
-    <%= javascript_include_tag "admin", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "admin", "data-turbo-track": "reload" %>
+
+    <!-- Importmap para Turbo, Stimulus, etc. -->
+    <%= javascript_importmap_tags %>
+
+    <!-- Erros globais do Turbo -->
     <script>
-      // Tratamento global de erros de fetch
       addEventListener('turbo:load', () => {
         window.addEventListener('unhandledrejection', event => {
           if (event.reason instanceof TypeError && event.reason.message.includes('Failed to fetch')) {
             console.error('Erro de conexão:', event.reason);
-            // Mostrar mensagem amigável para o usuário
             alert('Problema de conexão. Por favor, verifique sua internet e tente novamente.');
           }
         });
       });
     </script>
   </head>
-    
+
   <body class="d-flex flex-column min-vh-100">
     <%= render 'shared/navbar' %> 
     <%= render 'shared/flash_messages' %>
-    
+
     <main class="container flex-grow-1 py-4">
       <%= yield %>
     </main>
 
     <%= render 'shared/footer' %>
-   
-    <!-- Bootstrap Bundle com Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap JS + Popper (usado apenas se necessário fora do Stimulus) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
   </body>
 </html>

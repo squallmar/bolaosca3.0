@@ -1,6 +1,7 @@
 class Championship < ApplicationRecord
   has_many :matches
   has_and_belongs_to_many :teams
+  has_one_attached :logo
   
   attribute :active, :boolean, default: true
   before_validation :set_default_active, on: :create

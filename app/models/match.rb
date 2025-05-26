@@ -40,6 +40,14 @@ class Match < ApplicationRecord
     status == 'finalizado'
   end
 
+  def finished?
+    status == "finished"
+  end
+
+  def in_progress?
+    status == "in_progress"
+  end
+
   def team_a_name
     team_a&.name || "Time A"
   end

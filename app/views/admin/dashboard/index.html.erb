@@ -315,11 +315,11 @@
                   </td>
                   <td>
                     <div class="d-flex align-items-center">
-                      <small class="me-2"><%= match.team_a.short_name %></small>
+                      <small class="me-2"><%= match.team_a.name %></small>
                       <%= image_tag match.team_a.logo.variant(resize_to_limit: [20, 20]), class: 'mx-1', alt: match.team_a.name if match.team_a.logo.attached? %>
                       <strong class="mx-2">vs</strong>
                       <%= image_tag match.team_b.logo.variant(resize_to_limit: [20, 20]), class: 'mx-1', alt: match.team_b.name if match.team_b.logo.attached? %>
-                      <small class="ms-2"><%= match.team_b.short_name %></small>
+                      <small class="ms-2"><%= match.team_b.name %></small>
                     </div>
                   </td>
                   <td>

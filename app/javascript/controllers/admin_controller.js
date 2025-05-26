@@ -2,7 +2,7 @@
 import { Controller } from "@hotwired/stimulus"
 import * as bootstrap from "bootstrap"
 
-export default class extends Controller {
+export default class AdminController extends Controller {
   connect() {
     this.initComponents()
     this.setupEventListeners()

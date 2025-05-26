@@ -35,7 +35,7 @@ class User < ApplicationRecord
 
   # Instance Methods
   def admin?
-    admin || admin_emails.include?(email.downcase)
+    admin
   end
 
   def name
