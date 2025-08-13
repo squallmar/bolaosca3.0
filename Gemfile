@@ -70,7 +70,7 @@ gem "i18n"
 gem "carrierwave"
 gem "mini_magick", "~> 5.2"
 gem "rails-ujs"
-gem "pagy", "~> 9.3"
+gem "pagy", "~> 9.4"
 gem "kaminari", "~> 1.2", ">= 1.2.2"
 gem 'tailwindcss-rails', '~> 4.2', '>= 4.2.3'
 gem 'fiddle', '~> 1.1', '>= 1.1.8'
